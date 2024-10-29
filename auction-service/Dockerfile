@@ -1,17 +1,13 @@
+# Use the official MongoDB image from Docker Hub
+FROM mongo:latest
 
-FROM python:3.9
+# set username and password
+ENV MONGO_INITDB_ROOT_USERNAME=myUsername
+ENV MONGO_INITDB_ROOT_PASSWORD=myPassword
 
+# Expose MongoDB port (default 27017)
+EXPOSE 27017
 
-WORKDIR /code
+# Default command to run MongoDB server
+CMD ["mongod"]
 
-
-COPY ./requirements.txt /code/requirements.txt
-
-
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-
-
-COPY ./app /code/app
-
-
-CMD ["fastapi", "run", "app/main.py", "--port", "80"]
