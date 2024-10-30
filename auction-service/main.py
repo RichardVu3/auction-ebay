@@ -3,7 +3,7 @@ from fastapi import FastAPI
 
 from pymongo.mongo_client import MongoClient
 from pymongo import ASCENDING, DESCENDING
-from os import environ
+from os import environ, walk
 
 # environ.get("MONGODB_URL") if we were reading it from an env var for production
 
@@ -21,29 +21,23 @@ except Exception as e:
 
 db = client["auction_service"]
 # Create collections
-users = db["users"]
-items = db["items"]
+auctions = db["auctions"]
 bids = db["bids"]
 categories = db["categories"]
 notifications = db["notifications"]
 carts = db["carts"]
 
-# Set up indexes for efficient querying
-# Users: Unique index on email for quick login lookup
-users.create_index([("email", ASCENDING)], unique=True)
 
-# Items: Index on category and endTime to support category search and sorting by auction end time
-items.create_index([("category", ASCENDING)])
-items.create_index([("endTime", ASCENDING)])
+auctions.create_index([("category", ASCENDING)])
+auctions.create_index([("endTime", ASCENDING)])
+auctions.create_index([("user_id", ASCENDING)])
 
-# Bids: Index on itemId for fast retrieval of bids for an item
-bids.create_index([("itemId", ASCENDING)])
+bids.create_index([("auction_id", ASCENDING)])
+bids.create_index([("user_id", ASCENDING)])
 
-# Notifications: Index on userId for retrieving notifications by user
-notifications.create_index([("userId", ASCENDING)])
+notifications.create_index([("user_id", ASCENDING)])
 
-# Carts: Index on userId to efficiently manage user-specific carts
-carts.create_index([("userId", ASCENDING)])
+carts.create_index([("user_id", ASCENDING)])
 
 
 app = FastAPI()
