@@ -21,14 +21,30 @@ router = APIRouter(
 # get all auction
 @router.get("/", tags=["auction"])
 async def get_auction(db: Collection = Depends(get_db)):
-    # auctions_collection = db["auction"]
+    auctions_collection = db["auction"]
+
     return {"status": 200}
 
 
 # create a new auction
 @router.post("/", tags=["auction"])
-async def create_auction():
-    return {"status": 200}
+async def create_auction(new_auction: AuctionCreate, db: Collection = Depends(get_db)):
+    auctions_collection = db["auction"]
+    created_auction = auctions_collection.insert_one()
+    print(created_auction)
+
+    # response_payload = AuctionResponse(
+    #     _id=created_auction._id,
+    #     title=created_auction.title,
+    #     description=new_auction.description,
+    #     category=new_auction.category,
+    #     starting_price=new_auction.starting_price,
+    #     start_time=new_auction.start_time,
+    #     end_time=new_auction.end_time,
+    #     seller_id=new_auction.user_id,
+    # )
+
+    return created_auction
 
 
 # update an auction

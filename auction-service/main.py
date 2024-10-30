@@ -79,11 +79,6 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
-
 @app.get("/checkhealth")
 async def handle_checkhealth():
     return "API is up!"
