@@ -1,26 +1,18 @@
-from typing import Union
-from fastapi import FastAPI
+import traceback
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from pymongo.mongo_client import MongoClient
 from pymongo import ASCENDING
+from mongodb import get_db
+
+
 from routes.web import auction, bid, category
 
-# environ.get("MONGODB_URL") if we were reading it from an env var for production
+db = get_db()
 
-uri = "localhost:27017"
-
-# Create a new client and connect to the server
-client = MongoClient(uri)
-
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command("ping")
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
-
-db = client["auction_service"]
 # Create collections
 auctions = db["auctions"]
 bids = db["bids"]
@@ -42,6 +34,39 @@ carts.create_index([("user_id", ASCENDING)])
 
 
 app = FastAPI()
+
+
+# register this as a global error handler that runs for each request
+@app.middleware("http")
+async def error_handler(request: Request, call_next):
+    try:
+        response = await call_next(request)
+        if response.status_code >= 400:
+            return JSONResponse(
+                status_code=response.status_code,
+                content={
+                    "error": "An error occurred",
+                    "status_code": response.status_code,
+                    "detail": (
+                        response.body.decode()
+                        if response.body
+                        else "No additional detail"
+                    ),
+                },
+            )
+        return response
+    except Exception as exception:
+        # Catch all other unhandled exceptions
+        traceback.print_exc()  # Optionally log the traceback to the console or a log file
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "An internal server error occurred",
+                "detail": str(exception),
+            },
+        )
+
+
 app.include_router(auction.router, prefix="/api")
 app.include_router(bid.router, prefix="/api")
 app.include_router(category.router, prefix="/api")
@@ -59,11 +84,6 @@ app.add_middleware(
 @app.get("/")
 async def read_root():
     return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
 
 
 @app.get("/checkhealth")
