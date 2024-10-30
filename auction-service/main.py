@@ -1,9 +1,10 @@
 from typing import Union
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from pymongo.mongo_client import MongoClient
-from pymongo import ASCENDING, DESCENDING
-from os import environ, walk
+from pymongo import ASCENDING
+from routes.web import auction, bid, category
 
 # environ.get("MONGODB_URL") if we were reading it from an env var for production
 
@@ -41,6 +42,18 @@ carts.create_index([("user_id", ASCENDING)])
 
 
 app = FastAPI()
+app.include_router(auction.router, prefix="/api")
+app.include_router(bid.router, prefix="/api")
+app.include_router(category.router, prefix="/api")
+# add origins or load them from .env
+origins = [""]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
