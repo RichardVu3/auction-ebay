@@ -3,7 +3,7 @@ from typing_extensions import Annotated
 from decimal import Decimal
 from datetime import datetime
 from bson import ObjectId
-from objectid import PyObjectId
+from models.objectid import PyObjectId
 
 
 class BidModel(BaseModel):
@@ -16,3 +16,4 @@ class BidModel(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+        from_attributes = True  # Use from_attributes instead of orm_mode

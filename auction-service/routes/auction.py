@@ -1,4 +1,15 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
+from pymongo.collection import Collection
+
+from models.objectid import PyObjectId
+from models.auction import (
+    AuctionModel,
+    AuctionCreate,
+    AuctionResponse,
+    auction_helper,
+)
+from mongodb import get_db
+
 
 router = APIRouter(
     prefix="/auction",
@@ -9,7 +20,8 @@ router = APIRouter(
 
 # get all auction
 @router.get("/", tags=["auction"])
-async def get_auction():
+async def get_auction(db: Collection = Depends(get_db)):
+    # auctions_collection = db["auction"]
     return {"status": 200}
 
 

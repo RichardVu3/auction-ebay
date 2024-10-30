@@ -1,4 +1,4 @@
-from objectid import PyObjectId
+from models.objectid import PyObjectId
 from bson import ObjectId
 from typing import Optional
 from typing_extensions import Annotated
@@ -16,3 +16,4 @@ class CategoryModel(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+        from_attributes = True  # Use from_attributes instead of orm_mode

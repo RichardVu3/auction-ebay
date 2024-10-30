@@ -1,18 +1,45 @@
-import decimal
+from models.objectid import PyObjectId
 from pydantic import BaseModel, Field, StringConstraints
 from decimal import Decimal
 from typing import List, Optional
 from typing_extensions import Annotated
 from datetime import datetime
 from bson import ObjectId
-from objectid import PyObjectId
-from pymongo.collection import Collection
-
-from mongodb import get_db
 
 
-# Item Model
-class ItemModel(BaseModel):
+class AuctionCreate(BaseModel):
+    title: str
+    description: Optional[str]
+    category: str
+    starting_price: float
+    user_id: str
+    start_time: datetime
+    end_time: datetime
+
+
+class AuctionResponse(BaseModel):
+    id: str = Field(..., alias="_id")
+    title: str
+    description: Optional[str]
+    category: str
+    starting_price: float
+    seller_id: str
+    start_time: datetime
+    end_time: datetime
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        from_attributes = True  # Use from_attributes instead of orm_mode
+
+
+# Helper function to convert MongoDB ObjectId to string
+def auction_helper(auction) -> dict:
+    auction["_id"] = str(auction["_id"])
+    return auction
+
+
+class AuctionModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     title: Annotated[str, StringConstraints(max_length=100)]
     description: Optional[str]
@@ -37,3 +64,4 @@ class ItemModel(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+        from_attributes = True  # Use from_attributes instead of orm_mode
