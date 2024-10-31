@@ -1,5 +1,14 @@
 <script lang="ts">
-	let auctions = $state([]);
+	interface Auction {
+		_id: string;
+		title: string;
+		category: string;
+		starting_price: number;
+		auction_id: string;
+		start_time: string;
+		end_time: string;
+	}
+	let auctions: [Auction] | [] = $state([]);
 
 	$effect(() => {
 		async function getAuctions() {
@@ -12,21 +21,18 @@
 	});
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
-
 <ul>
-	<!-- {#each auctions as auction (user.age)} -->
-	<!-- 	<li> -->
-	<!-- 		name: {user.name} -->
-	<!-- 	</li> -->
-	<!-- 	<li> -->
-	<!-- 		age: {user.age} -->
-	<!-- 	</li> -->
-	<!-- 	<li> -->
-	<!-- 		favorite food: {user.favorite_food} -->
-	<!-- 	</li> -->
-	<!-- {/each} -->
+	{#each auctions as auction (auction._id)}
+		<li>
+			title: {auction.title}
+		</li>
+		<li>
+			starting price: ${auction.starting_price}
+		</li>
+		<li>
+			starting time: {auction.start_time}
+		</li>
+	{/each}
 </ul>
 
 <style>

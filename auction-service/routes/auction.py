@@ -1,8 +1,7 @@
 from bson.objectid import ObjectId
-from fastapi import APIRouter, Depends, Path, Query
-from typing import List, Annotated
+from fastapi import APIRouter, Depends, Path
+from typing import Annotated
 from pymongo.collection import Collection
-from models.objectid import PyObjectId
 from models.auction import (
     AuctionModel,
     AuctionCreate,

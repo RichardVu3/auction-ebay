@@ -27,6 +27,6 @@ async def update_category():
 
 
 # delete a category
-@router.delete("/{category_id}", tags=["bid"])
+@router.delete("/{category_id}", tags=["category"])
 async def delete_category(auction_id: int):
     return {"status": 200}
