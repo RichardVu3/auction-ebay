@@ -23,7 +23,7 @@ router = APIRouter(
 @router.get("/", tags=["auction"])
 async def get_auction(db: Collection = Depends(get_db)):
     auctions_collection = db["auctions"]
-    auctions = auctions_collection.find({}, {"_id": False})
+    auctions = auctions_collection.find({})
 
     return [auction_helper(doc) for doc in auctions.to_list()]
 
