@@ -5,7 +5,7 @@ from pymongo import ASCENDING
 from mongodb import get_db
 
 
-from routes import auction, bid, category
+from routes import auction, bid, category, user, admin
 
 db = get_db()
 
@@ -15,6 +15,7 @@ bids = db["bids"]
 categories = db["categories"]
 notifications = db["notifications"]
 carts = db["carts"]
+user = db["users"]
 
 
 auctions.create_index([("category", ASCENDING)])

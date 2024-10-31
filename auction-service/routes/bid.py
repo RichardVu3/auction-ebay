@@ -21,13 +21,13 @@ async def create_bid():
     return {"status": 200}
 
 
-# update an bid
-@router.put("/", tags=["bid"])
+# delete an bid
+@router.delete("/", tags=["bid"])
 async def update_bid():
     return {"status": 200}
 
 
 # update an bid
-@router.put("/{bid_id}", tags=["auction"])
+@router.put("/{bid_id}", tags=["bid"])
 async def delete_bid(auction_id: int):
     return {"status": 200}

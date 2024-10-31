@@ -20,13 +20,13 @@ async def create_category():
     return {"status": 200}
 
 
-# update an category
+# update a category
 @router.put("/", tags=["category"])
 async def update_category():
     return {"status": 200}
 
 
-# update an category
-@router.put("/{category_id}", tags=["auction"])
+# delete a category
+@router.delete("/{category_id}", tags=["bid"])
 async def delete_category(auction_id: int):
     return {"status": 200}
