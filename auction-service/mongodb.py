@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-from fastapi import Depends
 
 # environ.get("MONGODB_URL") if we were reading it from an env var for production
 

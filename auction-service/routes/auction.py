@@ -24,8 +24,9 @@ router = APIRouter(
 async def get_auction(db: Collection = Depends(get_db)):
     auctions_collection = db["auction"]
     auctions = auctions_collection.find({})
+    return 1
 
-    return [auction_helper(doc) for doc in auctions.to_list()]
+    # return [auction_helper(doc) for doc in auctions.to_list()]
 
 
 # create a new auction
