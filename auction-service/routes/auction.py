@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from typing import List
 from pymongo.collection import Collection
 
 from models.objectid import PyObjectId
@@ -22,38 +23,34 @@ router = APIRouter(
 @router.get("/", tags=["auction"])
 async def get_auction(db: Collection = Depends(get_db)):
     auctions_collection = db["auction"]
+    auctions = auctions_collection.find({})
 
-    return {"status": 200}
+    return [auction_helper(doc) for doc in auctions.to_list()]
 
 
 # create a new auction
 @router.post("/", tags=["auction"])
-async def create_auction(new_auction: AuctionCreate, db: Collection = Depends(get_db)):
+async def create_auction(auction: AuctionCreate, db: Collection = Depends(get_db)):
     auctions_collection = db["auction"]
-    created_auction = auctions_collection.insert_one()
-    print(created_auction)
+    auction_dict = dict(auction)
+    new_auction = auctions_collection.insert_one(auction_dict)
 
-    # response_payload = AuctionResponse(
-    #     _id=created_auction._id,
-    #     title=created_auction.title,
-    #     description=new_auction.description,
-    #     category=new_auction.category,
-    #     starting_price=new_auction.starting_price,
-    #     start_time=new_auction.start_time,
-    #     end_time=new_auction.end_time,
-    #     seller_id=new_auction.user_id,
-    # )
+    created_auction = auctions_collection.find_one({"_id": new_auction.inserted_id})
 
     return created_auction
 
 
 # update an auction
 @router.put("/", tags=["auction"])
-async def update_auction():
+async def update_auction(auction: AuctionModel, db: Collection = Depends(get_db)):
+    auctions_collection = db["auction"]
+    # auction_dict = dict(auction)
+    # updated_auction = auctions_collection.update_one(auction)
+
     return {"status": 200}
 
 
 # update an auction
 @router.put("/{auction_id}", tags=["auction"])
-async def delete_auction(auction_id: int):
+async def delete_auction(auction_id: int, db: Collection = Depends(get_db)):
     return {"status": 200}

@@ -1,6 +1,4 @@
 from bson import ObjectId
-
-
 from bson import ObjectId
 from pydantic.json import pydantic_encoder
 
