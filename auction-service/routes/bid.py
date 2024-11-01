@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pymongo import DESCENDING
 from pymongo.collection import Collection
-from mongodb import get_db
+from mongodb import get_db, client
 from models.bid import BidRequest, bid_helper
+from datetime import datetime
 
 router = APIRouter(
     prefix="/bid",
@@ -22,18 +23,25 @@ async def get_bids(db: Collection = Depends(get_db)):
 
 @router.post("/", tags=["bid"])
 async def create_bid(bid: BidRequest, db: Collection = Depends(get_db)):
-    bid_collection = db["bids"]
-    last_bid = bid_collection.find_one(
-        {"auction_id": bid.auction_id}, sort=[("timestamp", DESCENDING)]
-    )
-
-    if not last_bid or last_bid.amount < bid.amount:
-        new_bid = bid_collection.insert_one(dict(bid))
-        maybe_created_bid = bid_collection.find_one({"_id": new_bid.inserted_id})
-        return [bid_helper(maybe_created_bid)]
-
-    if last_bid.amount > bid.amount:
-        raise HTTPException(
-            status_code=409,
-            detail=f"Could not create bid because it is lower than the current highest bid. The current high bid is {last_bid.amount}.",
-        )
+    with client.start_session() as session:
+        with session.start_transaction():
+            bids_collection = db["bids"]
+            highest_bid = bids_collection.find_one(
+                {"auction_id": bid.auction_id},
+                sort=[("amount", DESCENDING)],
+                session=session,
+            )
+            if highest_bid is None or bid.amount > highest_bid["amount"]:
+                new_bid = {
+                    "auction_id": bid.auction_id,
+                    "user_id": bid.user_id,
+                    "amount": bid.amount,
+                    "timestamp": datetime.now(),
+                }
+                created_bid = bids_collection.insert_one(new_bid, session=session)
+                return created_bid.acknowledged
+            else:
+                raise HTTPException(
+                    status_code=409,
+                    detail=f"Could not create bid because it is lower than the current highest bid. The current high bid is {highest_bid.amount}.",
+                )
