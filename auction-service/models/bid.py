@@ -6,8 +6,8 @@ from bson import ObjectId
 from models.objectid import PyObjectId
 
 
-class BidCreate(BaseModel):
-    item_id: str
+class BidRequest(BaseModel):
+    auction_id: str
     user_id: str
     amount: Annotated[Decimal, Field(gt=0, max_digits=10, decimal_places=2)]
     timestamp: datetime = Field(default_factory=datetime.now)
@@ -15,7 +15,7 @@ class BidCreate(BaseModel):
 
 class BidModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    item_id: PyObjectId
+    auction_id: PyObjectId
     user_id: PyObjectId
     amount: Annotated[Decimal, Field(gt=0, max_digits=10, decimal_places=2)]
     timestamp: datetime = Field(default_factory=datetime.now)

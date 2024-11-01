@@ -1,5 +1,6 @@
-from fastapi import APIRouter
-from models.objectid import PyObjectId
+from fastapi import APIRouter, Depends
+from pymongo.collection import Collection
+from mongodb import get_db
 
 router = APIRouter(
     prefix="/category",
@@ -7,10 +8,15 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+# TODO: Embed categories
 
-# get all category
+
+# get all categories
 @router.get("/", tags=["category"])
-async def get_category():
+async def get_category(db: Collection = Depends(get_db)):
+    category_collection = db["categories"]
+    category_collection.find({})
+
     return {"status": 200}
 
 

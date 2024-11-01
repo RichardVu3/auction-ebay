@@ -17,6 +17,8 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+# TODO: Embed categories
+
 
 # get all auctions
 @router.get("/", tags=["auction"])

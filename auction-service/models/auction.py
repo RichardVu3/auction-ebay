@@ -23,7 +23,7 @@ class AuctionResponse(BaseModel):
     description: Optional[str]
     category: str
     starting_price: float
-    seller_id: str
+    user_id: str
     start_time: datetime
     end_time: datetime
 
@@ -50,7 +50,7 @@ class AuctionModel(BaseModel):
     ]
     bids: Optional[List[dict]]  # Could be improved with a Bid reference if needed
     watchlist_criteria: Optional[List[dict]]  # User-specific criteria for notifications
-    seller_id: PyObjectId
+    user_id: PyObjectId
     start_time: datetime
     end_time: datetime
     buy_now_price: Optional[
