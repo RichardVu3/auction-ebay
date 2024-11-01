@@ -2,8 +2,8 @@
 FROM mongo:latest
 
 # set username and password
-ENV MONGO_INITDB_ROOT_USERNAME=myUsername
-ENV MONGO_INITDB_ROOT_PASSWORD=myPassword
+ENV MONGO_INITDB_ROOT_USERNAME=mongoadmin
+ENV MONGO_INITDB_ROOT_PASSWORD=password
 
 # Expose MongoDB port (default 27017)
 EXPOSE 27017
