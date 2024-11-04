@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pymongo import DESCENDING
 from pymongo.collection import Collection
-from mongodb import get_db, client
+from db import get_db, client
 from models.bid import BidRequest, bid_helper
 from datetime import datetime
 

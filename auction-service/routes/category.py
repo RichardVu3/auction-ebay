@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pymongo.collection import Collection
 from typing import List
-from mongodb import get_db
+from db import get_db
 from models.category import CategoryModel, CategoryRequest, category_helper
 
 router = APIRouter(

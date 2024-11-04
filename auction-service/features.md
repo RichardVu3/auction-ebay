@@ -20,9 +20,9 @@
 
 ## Auction Functions
 
-- [ ] Create auction(see above)
+- [x] Create auction(see above)
 - [ ] Start an auction at a specified time defined by the user
-- [ ] User can set the duration of the auction (when it will start + end)
+- [x] User can set the duration of the auction (when it will start + end)
 - [ ] Allow bidding
 - [ ] Increment bid amount as user as users enter new bids
 - [ ] Search item by keyword or item category/tag

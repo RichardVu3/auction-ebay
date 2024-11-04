@@ -6,7 +6,7 @@ from models.objectid import PyObjectId
 from models.auction import (
     auction_helper,
 )
-from mongodb import get_db
+from db import get_db
 
 
 router = APIRouter(
