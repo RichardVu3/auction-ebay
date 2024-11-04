@@ -4,9 +4,6 @@ from typing import List, Annotated
 from pymongo.collection import Collection
 from models.objectid import PyObjectId
 from models.auction import (
-    AuctionModel,
-    AuctionCreate,
-    AuctionResponse,
     auction_helper,
 )
 from mongodb import get_db
