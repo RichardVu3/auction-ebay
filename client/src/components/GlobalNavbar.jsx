@@ -18,10 +18,17 @@ const menuItems = [
     path: "/",
     end: false,
   },
+
+  {
+    name: "dashboard",
+    text: "Dashboard",
+    path: "dashboard",
+    end: true,
+  },
   {
     name: "auctions",
     text: "My Auctions",
-    path: "auctions",
+    path: "dashboard/auctions",
     end: true,
   },
 ];

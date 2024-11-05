@@ -7,16 +7,17 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import App from "./App";
-import ErrorPage from "./ErrorPage";
-import Index from "./routes/Index";
+import App from "./app";
+import ErrorPage from "./error-page";
+import Index from "./routes/index";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route errorElement={<ErrorPage />}>
         <Route index element={<Index />} />
-        <Route path="auctions" element={<div>My Auctions</div>} />
+        <Route path="dashboard" element={<div>Dashboard</div>} />
+        <Route path="dashboard/auctions" element={<div>My Auctions</div>} />
       </Route>
     </Route>,
   ),
