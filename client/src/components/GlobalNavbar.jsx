@@ -9,7 +9,7 @@ import {
 } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const menuItems = [
   {
@@ -26,13 +26,7 @@ const menuItems = [
   },
 ];
 
-// <a
-//   href="#"
-//   className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-// >
-//   Dashboard
-// </a>
-
+//used for responsive menu items
 const activeClass =
   "rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white";
 const defaultClass =
@@ -121,9 +115,33 @@ const MobileMenuPanel = () => {
   return (
     <DisclosurePanel className="lg:hidden">
       <div className="space-y-1 px-2 pb-3 pt-2">
+        {menuItems.map((item) => {
+          return (
+            <DisclosureButton
+              as="div"
+              key={item.name}
+              className="block rounded-md"
+            >
+              <NavLink
+                className={({ isActive }) => [
+                  isActive
+                    ? "block rounded-md px-3 py-2 text-base font-medium bg-gray-900 text-white"
+                    : "block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white",
+                ]}
+                key={item.name}
+                to={item.path}
+                end={item.end}
+              >
+                {item.text}
+              </NavLink>
+            </DisclosureButton>
+          );
+        })}
+
         {/* Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" */}
+        {/*
         <DisclosureButton
-          as="a"
+          as={NavLink}
           href="#"
           className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
         >
@@ -198,6 +216,8 @@ const MobileMenuPanel = () => {
             Sign out
           </DisclosureButton>
         </div>
+
+		  */}
       </div>
     </DisclosurePanel>
   );
