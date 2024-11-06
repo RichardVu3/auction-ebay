@@ -21,7 +21,7 @@ const user = {
   imageUrl:
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
-const navigation = [
+const categoryNavigation = [
   { name: "Electronics", to: "/categories/electronics", end: false },
   { name: "Motors", to: "/categories/motors", end: true },
   { name: "Collectibles", to: "/categories/collectibles", end: false },
@@ -41,23 +41,25 @@ const navigation = [
   },
 ];
 const userNavigation = [
-  { name: "Your Profile", to: "#" },
-  { name: "Settings", to: "#" },
-  { name: "Sign out", to: "#" },
+  { name: "Dashboard", to: "/dashboard" },
+  { name: "Auctions", to: "/dashboard/auctions" },
+  { name: "Watchlist", to: "/dashboard/watchlist" },
+  { name: "Your Profile", to: "/account" },
+  { name: "Settings", to: "/account/settings" },
+  { name: "Sign out", to: "/signout" },
 ];
 
-// const { path, text, icon } = props;
 const iconButtons = [
   {
     name: "notifications",
     text: "View Notifications",
-    path: "",
+    to: "",
     icon: <BellIcon aria-hidden="true" className="h-6 w-6" />,
   },
   {
     name: "cart",
     text: "View Cart",
-    path: "",
+    to: "",
     icon: <ShoppingCartIcon aria-hidden="true" className="h-6 w-6" />,
   },
 ];
@@ -68,13 +70,13 @@ function classNames(...classes) {
 
 const SecondaryNavLinks = () => {
   const activeStyle =
-    "inline-flex items-center rounded-md px-1	 py-2 text-sm font-medium bg-gray-900 text-white";
+    "inline-flex items-center rounded-md px-1 py-2 text-sm font-medium bg-gray-900 text-white";
   const inactiveStyle =
     "inline-flex items-center rounded-md px-1 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white";
 
   return (
     <nav aria-label="Global" className="hidden lg:flex lg:space-x-8 lg:py-2">
-      {navigation.map((item) => (
+      {categoryNavigation.map((item) => (
         <NavLink
           key={item.name}
           to={item.to}
@@ -149,7 +151,7 @@ const MobileNavDropdown = () => {
   return (
     <DisclosurePanel as="nav" aria-label="Global" className="lg:hidden">
       <div className="space-y-1 px-2 pb-3 pt-2">
-        {navigation.map((item) => (
+        {categoryNavigation.map((item) => (
           <DisclosureButton
             key={item.name}
             as="a"
@@ -195,14 +197,14 @@ const MobileNavDropdown = () => {
         </div>
         <div className="mt-3 space-y-1 px-2">
           {userNavigation.map((item) => (
-            <DisclosureButton
-              key={item.name}
-              as="a"
-              to={item.to}
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-            >
-              {item.name}
-            </DisclosureButton>
+            <NavLink to={item.to} key={item.name}>
+              <DisclosureButton
+                as="div"
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+              >
+                {item.name}
+              </DisclosureButton>
+            </NavLink>
           ))}
         </div>
       </div>
@@ -225,14 +227,16 @@ const DesktopProfileDropdown = () => {
         className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
       >
         {userNavigation.map((item) => (
-          <MenuItem key={item.name}>
-            <a
-              to={item.to}
-              className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
-            >
-              {item.name}
-            </a>
-          </MenuItem>
+          <NavLink key={item.name} to={item.to}>
+            <MenuItem>
+              <a
+                to={item.to}
+                className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
+              >
+                {item.name}
+              </a>
+            </MenuItem>
+          </NavLink>
         ))}
       </MenuItems>
     </Menu>
