@@ -9,7 +9,7 @@ import {
 const navigation = [
   {
     name: "My Auctions",
-    href: "#",
+    to: "dashboard/",
     icon: HomeIcon,
     count: "5",
     current: true,
@@ -17,7 +17,7 @@ const navigation = [
   },
   {
     name: "Watchlist",
-    href: "#",
+    to: "dashboard/",
     icon: UsersIcon,
     current: false,
     adminRoute: false,
@@ -25,13 +25,13 @@ const navigation = [
 
   {
     name: "Order History",
-    href: "#",
+    to: "dashboard/",
     icon: DocumentDuplicateIcon,
     current: false,
   },
   {
-    name: "Metrics and Reports",
-    href: "#",
+    name: "Analytics",
+    to: "dashboard/",
     icon: ChartPieIcon,
     count: "12",
     current: false,
@@ -39,7 +39,7 @@ const navigation = [
   },
   {
     name: "Calendar",
-    href: "#",
+    to: "dashboard/",
     icon: CalendarIcon,
     count: "20+",
     current: true,
@@ -52,12 +52,12 @@ function classNames(...classes) {
 
 export default function DashboardSidebar() {
   return (
-    <nav aria-label="Sidebar" className="flex flex-1 flex-col">
+    <nav aria-label="Sidebar" className="sm:hidden flex flex-1 flex-col">
       <ul role="list" className="-mx-2 space-y-1">
         {navigation.map((item) => (
           <li key={item.name}>
             <a
-              href={item.href}
+              to={item.href}
               className={classNames(
                 item.current
                   ? "bg-gray-50 text-indigo-600"

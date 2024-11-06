@@ -23,7 +23,13 @@ const router = createBrowserRouter(
         <Route index element={<Index />} />
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="dashboard/auctions" element={<DashboardPage />} />
-        <Route path="catories/:categoryid" element={<DashboardPage />} />
+
+        <Route path="dashboard/watchlist" element={<DashboardPage />} />
+
+        <Route path="dashboard/orders" element={<DashboardPage />} />
+
+        <Route path="dashboard/sell" element={<DashboardPage />} />
+        <Route path="categories/:categoryid" element={<DashboardPage />} />
       </Route>
     </Route>,
   ),
