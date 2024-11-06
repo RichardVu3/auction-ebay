@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./app";
 import ErrorPage from "./error-page";
+import DashboardPage from "./routes/dashboard/dashboard-page";
 import Index from "./routes/index";
 
 const queryClient = new QueryClient();
@@ -20,8 +21,8 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route errorElement={<ErrorPage />}>
         <Route index element={<Index />} />
-        <Route path="dashboard" element={<div>Dashboard</div>} />
-        <Route path="dashboard/auctions" element={<div>My Auctions</div>} />
+        <Route path="dashboard" element={<DashboardPage />} />
+        <Route path="dashboard/auctions" element={<DashboardPage />} />
       </Route>
     </Route>,
   ),
