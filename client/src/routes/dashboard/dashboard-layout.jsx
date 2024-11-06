@@ -1,4 +1,6 @@
+import { Outlet } from "react-router-dom";
 import DashboardSidebar from "../../components/DashboardSidebar";
+Outlet;
 const DashboardLayout = () => {
   return (
     <div className="bg-gray-400 flex min-h-full flex-col">
@@ -9,7 +11,7 @@ const DashboardLayout = () => {
           <div className="border-b border-gray-200 px-4 py-6 sm:px-6 lg:pl-8 xl:w-64 xl:shrink-0 xl:border-b-0 xl:border-r xl:pl-6">
             {/* Left column area */}
             LEFT COL AREA
-            <DashboardSidebar />
+            {/*           <DashboardSidebar />*/}
           </div>
 
           <div className="bg-green-100 px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">

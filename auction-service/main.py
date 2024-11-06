@@ -68,7 +68,7 @@ app.include_router(auction.router, prefix="/api")
 app.include_router(bid.router, prefix="/api")
 app.include_router(category.router, prefix="/api")
 # add origins or load them from .env
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173", "https://localhost:5173"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

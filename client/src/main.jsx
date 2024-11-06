@@ -12,23 +12,32 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./app";
 import ErrorPage from "./error-page";
 import DashboardPage from "./routes/dashboard/dashboard-page";
+import AuctionsSummary from "./routes/dashboard/dashboard-auctions";
 import Index from "./routes/index";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      gcTime: 1000 * 60 * 60 * 24,
+    },
+  },
+});
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route errorElement={<ErrorPage />}>
         <Route index element={<Index />} />
-        <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="dashboard/auctions" element={<DashboardPage />} />
+        <Route path="dashboard" element={<DashboardPage />}>
+          <Route path="auctions" element={<AuctionsSummary />} />
 
-        <Route path="dashboard/watchlist" element={<DashboardPage />} />
+          <Route path="watchlist" element={<DashboardPage />} />
 
-        <Route path="dashboard/orders" element={<DashboardPage />} />
+          <Route path="orders" element={<DashboardPage />} />
 
-        <Route path="dashboard/sell" element={<DashboardPage />} />
+          <Route path="sell" element={<DashboardPage />} />
+        </Route>
+
         <Route path="categories/:categoryid" element={<DashboardPage />} />
       </Route>
     </Route>,

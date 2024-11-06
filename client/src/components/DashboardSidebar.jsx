@@ -1,48 +1,36 @@
 import {
-  CalendarIcon,
   ChartPieIcon,
   DocumentDuplicateIcon,
   HomeIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { NavLink } from "react-router-dom";
 
 const navigation = [
   {
     name: "My Auctions",
-    to: "dashboard/",
+    to: "/dashboard/auctions",
     icon: HomeIcon,
-    count: "5",
-    current: true,
     adminRoute: false,
   },
   {
     name: "Watchlist",
-    to: "dashboard/",
+    to: "/dashboard/watchlist",
     icon: UsersIcon,
-    current: false,
     adminRoute: false,
   },
 
   {
     name: "Order History",
-    to: "dashboard/",
+    to: "/dashboard/orders",
     icon: DocumentDuplicateIcon,
-    current: false,
+    adminRoute: false,
   },
   {
     name: "Analytics",
-    to: "dashboard/",
+    to: "/dashboard/analytics",
     icon: ChartPieIcon,
-    count: "12",
-    current: false,
     adminRoute: true,
-  },
-  {
-    name: "Calendar",
-    to: "dashboard/",
-    icon: CalendarIcon,
-    count: "20+",
-    current: true,
   },
 ];
 
@@ -51,19 +39,24 @@ function classNames(...classes) {
 }
 
 export default function DashboardSidebar() {
+  const baseStyles =
+    "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold";
   return (
-    <nav aria-label="Sidebar" className="sm:hidden flex flex-1 flex-col">
+    <nav aria-label="Sidebar" className="sm:hidden md:flex flex-1 flex-col">
       <ul role="list" className="-mx-2 space-y-1">
         {navigation.map((item) => (
           <li key={item.name}>
-            <a
-              to={item.href}
-              className={classNames(
-                item.current
-                  ? "bg-gray-50 text-indigo-600"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600",
-                "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold",
-              )}
+            <NavLink
+              end
+              key={item.name}
+              to={item.to}
+              className={({ isActive }) => {
+                [
+                  isActive
+                    ? "bg-gray-50 text-indigo-600 group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-indigo-600 group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold",
+                ];
+              }}
             >
               <item.icon
                 aria-hidden="true"
@@ -83,7 +76,7 @@ export default function DashboardSidebar() {
                   {item.count}
                 </span>
               ) : null}
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>
