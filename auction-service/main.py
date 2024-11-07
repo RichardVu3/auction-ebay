@@ -5,7 +5,7 @@ from pymongo import ASCENDING
 from db import get_db
 
 
-from routes import auction, bid, category, user, admin
+from routes import auction, bid, category, user
 
 db = get_db()
 
@@ -15,7 +15,7 @@ bids = db["bids"]
 categories = db["categories"]
 notifications = db["notifications"]
 carts = db["carts"]
-user = db["users"]
+users = db["users"]
 
 
 auctions.create_index([("category", ASCENDING)])
@@ -67,6 +67,8 @@ app = FastAPI()
 app.include_router(auction.router, prefix="/api")
 app.include_router(bid.router, prefix="/api")
 app.include_router(category.router, prefix="/api")
+app.include_router(user.router, prefix="/api")
+
 # add origins or load them from .env
 origins = ["http://localhost:5173", "https://localhost:5173"]
 app.add_middleware(

@@ -2,7 +2,7 @@ from pymongo import MongoClient
 
 # environ.get("MONGODB_URL") if we were reading it from an env var for production
 
-uri = "localhost:27017"
+uri = "mongodb://mongoadmin:password@localhost:27017/"
 
 # Create a new client and connect to the server
 client = MongoClient(uri)

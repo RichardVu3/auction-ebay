@@ -17,17 +17,18 @@ router = APIRouter(
 
 
 # get all auctions by user_id
-@router.get("/{user_Id}/auctions", tags=["auction"])
+@router.get("/{user_id}/auctions", tags=["user"])
 async def get_user_auctions(
     # TODO: Sync with Daniel and Richard on the data type
     # of user id
-    user_id: Annotated[str, Path(title="the user's id.")],
+    user_id: Annotated[int, Path(title="the user's id.")],
     db: Collection = Depends(get_db),
 ):
-    auctions_collection = db["users"]
+    auctions_collection = db["auctions"]
+
     user_auctions = auctions_collection.find(
         {
-            "seller_id": ObjectId(user_id),
+            "user_id": user_id,
         },
     )
 

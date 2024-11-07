@@ -1,25 +1,20 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-function useAuctions() {
-  return useQuery({
+const AuctionsSummary = () => {
+  const queryClient = useQueryClient();
+  const userId = 1;
+  const { status, data, error, isFetching } = useQuery({
     queryKey: ["auctions"],
     queryFn: async () => {
-      const res = await fetch("/api/auction");
+      const res = await fetch(`/api/user/${userId}/auctions`);
       if (!res.ok) {
-        console.log("error");
+        console.error(res.statusText);
       }
       const data = await res.json();
-      console.log("auctions?", data);
+
       return data;
     },
   });
-}
-
-const AuctionsSummary = () => {
-  const queryClient = useQueryClient();
-  const { status, data, error, isFetching } = useAuctions();
-
-  console.log(data, status, error, isFetching);
 
   if (status === "pending") {
     return "Loading...";
