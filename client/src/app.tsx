@@ -286,7 +286,7 @@ export function HeaderMegaMenu({
                 <Link to="/" className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
-                      Features
+                      Shop by Categories
                     </Box>
                     <ChevronDownIcon
                       style={{ width: rem(16), height: rem(16) }}
@@ -326,7 +326,7 @@ export function HeaderMegaMenu({
               </HoverCard.Dropdown>
             </HoverCard>
 
-            <Link to="/" className={classes.link}>
+            <Link to="/dashboard" className={classes.link}>
               Dashboard
             </Link>
             <Link to="/dashboard/sell" className={classes.link}>
