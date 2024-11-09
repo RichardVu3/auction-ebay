@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 
-const DashboardPage = () => {
+const DashboardSummary = () => {
   return <Outlet />;
 };
 
-export default DashboardPage;
+export default DashboardSummary;

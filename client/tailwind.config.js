@@ -13,5 +13,9 @@ export default {
       colors: {},
     },
   },
-  plugins: ["@tailwindcss/forms", require("tailwindcss-animate")],
+  plugins: [
+    "@tailwindcss/forms",
+    "@tailwindcss/aspect-ratio",
+    require("tailwindcss-animate"),
+  ],
 };

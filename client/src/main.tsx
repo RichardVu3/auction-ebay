@@ -11,10 +11,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./app";
 import ErrorPage from "./error-page";
-import DashboardPage from "./routes/dashboard/dashboard-page";
-import AuctionsSummary from "./routes/dashboard/dashboard-auctions";
 import Index from "./routes/index";
-
+import Dashboard from "./routes/dashboard/dashboard";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -28,17 +26,17 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />} errorElement={<ErrorPage />}>
       <Route errorElement={<ErrorPage />}>
         <Route index element={<Index />} />
-        <Route path="dashboard" element={<DashboardPage />}>
-          <Route path="auctions" element={<AuctionsSummary />} />
+        <Route path="dashboard" element={<Dashboard />}>
+          {/* <Route path="auctions" element={<AuctionsSummary />} />
 
           <Route path="watchlist" element={<DashboardPage />} />
 
           <Route path="orders" element={<DashboardPage />} />
 
           <Route path="sell" element={<DashboardPage />} />
-        </Route>
 
-        <Route path="categories/:categoryid" element={<DashboardPage />} />
+          <Route path="categories/:categoryid" element={<DashboardPage />} />*/}
+        </Route>
       </Route>
     </Route>,
   ),
