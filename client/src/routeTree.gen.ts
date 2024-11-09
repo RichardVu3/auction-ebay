@@ -13,11 +13,14 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
 
 const AboutLazyImport = createFileRoute('/about')()
+const IndexLazyImport = createFileRoute('/')()
+const DashboardIndexLazyImport = createFileRoute('/dashboard/')()
+const DashboardSellLazyImport = createFileRoute('/dashboard/sell')()
+const DashboardAuctionsLazyImport = createFileRoute('/dashboard/auctions')()
 
 // Create/Update Routes
 
@@ -27,11 +30,35 @@ const AboutLazyRoute = AboutLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
-const IndexRoute = IndexImport.update({
+const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const DashboardIndexLazyRoute = DashboardIndexLazyImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/index.lazy').then((d) => d.Route),
+)
+
+const DashboardSellLazyRoute = DashboardSellLazyImport.update({
+  id: '/dashboard/sell',
+  path: '/dashboard/sell',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/sell.lazy').then((d) => d.Route),
+)
+
+const DashboardAuctionsLazyRoute = DashboardAuctionsLazyImport.update({
+  id: '/dashboard/auctions',
+  path: '/dashboard/auctions',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/dashboard/auctions.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -41,7 +68,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+      preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
     '/about': {
@@ -51,44 +78,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/auctions': {
+      id: '/dashboard/auctions'
+      path: '/dashboard/auctions'
+      fullPath: '/dashboard/auctions'
+      preLoaderRoute: typeof DashboardAuctionsLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/sell': {
+      id: '/dashboard/sell'
+      path: '/dashboard/sell'
+      fullPath: '/dashboard/sell'
+      preLoaderRoute: typeof DashboardSellLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/dashboard/auctions': typeof DashboardAuctionsLazyRoute
+  '/dashboard/sell': typeof DashboardSellLazyRoute
+  '/dashboard': typeof DashboardIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/dashboard/auctions': typeof DashboardAuctionsLazyRoute
+  '/dashboard/sell': typeof DashboardSellLazyRoute
+  '/dashboard': typeof DashboardIndexLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/': typeof IndexLazyRoute
   '/about': typeof AboutLazyRoute
+  '/dashboard/auctions': typeof DashboardAuctionsLazyRoute
+  '/dashboard/sell': typeof DashboardSellLazyRoute
+  '/dashboard/': typeof DashboardIndexLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/dashboard/auctions'
+    | '/dashboard/sell'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to: '/' | '/about' | '/dashboard/auctions' | '/dashboard/sell' | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/dashboard/auctions'
+    | '/dashboard/sell'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  IndexLazyRoute: typeof IndexLazyRoute
   AboutLazyRoute: typeof AboutLazyRoute
+  DashboardAuctionsLazyRoute: typeof DashboardAuctionsLazyRoute
+  DashboardSellLazyRoute: typeof DashboardSellLazyRoute
+  DashboardIndexLazyRoute: typeof DashboardIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  IndexLazyRoute: IndexLazyRoute,
   AboutLazyRoute: AboutLazyRoute,
+  DashboardAuctionsLazyRoute: DashboardAuctionsLazyRoute,
+  DashboardSellLazyRoute: DashboardSellLazyRoute,
+  DashboardIndexLazyRoute: DashboardIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -102,14 +176,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about"
+        "/about",
+        "/dashboard/auctions",
+        "/dashboard/sell",
+        "/dashboard/"
       ]
     },
     "/": {
-      "filePath": "index.tsx"
+      "filePath": "index.lazy.tsx"
     },
     "/about": {
       "filePath": "about.lazy.tsx"
+    },
+    "/dashboard/auctions": {
+      "filePath": "dashboard/auctions.lazy.tsx"
+    },
+    "/dashboard/sell": {
+      "filePath": "dashboard/sell.lazy.tsx"
+    },
+    "/dashboard/": {
+      "filePath": "dashboard/index.lazy.tsx"
     }
   }
 }

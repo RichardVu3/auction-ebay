@@ -1,5 +1,4 @@
 import { MouseEventHandler, useState } from "react";
-import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "@mantine/core/styles.css";
 import cx from "clsx";
@@ -45,6 +44,7 @@ import {
 
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./HeaderMegaMenu.module.css";
+import { Outlet, Link } from "@tanstack/react-router";
 
 const user = {
   name: "Jane Spoonfighter",
@@ -174,7 +174,7 @@ const ProfileDropdown = () => {
           leftSection={
             <ArrowRightStartOnRectangleIcon
               style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
+              stroke={"1.5"}
             />
           }
         >
@@ -199,7 +199,7 @@ const ProfileDropdown = () => {
           leftSection={
             <TrashIcon
               style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
+              stroke={"1.5"}
             />
           }
         >
@@ -245,8 +245,8 @@ export function HeaderMegaMenu({
   ));
 
   return (
-    <Box pb={120}>
-      <header className={classes.header}>
+    <Box id="header-box" mb={120}>
+      <header id="header-inner" className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group>
             <Avatar src={viteLogo} />
@@ -258,7 +258,7 @@ export function HeaderMegaMenu({
               leftSection={
                 <MagnifyingGlassIcon
                   style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
+                  stroke={"1.5"}
                 />
               }
               data={[
@@ -275,9 +275,6 @@ export function HeaderMegaMenu({
           </Group>
 
           <Group h="100%" gap={0} visibleFrom="sm">
-            <a href="#" className={classes.link}>
-              Home
-            </a>
             <HoverCard
               width={600}
               position="bottom"
@@ -286,7 +283,7 @@ export function HeaderMegaMenu({
               withinPortal
             >
               <HoverCard.Target>
-                <a href="#" className={classes.link}>
+                <Link to="/" className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       Features
@@ -296,7 +293,7 @@ export function HeaderMegaMenu({
                       color={theme.colors.blue[6]}
                     />
                   </Center>
-                </a>
+                </Link>
               </HoverCard.Target>
 
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
@@ -328,12 +325,16 @@ export function HeaderMegaMenu({
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-            <a href="#" className={classes.link}>
-              Academy
-            </a>
+
+            <Link to="/" className={classes.link}>
+              Dashboard
+            </Link>
+            <Link to="/dashboard/sell" className={classes.link}>
+              Sell
+            </Link>
+            <Link to="/dashboard/auctions" className={classes.link}>
+              Auctions
+            </Link>
           </Group>
           <Group visibleFrom="sm">
             <ProfileDropdown />
@@ -363,9 +364,9 @@ export function HeaderMegaMenu({
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <a href="#" className={classes.link}>
-            Home
-          </a>
+          <Link to="/dashboard" className={classes.link}>
+            Dashboard
+          </Link>
           <UnstyledButton className={classes.link} onClick={toggleLinks}>
             <Center inline>
               <Box component="span" mr={5}>
@@ -399,7 +400,6 @@ export function HeaderMegaMenu({
 }
 
 function App() {
-  const [count, setCount] = useState(0);
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   return (
@@ -421,28 +421,11 @@ function App() {
               closeDrawer={closeDrawer}
             />
           </AppShellHeader>
+
           <AppShellNavbar>Sidebar</AppShellNavbar>
+
           <AppShellMain>
-            <div>
-              <a href="https://vite.dev" target="_blank">
-                <img src={viteLogo} className="logo" alt="Vite logo" />
-              </a>
-              <a href="https://react.dev" target="_blank">
-                <img src={reactLogo} className="logo react" alt="React logo" />
-              </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-              <button onClick={() => setCount((count) => count + 1)}>
-                count is {count}
-              </button>
-              <p>
-                Edit <code>src/App.tsx</code> and save to test HMR
-              </p>
-            </div>
-            <p className="read-the-docs">
-              Click on the Vite and React logos to learn more
-            </p>
+            <Outlet />
           </AppShellMain>
         </AppShell>
       </MantineProvider>
