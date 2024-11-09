@@ -1,200 +1,453 @@
-import { Outlet } from "react-router-dom";
-import { Avatar } from "./components/avatar";
-import {
-  Dropdown,
-  DropdownButton,
-  DropdownDivider,
-  DropdownItem,
-  DropdownLabel,
-  DropdownMenu,
-} from "./components/dropdown";
-import {
-  Navbar,
-  NavbarDivider,
-  NavbarItem,
-  NavbarLabel,
-  NavbarSection,
-  NavbarSpacer,
-} from "./components/navbar";
-import {
-  Sidebar,
-  SidebarBody,
-  SidebarDivider,
-  SidebarHeader,
-  SidebarItem,
-  SidebarLabel,
-  SidebarSection,
-} from "./components/sidebar";
-import { StackedLayout } from "./components/stacked-layout";
+import { MouseEventHandler, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "@mantine/core/styles.css";
+import cx from "clsx";
 import {
   ArrowRightStartOnRectangleIcon,
+  BellIcon,
   ChevronDownIcon,
   Cog8ToothIcon,
-  LightBulbIcon,
-  PlusIcon,
-  ShieldCheckIcon,
-  UserIcon,
-} from "@heroicons/react/16/solid";
-import { HeartIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
-import { Input, InputGroup } from "./components/input";
-const navItems = [
-  { label: "Dashboard", url: "/dashboard" },
-  { label: "Sell", url: "/dashboard/sell" },
+  EnvelopeIcon,
+  HeartIcon,
+  MagnifyingGlassIcon,
+  PauseIcon,
+  StarIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
+import {
+  Autocomplete,
+  Avatar,
+  AppShell,
+  AppShellHeader,
+  AppShellMain,
+  AppShellNavbar,
+  MantineProvider,
+  Burger,
+  HoverCard,
+  Group,
+  Button,
+  UnstyledButton,
+  Text,
+  SimpleGrid,
+  ThemeIcon,
+  Anchor,
+  Menu,
+  Divider,
+  Center,
+  Box,
+  Drawer,
+  Collapse,
+  ScrollArea,
+  rem,
+  useMantineTheme,
+} from "@mantine/core";
+
+import { useDisclosure } from "@mantine/hooks";
+import classes from "./HeaderMegaMenu.module.css";
+
+const user = {
+  name: "Jane Spoonfighter",
+  email: "janspoon@fighter.dev",
+  image:
+    "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png",
+};
+const mockdata = [
+  {
+    icon: BellIcon,
+    title: "Open source",
+    description: "This Pokémon’s cry is very loud and distracting",
+  },
+  {
+    icon: BellIcon,
+    title: "Free for everyone",
+    description: "The fluid of Smeargle’s tail secretions changes",
+  },
+  {
+    icon: BellIcon,
+    title: "Documentation",
+    description: "Yanma is capable of seeing 360 degrees without",
+  },
+  {
+    icon: BellIcon,
+    title: "Security",
+    description: "The shell’s rounded shape and the grooves on its.",
+  },
+  {
+    icon: BellIcon,
+    title: "Analytics",
+    description: "This Pokémon uses its flying ability to quickly chase",
+  },
+  {
+    icon: BellIcon,
+    title: "Notifications",
+    description: "Combusken battles with the intensely hot flames it spews",
+  },
 ];
 
-function TeamDropdownMenu() {
+const ProfileDropdown = () => {
+  const theme = useMantineTheme();
+  const [userMenuOpened, setUserMenuOpened] = useState(false);
+
   return (
-    <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
-      <DropdownItem to="/teams/1/settings">
-        <Cog8ToothIcon />
-        <DropdownLabel>Settings</DropdownLabel>
-      </DropdownItem>
-      <DropdownDivider />
-      <DropdownItem to="/teams/1">
-        <Avatar slot="icon" src="/tailwind-logo.svg" />
-        <DropdownLabel>Tailwind Labs</DropdownLabel>
-      </DropdownItem>
-      <DropdownItem to="/teams/2">
-        <Avatar
-          slot="icon"
-          initials="WC"
-          className="bg-purple-500 text-white"
-        />
-        <DropdownLabel>Workcation</DropdownLabel>
-      </DropdownItem>
-      <DropdownDivider />
-      <DropdownItem to="/team../create">
-        <PlusIcon />
-        <DropdownLabel>New team&hellip;</DropdownLabel>
-      </DropdownItem>
-    </DropdownMenu>
+    <Menu
+      width={260}
+      position="bottom-end"
+      transitionProps={{ transition: "pop-top-right" }}
+      onClose={() => setUserMenuOpened(false)}
+      onOpen={() => setUserMenuOpened(true)}
+      withinPortal
+    >
+      <Menu.Target>
+        <UnstyledButton
+          className={cx(classes.user, { [classes.userActive]: userMenuOpened })}
+        >
+          <Group gap={7}>
+            <Avatar src={user.image} alt={user.name} radius="xl" size={20} />
+            <Text fw={500} size="sm" lh={1} mr={3}>
+              {user.name}
+            </Text>
+            <ChevronDownIcon
+              style={{ width: rem(12), height: rem(12) }}
+              stroke={"1.5"}
+            />
+          </Group>
+        </UnstyledButton>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item
+          leftSection={
+            <HeartIcon
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.red[6]}
+              stroke={"1.5"}
+            />
+          }
+        >
+          Liked posts
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <StarIcon
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.yellow[6]}
+              stroke={"1.5"}
+            />
+          }
+        >
+          Saved posts
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <EnvelopeIcon
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.blue[6]}
+              stroke={"1.5"}
+            />
+          }
+        >
+          Your comments
+        </Menu.Item>
+
+        <Menu.Label>Settings</Menu.Label>
+        <Menu.Item
+          leftSection={
+            <Cog8ToothIcon
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={"1.5"}
+            />
+          }
+        >
+          Account settings
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <ArrowRightStartOnRectangleIcon
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={"1.5"}
+            />
+          }
+        >
+          Change account
+        </Menu.Item>
+        <Menu.Item
+          leftSection={
+            <ArrowRightStartOnRectangleIcon
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={1.5}
+            />
+          }
+        >
+          Logout
+        </Menu.Item>
+
+        <Menu.Divider />
+
+        <Menu.Label>Danger zone</Menu.Label>
+        <Menu.Item
+          leftSection={
+            <PauseIcon
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={"1.5"}
+            />
+          }
+        >
+          Pause subscription
+        </Menu.Item>
+        <Menu.Item
+          color="red"
+          leftSection={
+            <TrashIcon
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={1.5}
+            />
+          }
+        >
+          Delete account
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
+
+export function HeaderMegaMenu({
+  toggleDrawer,
+  closeDrawer,
+  drawerOpened,
+}: {
+  drawerOpened: boolean;
+  toggleDrawer: MouseEventHandler<HTMLButtonElement>;
+  closeDrawer: () => void;
+}) {
+  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const theme = useMantineTheme();
+
+  const links = mockdata.map((item) => (
+    <UnstyledButton className={classes.subLink} key={item.title}>
+      <Group wrap="nowrap" align="flex-start">
+        <ThemeIcon size={34} variant="default" radius="md">
+          <item.icon
+            style={{ width: rem(22), height: rem(22) }}
+            color={theme.colors.blue[6]}
+          />
+        </ThemeIcon>
+
+        <div>
+          <Text size="sm" fw={500}>
+            {item.title}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {item.description}
+          </Text>
+        </div>
+      </Group>
+    </UnstyledButton>
+  ));
+
+  return (
+    <Box pb={120}>
+      <header className={classes.header}>
+        <Group justify="space-between" h="100%">
+          <Group>
+            <Avatar src={viteLogo} />
+          </Group>
+          <Group style={{ flex: 1 }}>
+            <Autocomplete
+              style={{ flex: 1 }}
+              placeholder="Search"
+              leftSection={
+                <MagnifyingGlassIcon
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                />
+              }
+              data={[
+                "React",
+                "Angular",
+                "Vue",
+                "Next.js",
+                "Riot.js",
+                "Svelte",
+                "Blitz.js",
+              ]}
+              visibleFrom="xs"
+            />
+          </Group>
+
+          <Group h="100%" gap={0} visibleFrom="sm">
+            <a href="#" className={classes.link}>
+              Home
+            </a>
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
+              <HoverCard.Target>
+                <a href="#" className={classes.link}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Features
+                    </Box>
+                    <ChevronDownIcon
+                      style={{ width: rem(16), height: rem(16) }}
+                      color={theme.colors.blue[6]}
+                    />
+                  </Center>
+                </a>
+              </HoverCard.Target>
+
+              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+                <Group justify="space-between" px="md">
+                  <Text fw={500}>Features</Text>
+                  <Anchor href="#" fz="xs">
+                    View all
+                  </Anchor>
+                </Group>
+
+                <Divider my="sm" />
+
+                <SimpleGrid cols={2} spacing={0}>
+                  {links}
+                </SimpleGrid>
+
+                <div className={classes.dropdownFooter}>
+                  <Group justify="space-between">
+                    <div>
+                      <Text fw={500} fz="sm">
+                        Get started
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        Their food sources have decreased, and their numbers
+                      </Text>
+                    </div>
+                    <Button variant="default">Get started</Button>
+                  </Group>
+                </div>
+              </HoverCard.Dropdown>
+            </HoverCard>
+            <a href="#" className={classes.link}>
+              Learn
+            </a>
+            <a href="#" className={classes.link}>
+              Academy
+            </a>
+          </Group>
+          <Group visibleFrom="sm">
+            <ProfileDropdown />
+          </Group>
+          {/*<Group visibleFrom="sm">
+            <Button variant="default">Log in</Button>
+            <Button>Sign up</Button>
+          </Group>*/}
+
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="sm"
+          />
+        </Group>
+      </header>
+
+      <Drawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        size="100%"
+        padding="md"
+        title="Navigation"
+        hiddenFrom="sm"
+        zIndex={1000000}
+      >
+        <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
+          <Divider my="sm" />
+
+          <a href="#" className={classes.link}>
+            Home
+          </a>
+          <UnstyledButton className={classes.link} onClick={toggleLinks}>
+            <Center inline>
+              <Box component="span" mr={5}>
+                Features
+              </Box>
+              <ChevronDownIcon
+                style={{ width: rem(16), height: rem(16) }}
+                color={theme.colors.blue[6]}
+              />
+            </Center>
+          </UnstyledButton>
+          <Collapse in={linksOpened}>{links}</Collapse>
+          <a href="#" className={classes.link}>
+            Learn
+          </a>
+          <a href="#" className={classes.link}>
+            Academy
+          </a>
+
+          <Divider my="sm" />
+
+          <Group justify="center" grow pb="xl" px="md">
+            <ProfileDropdown />
+            {/*<Button variant="default">Log in</Button>
+            <Button>Sign up</Button>*/}
+          </Group>
+        </ScrollArea>
+      </Drawer>
+    </Box>
   );
 }
 
-const AppNavbar = () => {
+function App() {
+  const [count, setCount] = useState(0);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
   return (
-    <Navbar>
-      <NavbarSection>
-        <NavbarItem className="max-sm:hidden pr-2">
-          <Avatar src="/tailwind-logo.svg" />
-          <NavbarLabel>Tailwind Labs</NavbarLabel>
-        </NavbarItem>
-      </NavbarSection>
-      {/*Searchbar*/}
-      <NavbarSpacer>
-        <InputGroup>
-          <MagnifyingGlassIcon />
-          <Input type="search" placeholder="Search" />
-        </InputGroup>
-      </NavbarSpacer>
-      {/*Navitems*/}
-      <NavbarSection className="max-lg:hidden">
-        {navItems.map(({ label, url }) => (
-          <NavbarItem key={label} to={url}>
-            {label}
-          </NavbarItem>
-        ))}
-      </NavbarSection>
-      {/* Right End */}
-      <NavbarSection>
-        <NavbarItem to="/inbox" aria-label="Inbox">
-          <HeartIcon />
-        </NavbarItem>
-        <Dropdown>
-          <DropdownButton as={NavbarItem} className="max-lg:hidden">
-            <Avatar src="/profile-photo.jpg" square />
-          </DropdownButton>
-          <DropdownMenu className="min-w-64" anchor="bottom end">
-            <DropdownItem to="/my-profile">
-              <UserIcon />
-              <DropdownLabel>My profile</DropdownLabel>
-            </DropdownItem>
-            <DropdownItem to="/settings">
-              <Cog8ToothIcon />
-              <DropdownLabel>Settings</DropdownLabel>
-            </DropdownItem>
-            <DropdownDivider />
-            <DropdownItem to="/privacy-policy">
-              <ShieldCheckIcon />
-              <DropdownLabel>Privacy policy</DropdownLabel>
-            </DropdownItem>
-            <DropdownItem to="/share-feedback">
-              <LightBulbIcon />
-              <DropdownLabel>Share feedback</DropdownLabel>
-            </DropdownItem>
-            <DropdownDivider />
-            <DropdownItem to="/logout">
-              <ArrowRightStartOnRectangleIcon />
-              <DropdownLabel>Sign out</DropdownLabel>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
-      </NavbarSection>
-    </Navbar>
-  );
-};
-
-const sidebarUserNavItems = [
-  { label: "Dashboard", url: "/dashboard" },
-  { label: "Watchlist", url: "/dashboard/watchlist" },
-  { label: "Auctions", url: "/dashboard/auctions" },
-  { label: "Sell", url: "/dashboard/sell" },
-];
-
-const sidebarCategoriesNavItems = [
-  { label: "Clothing", url: "categories/clothing" },
-  { label: "Motors", url: "/categories/motors" },
-  { label: "Collectibles", url: "/categories/collectibles" },
-  { label: "Electronics", url: "/categories/electronics" },
-  { label: "Home & Garden", url: "/categories/home-garden" },
-];
-const AppSidebar = () => {
-  return (
-    <Sidebar>
-      <SidebarHeader>
-        <Dropdown>
-          <DropdownButton as={SidebarItem} className="lg:mb-2.5">
-            <Avatar src="/tailwind-logo.svg" />
-            <SidebarLabel>Tailwind Labs</SidebarLabel>
-            <ChevronDownIcon />
-          </DropdownButton>
-          <TeamDropdownMenu />
-        </Dropdown>
-      </SidebarHeader>
-      <SidebarBody>
-        <SidebarSection>
-          {sidebarUserNavItems.map(({ label, url }) => (
-            <SidebarItem key={label} to={url}>
-              {label}
-            </SidebarItem>
-          ))}
-        </SidebarSection>
-        <SidebarDivider />
-        <SidebarSection>
-          {sidebarCategoriesNavItems.map(({ label, url }) => (
-            <SidebarItem key={label} to={url}>
-              {label}
-            </SidebarItem>
-          ))}
-        </SidebarSection>
-
-        <SidebarDivider />
-      </SidebarBody>
-    </Sidebar>
-  );
-};
-
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <StackedLayout navbar={<AppNavbar />} sidebar={<AppSidebar />}>
-      {children}
-    </StackedLayout>
-  );
-};
-export default function App() {
-  return (
-    <AppLayout>
-      <Outlet />
-    </AppLayout>
+    <>
+      <MantineProvider>
+        <AppShell
+          header={{ height: 60 }}
+          navbar={{
+            width: 300,
+            breakpoint: "sm",
+            collapsed: { mobile: !drawerOpened },
+          }}
+          padding="md"
+        >
+          <AppShellHeader>
+            <HeaderMegaMenu
+              drawerOpened={drawerOpened}
+              toggleDrawer={toggleDrawer}
+              closeDrawer={closeDrawer}
+            />
+          </AppShellHeader>
+          <AppShellNavbar>Sidebar</AppShellNavbar>
+          <AppShellMain>
+            <div>
+              <a href="https://vite.dev" target="_blank">
+                <img src={viteLogo} className="logo" alt="Vite logo" />
+              </a>
+              <a href="https://react.dev" target="_blank">
+                <img src={reactLogo} className="logo react" alt="React logo" />
+              </a>
+            </div>
+            <h1>Vite + React</h1>
+            <div className="card">
+              <button onClick={() => setCount((count) => count + 1)}>
+                count is {count}
+              </button>
+              <p>
+                Edit <code>src/App.tsx</code> and save to test HMR
+              </p>
+            </div>
+            <p className="read-the-docs">
+              Click on the Vite and React logos to learn more
+            </p>
+          </AppShellMain>
+        </AppShell>
+      </MantineProvider>
+    </>
   );
 }
+
+export default App;
