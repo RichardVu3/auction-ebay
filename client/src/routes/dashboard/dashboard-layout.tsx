@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import DashboardSidebar from "../../components/DashboardSidebar";
-Outlet;
 const DashboardLayout = () => {
   return (
     <div className="bg-gray-400 flex min-h-full flex-col">
