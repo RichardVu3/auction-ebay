@@ -12,7 +12,7 @@ from db import get_db
 
 
 router = APIRouter(
-    prefix="/auction",
+    prefix="/auctions",
     tags=["auction"],
     responses={404: {"description": "Not found"}},
 )
@@ -21,7 +21,7 @@ router = APIRouter(
 
 
 # get all auctions
-@router.get("/", tags=["auction"])
+@router.get("/", tags=["auctions"])
 async def get_auction(db: Collection = Depends(get_db)):
     auctions_collection = db["auctions"]
     auctions = auctions_collection.find({})
@@ -29,8 +29,8 @@ async def get_auction(db: Collection = Depends(get_db)):
     return [auction_helper(doc) for doc in auctions.to_list()]
 
 
-# get all auctions
-@router.get("/{auction_id}", tags=["auction"])
+# get single auction by ID
+@router.get("/{auction_id}", tags=["auctions"])
 async def get_auction_by_id(
     auction_id: Annotated[str, Path(title="The ID of the auction to get")],
     db: Collection = Depends(get_db),
@@ -44,7 +44,7 @@ async def get_auction_by_id(
 
 
 # create a new auction
-@router.post("/", tags=["auction"])
+@router.post("/", tags=["auctions"])
 async def create_auction(auction: AuctionCreate, db: Collection = Depends(get_db)):
     auctions_collection = db["auctions"]
     auction_dict = dict(auction)
@@ -57,7 +57,7 @@ async def create_auction(auction: AuctionCreate, db: Collection = Depends(get_db
 
 # We should soft delete auctions insetead of actually deleting them so that we
 # can integrate with metrics more easily
-@router.delete("/{auction_id}", tags=["auction"])
+@router.delete("/{auction_id}", tags=["auctions"])
 async def delete_auction(
     auction_id: Annotated[str, Path(title="The ID of the auction to delete")],
     db: Collection = Depends(get_db),
@@ -71,7 +71,7 @@ async def delete_auction(
 ## TODO: Routes below are broken due to AuctionModel typing
 
 
-@router.put("/{auction_id}", tags=["auction"])
+@router.put("/{auction_id}", tags=["auctions"])
 async def update_auction(
     auction_id: str,
     auction: AuctionModel,
@@ -87,11 +87,11 @@ async def update_auction(
     return updated_auction
 
 
-@router.put("/{auction_id}/flag", tags=["auction"])
+@router.put("/{auction_id}/flag", tags=["auctions"])
 async def flag_auction(auction: AuctionModel, db: Collection = Depends(get_db)):
     return {"status": 200}
 
 
-@router.put("/{auction_id}/end", tags=["auction"])
+@router.put("/{auction_id}/end", tags=["auctions"])
 async def end_auction(auction: AuctionCreate, db: Collection = Depends(get_db)):
     return {"status": 200}

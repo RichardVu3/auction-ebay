@@ -12,9 +12,10 @@ import HeaderMegaMenu from "../components/header-mega-menu";
 import { useDisclosure } from "@mantine/hooks";
 import type { Auth } from "../utils/auth";
 import type { QueryClient } from "@tanstack/react-query";
+
 export const Route = createRootRouteWithContext<{
   auth: Auth;
-  queryclient: QueryClient;
+  queryClient: QueryClient;
 }>()({
   component: App,
 });

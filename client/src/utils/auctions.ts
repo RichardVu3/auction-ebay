@@ -1,4 +1,3 @@
-import axios from "redaxios";
 import { produce } from "immer";
 
 type PickAsRequired<TValue, TKey extends keyof TValue> = Omit<TValue, TKey> &
@@ -40,8 +39,24 @@ export interface User {
   website: string;
 }
 
-// let invoices: Array<Invoice> = null!;
-// let users: Array<User> = null!;
+let auctions: Array<Auction> = null!;
+let users: Array<User> = null!;
 
-// let invoicesPromise: Promise<void> | undefined = undefined;
-// let usersPromise: Promise<void> | undefined = undefined;
+let auctionsPromise: Promise<void> | undefined = undefined;
+let usersPromise: Promise<void> | undefined = undefined;
+
+export type AuctionsSortBy = "" | "" | "";
+
+export async function fetchAuctions() {
+  // {
+  //   filterBy,
+  //   sortBy,
+  // }: { filterBy?: string; sortBy: AuctionsSortBy } = {}
+  const res = await fetch("/api/auctions");
+  if (!res.ok) {
+    console.error(res.statusText);
+  }
+  const data = await res.json();
+  console.log("data", data);
+  return data;
+}
