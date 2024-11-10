@@ -5,7 +5,7 @@ type PickAsRequired<TValue, TKey extends keyof TValue> = Omit<TValue, TKey> &
 
 /* Types */
 export interface Auction {
-  id: string;
+  _id: string;
   title: string;
   user_id: number;
   start_time: Date;

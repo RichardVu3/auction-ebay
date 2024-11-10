@@ -48,7 +48,7 @@ function RouteComponent() {
         <Tabs.List>
           {tabItems.map((tab) => {
             return (
-              <TabsTab value={tab.to} key={tab.name}>
+              <TabsTab value={tab.to} key={tab.to}>
                 {tab.name}
               </TabsTab>
             );
