@@ -5,11 +5,10 @@ import {
 
 import { queryClient } from "../main";
 
-export const auctionsQueryOptions = () =>
-  queryOptions({
-    queryKey: ["auctions"],
-    queryFn: () => fetchAuctions(),
-  });
+export const auctionsQueryOptions = queryOptions({
+  queryKey: ["auctions"],
+  queryFn: () => fetchAuctions(),
+});
 //
 // export const invoiceQueryOptions = (invoiceId: number) =>
 //   queryOptions({

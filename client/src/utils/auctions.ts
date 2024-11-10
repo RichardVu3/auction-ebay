@@ -39,24 +39,27 @@ export interface User {
   website: string;
 }
 
-let auctions: Array<Auction> = null!;
-let users: Array<User> = null!;
-
-let auctionsPromise: Promise<void> | undefined = undefined;
-let usersPromise: Promise<void> | undefined = undefined;
+// let users: Array<User> = null!;
+//
+// let auctionsPromise: Promise<void> | undefined = undefined;
+// let usersPromise: Promise<void> | undefined = undefined;
 
 export type AuctionsSortBy = "" | "" | "";
 
-export async function fetchAuctions() {
+export async function fetchAuctions(): Promise<Auction[]> {
   // {
   //   filterBy,
   //   sortBy,
   // }: { filterBy?: string; sortBy: AuctionsSortBy } = {}
-  const res = await fetch("/api/auctions");
+  const res = await fetch("/api/auctions", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   if (!res.ok) {
-    console.error(res.statusText);
+    console.error("fetch auctions error", res.statusText);
   }
   const data = await res.json();
-  console.log("data", data);
   return data;
 }

@@ -42,7 +42,6 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <MantineProvider>
         <QueryClientProvider client={queryClient}>
-          {/*App*/}
           <RouterProvider router={router} context={{ auth }} />
         </QueryClientProvider>
       </MantineProvider>

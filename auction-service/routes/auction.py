@@ -13,7 +13,7 @@ from db import get_db
 
 router = APIRouter(
     prefix="/auctions",
-    tags=["auction"],
+    tags=["auctions"],
     responses={404: {"description": "Not found"}},
 )
 
@@ -71,27 +71,27 @@ async def delete_auction(
 ## TODO: Routes below are broken due to AuctionModel typing
 
 
-@router.put("/{auction_id}", tags=["auctions"])
-async def update_auction(
-    auction_id: str,
-    auction: AuctionModel,
-    db: Collection = Depends(get_db),
-):
-    auction_collection = db["auctions"]
-    maybe_update_auction = auction_collection.update_one(
-        {"_id": auction_id}, dict(auction)
-    )
-    updated_auction = auction_collection.find_one(
-        {"_id": maybe_update_auction.upserted_id}
-    )
-    return updated_auction
-
-
-@router.put("/{auction_id}/flag", tags=["auctions"])
-async def flag_auction(auction: AuctionModel, db: Collection = Depends(get_db)):
-    return {"status": 200}
-
-
-@router.put("/{auction_id}/end", tags=["auctions"])
-async def end_auction(auction: AuctionCreate, db: Collection = Depends(get_db)):
-    return {"status": 200}
+# @router.put("/{auction_id}", tags=["auctions"])
+# async def update_auction(
+#     auction_id: str,
+#     auction: AuctionModel,
+#     db: Collection = Depends(get_db),
+# ):
+#     auction_collection = db["auctions"]
+#     maybe_update_auction = auction_collection.update_one(
+#         {"_id": auction_id}, dict(auction)
+#     )
+#     updated_auction = auction_collection.find_one(
+#         {"_id": maybe_update_auction.upserted_id}
+#     )
+#     return updated_auction
+#
+#
+# @router.put("/{auction_id}/flag", tags=["auctions"])
+# async def flag_auction(auction: AuctionModel, db: Collection = Depends(get_db)):
+#     return {"status": 200}
+#
+#
+# @router.put("/{auction_id}/end", tags=["auctions"])
+# async def end_auction(auction: AuctionCreate, db: Collection = Depends(get_db)):
+#     return {"status": 200}
