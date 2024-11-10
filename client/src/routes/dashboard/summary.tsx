@@ -4,5 +4,5 @@ export const Route = createFileRoute("/dashboard/summary")({
 });
 
 function DashboardSummary() {
-  return "/dashboard/summary";
+  return "asdfa";
 }

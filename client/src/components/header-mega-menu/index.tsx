@@ -319,7 +319,7 @@ const HeaderMegaMenu = ({
               </HoverCard.Dropdown>
             </HoverCard>
 
-            <Link to="/dashboard" className={classes.link}>
+            <Link to="/dashboard/summary" className={classes.link}>
               Dashboard
             </Link>
             <Link to="/dashboard/sell" className={classes.link}>
@@ -357,7 +357,7 @@ const HeaderMegaMenu = ({
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <Link to="/dashboard" className={classes.link}>
+          <Link to="/dashboard/summary" className={classes.link}>
             Dashboard
           </Link>
           <UnstyledButton className={classes.link} onClick={toggleLinks}>

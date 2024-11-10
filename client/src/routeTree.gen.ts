@@ -8,29 +8,19 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as DashboardImport } from './routes/dashboard'
-import { Route as DashboardWatchlistImport } from './routes/dashboard.watchlist'
-import { Route as DashboardSummaryImport } from './routes/dashboard.summary'
-import { Route as DashboardSellImport } from './routes/dashboard.sell'
-import { Route as DashboardAuctionsImport } from './routes/dashboard.auctions'
-
-// Create Virtual Routes
-
-const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
+import { Route as AboutImport } from './routes/about'
+import { Route as IndexImport } from './routes/index'
+import { Route as DashboardWatchlistImport } from './routes/dashboard/watchlist'
+import { Route as DashboardSummaryImport } from './routes/dashboard/summary'
+import { Route as DashboardSellImport } from './routes/dashboard/sell'
+import { Route as DashboardAuctionsImport } from './routes/dashboard/auctions'
+import { Route as DashboardAuctionsAuctionIdImport } from './routes/dashboard/auctions.$auctionId'
 
 // Create/Update Routes
-
-const AboutLazyRoute = AboutLazyImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
 
 const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
@@ -38,11 +28,17 @@ const DashboardRoute = DashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexLazyRoute = IndexLazyImport.update({
+const AboutRoute = AboutImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
 const DashboardWatchlistRoute = DashboardWatchlistImport.update({
   id: '/watchlist',
@@ -68,6 +64,14 @@ const DashboardAuctionsRoute = DashboardAuctionsImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
+const DashboardAuctionsAuctionIdRoute = DashboardAuctionsAuctionIdImport.update(
+  {
+    id: '/$auctionId',
+    path: '/$auctionId',
+    getParentRoute: () => DashboardAuctionsRoute,
+  } as any,
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -76,7 +80,14 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -84,13 +95,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardImport
-      parentRoute: typeof rootRoute
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
     '/dashboard/auctions': {
@@ -121,20 +125,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardWatchlistImport
       parentRoute: typeof DashboardImport
     }
+    '/dashboard/auctions/$auctionId': {
+      id: '/dashboard/auctions/$auctionId'
+      path: '/$auctionId'
+      fullPath: '/dashboard/auctions/$auctionId'
+      preLoaderRoute: typeof DashboardAuctionsAuctionIdImport
+      parentRoute: typeof DashboardAuctionsImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface DashboardAuctionsRouteChildren {
+  DashboardAuctionsAuctionIdRoute: typeof DashboardAuctionsAuctionIdRoute
+}
+
+const DashboardAuctionsRouteChildren: DashboardAuctionsRouteChildren = {
+  DashboardAuctionsAuctionIdRoute: DashboardAuctionsAuctionIdRoute,
+}
+
+const DashboardAuctionsRouteWithChildren =
+  DashboardAuctionsRoute._addFileChildren(DashboardAuctionsRouteChildren)
+
 interface DashboardRouteChildren {
-  DashboardAuctionsRoute: typeof DashboardAuctionsRoute
+  DashboardAuctionsRoute: typeof DashboardAuctionsRouteWithChildren
   DashboardSellRoute: typeof DashboardSellRoute
   DashboardSummaryRoute: typeof DashboardSummaryRoute
   DashboardWatchlistRoute: typeof DashboardWatchlistRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardAuctionsRoute: DashboardAuctionsRoute,
+  DashboardAuctionsRoute: DashboardAuctionsRouteWithChildren,
   DashboardSellRoute: DashboardSellRoute,
   DashboardSummaryRoute: DashboardSummaryRoute,
   DashboardWatchlistRoute: DashboardWatchlistRoute,
@@ -145,77 +167,83 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/about': typeof AboutLazyRoute
-  '/dashboard/auctions': typeof DashboardAuctionsRoute
+  '/dashboard/auctions': typeof DashboardAuctionsRouteWithChildren
   '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
+  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/about': typeof AboutLazyRoute
-  '/dashboard/auctions': typeof DashboardAuctionsRoute
+  '/dashboard/auctions': typeof DashboardAuctionsRouteWithChildren
   '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
+  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexLazyRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/dashboard': typeof DashboardRouteWithChildren
-  '/about': typeof AboutLazyRoute
-  '/dashboard/auctions': typeof DashboardAuctionsRoute
+  '/dashboard/auctions': typeof DashboardAuctionsRouteWithChildren
   '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
+  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/dashboard'
     | '/about'
+    | '/dashboard'
     | '/dashboard/auctions'
     | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
+    | '/dashboard/auctions/$auctionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard'
     | '/about'
+    | '/dashboard'
     | '/dashboard/auctions'
     | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
+    | '/dashboard/auctions/$auctionId'
   id:
     | '__root__'
     | '/'
-    | '/dashboard'
     | '/about'
+    | '/dashboard'
     | '/dashboard/auctions'
     | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
+    | '/dashboard/auctions/$auctionId'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexLazyRoute: typeof IndexLazyRoute
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   DashboardRoute: typeof DashboardRouteWithChildren
-  AboutLazyRoute: typeof AboutLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexLazyRoute: IndexLazyRoute,
+  IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   DashboardRoute: DashboardRouteWithChildren,
-  AboutLazyRoute: AboutLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -229,12 +257,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/dashboard",
-        "/about"
+        "/about",
+        "/dashboard"
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
+    },
+    "/about": {
+      "filePath": "about.tsx"
     },
     "/dashboard": {
       "filePath": "dashboard.tsx",
@@ -245,24 +276,28 @@ export const routeTree = rootRoute
         "/dashboard/watchlist"
       ]
     },
-    "/about": {
-      "filePath": "about.lazy.tsx"
-    },
     "/dashboard/auctions": {
-      "filePath": "dashboard.auctions.tsx",
-      "parent": "/dashboard"
+      "filePath": "dashboard/auctions.tsx",
+      "parent": "/dashboard",
+      "children": [
+        "/dashboard/auctions/$auctionId"
+      ]
     },
     "/dashboard/sell": {
-      "filePath": "dashboard.sell.tsx",
+      "filePath": "dashboard/sell.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/summary": {
-      "filePath": "dashboard.summary.tsx",
+      "filePath": "dashboard/summary.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/watchlist": {
-      "filePath": "dashboard.watchlist.tsx",
+      "filePath": "dashboard/watchlist.tsx",
       "parent": "/dashboard"
+    },
+    "/dashboard/auctions/$auctionId": {
+      "filePath": "dashboard/auctions.$auctionId.tsx",
+      "parent": "/dashboard/auctions"
     }
   }
 }

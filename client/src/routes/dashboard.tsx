@@ -1,54 +1,62 @@
 import {
+  Outlet,
   createFileRoute,
   useLocation,
   useNavigate,
-} from '@tanstack/react-router'
-import { Tabs } from '@mantine/core'
-import { Outlet } from '@tanstack/react-router'
-export const Route = createFileRoute('/dashboard')({
-  component: Dashboard,
-})
+} from "@tanstack/react-router";
+import { Tabs, TabsTab } from "@mantine/core";
 
-function Dashboard() {
-  const location = useLocation()
-  const navigate = useNavigate({})
-  const tabItems = [
-    {
-      name: 'Summary',
-      to: '/summary',
-    },
-    {
-      name: 'Auctions',
-      to: '/auctions',
-    },
-    {
-      name: 'Watchlist',
-      to: '/watchlist',
-    },
-    {
-      name: 'Sell',
-      to: '/sell',
-    },
-  ]
+export const Route = createFileRoute("/dashboard")({
+  component: RouteComponent,
+});
+
+const tabItems = [
+  {
+    name: "Summary",
+    to: "/dashboard/summary",
+  },
+
+  {
+    name: "Sell",
+    to: "/dashboard/sell",
+  },
+  {
+    name: "Auctions",
+    to: "/dashboard/auctions",
+  },
+  {
+    name: "Watchlist",
+    to: "/dashboard/watchlist",
+  },
+];
+
+function RouteComponent() {
+  const location = useLocation();
+  const navigate = useNavigate();
   return (
-    <Tabs
-      defaultValue="summary"
-      orientation="vertical"
-      value={location.pathname}
-      onChange={(value) => {
-        navigate({ to: `/dashboard/${value}` })
-      }}
-    >
-      <Tabs.List>
-        {tabItems.map((tab) => {
-          return (
-            <Tabs.Tab key={tab.name} value={tab.to}>
-              {tab.name}
-            </Tabs.Tab>
-          )
-        })}
-      </Tabs.List>
-      <Outlet />
-    </Tabs>
-  )
+    <div>
+      Layout Route
+      <hr />
+      <Tabs
+        defaultValue="gallery"
+        value={location.pathname}
+        onChange={(path) => {
+          navigate({ to: `/${path}` });
+        }}
+        orientation="vertical"
+      >
+        <Tabs.List>
+          {tabItems.map((tab) => {
+            return (
+              <TabsTab value={tab.to} key={tab.name}>
+                {tab.name}
+              </TabsTab>
+            );
+          })}
+        </Tabs.List>
+
+        <Outlet />
+      </Tabs>
+    </div>
+  );
 }
