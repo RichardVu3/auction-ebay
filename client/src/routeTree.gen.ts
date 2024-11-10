@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as DashboardWatchlistImport } from './routes/dashboard.watchlist'
 import { Route as DashboardSummaryImport } from './routes/dashboard.summary'
+import { Route as DashboardSellImport } from './routes/dashboard.sell'
 import { Route as DashboardAuctionsImport } from './routes/dashboard.auctions'
 
 // Create Virtual Routes
@@ -52,6 +53,12 @@ const DashboardWatchlistRoute = DashboardWatchlistImport.update({
 const DashboardSummaryRoute = DashboardSummaryImport.update({
   id: '/summary',
   path: '/summary',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardSellRoute = DashboardSellImport.update({
+  id: '/sell',
+  path: '/sell',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -93,6 +100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuctionsImport
       parentRoute: typeof DashboardImport
     }
+    '/dashboard/sell': {
+      id: '/dashboard/sell'
+      path: '/sell'
+      fullPath: '/dashboard/sell'
+      preLoaderRoute: typeof DashboardSellImport
+      parentRoute: typeof DashboardImport
+    }
     '/dashboard/summary': {
       id: '/dashboard/summary'
       path: '/summary'
@@ -114,12 +128,14 @@ declare module '@tanstack/react-router' {
 
 interface DashboardRouteChildren {
   DashboardAuctionsRoute: typeof DashboardAuctionsRoute
+  DashboardSellRoute: typeof DashboardSellRoute
   DashboardSummaryRoute: typeof DashboardSummaryRoute
   DashboardWatchlistRoute: typeof DashboardWatchlistRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAuctionsRoute: DashboardAuctionsRoute,
+  DashboardSellRoute: DashboardSellRoute,
   DashboardSummaryRoute: DashboardSummaryRoute,
   DashboardWatchlistRoute: DashboardWatchlistRoute,
 }
@@ -133,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/about': typeof AboutLazyRoute
   '/dashboard/auctions': typeof DashboardAuctionsRoute
+  '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
 }
@@ -142,6 +159,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRouteWithChildren
   '/about': typeof AboutLazyRoute
   '/dashboard/auctions': typeof DashboardAuctionsRoute
+  '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
 }
@@ -152,6 +170,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/about': typeof AboutLazyRoute
   '/dashboard/auctions': typeof DashboardAuctionsRoute
+  '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
 }
@@ -163,6 +182,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/about'
     | '/dashboard/auctions'
+    | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
   fileRoutesByTo: FileRoutesByTo
@@ -171,6 +191,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/about'
     | '/dashboard/auctions'
+    | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
   id:
@@ -179,6 +200,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/about'
     | '/dashboard/auctions'
+    | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
   fileRoutesById: FileRoutesById
@@ -218,6 +240,7 @@ export const routeTree = rootRoute
       "filePath": "dashboard.tsx",
       "children": [
         "/dashboard/auctions",
+        "/dashboard/sell",
         "/dashboard/summary",
         "/dashboard/watchlist"
       ]
@@ -227,6 +250,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/auctions": {
       "filePath": "dashboard.auctions.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/sell": {
+      "filePath": "dashboard.sell.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/summary": {

@@ -30,7 +30,6 @@ function Dashboard() {
       to: '/sell',
     },
   ]
-  console.log(location)
   return (
     <Tabs
       defaultValue="summary"
