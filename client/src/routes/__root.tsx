@@ -1,18 +1,9 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import {
-  AppShell,
-  AppShellHeader,
-  AppShellMain,
-  createTheme,
-  MantineProvider,
-} from "@mantine/core";
-import HeaderMegaMenu from "../components/header-mega-menu";
-import { useDisclosure } from "@mantine/hooks";
 import type { Auth } from "../utils/auth";
 import type { QueryClient } from "@tanstack/react-query";
-
+import AppNavbar from "@/components/app-navbar";
 export const Route = createRootRouteWithContext<{
   auth: Auth;
   queryClient: QueryClient;
@@ -20,47 +11,18 @@ export const Route = createRootRouteWithContext<{
   component: App,
 });
 
-const theme = createTheme({
-  breakpoints: {
-    xs: "30em",
-    sm: "48em",
-    md: "64em",
-    lg: "74em",
-    xl: "90em",
+const navMenuItems = [
+  {
+    triggerText: "Dashboard",
+    link: "/dashboard",
   },
-});
+];
 
 function App() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false);
-
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-
   return (
     <>
-      <MantineProvider theme={theme}>
-        <AppShell
-          header={{ height: 60 }}
-          navbar={{
-            width: { sm: 200, lg: 0 },
-            breakpoint: "xl",
-            collapsed: { mobile: !drawerOpened, desktop: !desktopOpened },
-          }}
-          padding="sm"
-        >
-          <AppShellHeader>
-            <HeaderMegaMenu
-              drawerOpened={drawerOpened}
-              toggleDrawer={toggleDrawer}
-              closeDrawer={closeDrawer}
-            />
-          </AppShellHeader>
-
-          <AppShellMain>
-            <Outlet />
-          </AppShellMain>
-        </AppShell>
-      </MantineProvider>
+      <AppNavbar />
+      <Outlet />
       <ReactQueryDevtools buttonPosition="bottom-left" />
       <TanStackRouterDevtools position="bottom-right" />
     </>
