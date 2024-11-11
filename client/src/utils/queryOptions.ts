@@ -1,6 +1,8 @@
 import { queryOptions, useMutation } from "@tanstack/react-query";
 import {
-  fetchAuctions, // fetchInvoiceById,
+  fetchAuctions,
+  fetchAuctionById,
+  // fetchauctionById,
 } from "./auctions";
 
 import { queryClient } from "../main";
@@ -9,12 +11,11 @@ export const auctionsQueryOptions = queryOptions({
   queryKey: ["auctions"],
   queryFn: () => fetchAuctions(),
 });
-//
-// export const invoiceQueryOptions = (invoiceId: number) =>
-//   queryOptions({
-//     queryKey: ["invoices", invoiceId],
-//     queryFn: () => fetchInvoiceById(invoiceId),
-//   });
+export const auctionQueryOptions = (auctionId: string) =>
+  queryOptions({
+    queryKey: ["auctions", auctionId],
+    queryFn: () => fetchAuctionById(auctionId),
+  });
 //
 // export const usersQueryOptions = (opts: {
 //   filterBy?: string;
@@ -31,18 +32,18 @@ export const auctionsQueryOptions = queryOptions({
 //     queryFn: () => fetchUserById(userId),
 //   });
 //
-// export const useCreateInvoiceMutation = () => {
+// export const useCreateauctionMutation = () => {
 //   return useMutation({
-//     // mutationKey: ['invoices', 'create'],
-//     mutationFn: postInvoice,
+//     // mutationKey: ['auctions', 'create'],
+//     mutationFn: postauction,
 //     onSuccess: () => queryClient.invalidateQueries(),
 //   });
 // };
 //
-// export const useUpdateInvoiceMutation = (invoiceId: number) => {
+// export const useUpdateauctionMutation = (auctionId: number) => {
 //   return useMutation({
-//     mutationKey: ["invoices", "update", invoiceId],
-//     mutationFn: patchInvoice,
+//     mutationKey: ["auctions", "update", auctionId],
+//     mutationFn: patchauction,
 //     onSuccess: () => queryClient.invalidateQueries(),
 //     gcTime: 1000 * 10,
 //   });

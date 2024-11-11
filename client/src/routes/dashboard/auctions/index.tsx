@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { auctionsQueryOptions } from "../../utils/queryOptions";
+import { auctionsQueryOptions } from "../../../utils/queryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import AuctionCard from "../../components/auction-card";
-import { Container, Flex, Stack } from "@mantine/core";
-export const Route = createFileRoute("/dashboard/auctions")({
+import AuctionCard from "../../../components/auction-card";
+import { Container, Stack } from "@mantine/core";
+export const Route = createFileRoute("/dashboard/auctions/")({
   loader: ({ context: { queryClient } }) => {
     return queryClient.ensureQueryData(auctionsQueryOptions);
   },

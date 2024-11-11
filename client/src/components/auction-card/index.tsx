@@ -1,5 +1,6 @@
-import { Card, Image, Text, Badge, Button, Group, Flex } from "@mantine/core";
+import { Card, Image, Text, Button } from "@mantine/core";
 import { Auction } from "../../utils/auctions";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 export default function AuctionCard({ auction }: { auction: Auction }) {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -12,7 +13,10 @@ export default function AuctionCard({ auction }: { auction: Auction }) {
         {auction.description}
       </Text>
       <Button color="blue" fullWidth mt="md" radius="md">
-        Book classic tour now
+        Details
+      </Button>
+      <Button color="blue" fullWidth mt="md" radius="md">
+        Edit Auction
       </Button>
     </Card>
   );

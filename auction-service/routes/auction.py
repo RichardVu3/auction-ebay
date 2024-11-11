@@ -36,7 +36,8 @@ async def get_auction_by_id(
     db: Collection = Depends(get_db),
 ):
     auctions_collection = db["auctions"]
-    auction = auctions_collection.find_one({"_id", auction_id})
+    print("auction_id", ObjectId(auction_id))
+    auction = auctions_collection.find_one(ObjectId(auction_id))
     if not auction:
         raise HTTPException(status_code=404, detail="Auction not found")
 

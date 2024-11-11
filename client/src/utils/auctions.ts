@@ -63,3 +63,17 @@ export async function fetchAuctions(): Promise<Auction[]> {
   const data = await res.json();
   return data;
 }
+
+export async function fetchAuctionById(auctionId: string): Promise<Auction[]> {
+  const res = await fetch(`/api/auctions/${auctionId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    console.error("fetch auctions error", res.statusText);
+  }
+  const data = await res.json();
+  return data;
+}
