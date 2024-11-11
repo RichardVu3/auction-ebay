@@ -1,11 +1,11 @@
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import "@mantine/core/styles.css";
 import {
   AppShell,
   AppShellHeader,
   AppShellMain,
+  createTheme,
   MantineProvider,
 } from "@mantine/core";
 import HeaderMegaMenu from "../components/header-mega-menu";
@@ -20,6 +20,16 @@ export const Route = createRootRouteWithContext<{
   component: App,
 });
 
+const theme = createTheme({
+  breakpoints: {
+    xs: "30em",
+    sm: "48em",
+    md: "64em",
+    lg: "74em",
+    xl: "90em",
+  },
+});
+
 function App() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -28,7 +38,7 @@ function App() {
 
   return (
     <>
-      <MantineProvider>
+      <MantineProvider theme={theme}>
         <AppShell
           header={{ height: 60 }}
           navbar={{

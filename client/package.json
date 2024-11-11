@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@mantine/carousel": "^7.13.5",
+    "@mantine/charts": "^7.13.5",
     "@mantine/code-highlight": "^7.13.5",
     "@mantine/core": "^7.13.5",
     "@mantine/dates": "^7.13.5",
@@ -28,15 +29,17 @@
     "@tanstack/react-router": "^1.79.0",
     "@tanstack/router-devtools": "^1.79.0",
     "@tiptap/extension-link": "^2.9.1",
+    "@tiptap/pm": "^2.9.1",
     "@tiptap/react": "^2.9.1",
     "@tiptap/starter-kit": "^2.9.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
-    "embla-carousel-react": "^8.3.1",
+    "embla-carousel-react": "^7.1.0",
     "immer": "^10.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.2",
+    "recharts": "2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

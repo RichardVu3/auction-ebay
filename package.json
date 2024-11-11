@@ -1,0 +1,5 @@
+{
+	"dependencies": {
+		"@mantine/carousel": "^7.13.5"
+	}
+}

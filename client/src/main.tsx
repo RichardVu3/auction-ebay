@@ -1,14 +1,9 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import {
-  RouterProvider,
-  createRouter,
-  useRouterState,
-} from "@tanstack/react-router";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import { auth } from "./utils/auth";
@@ -40,11 +35,9 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <MantineProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} context={{ auth }} />
-        </QueryClientProvider>
-      </MantineProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} context={{ auth }} />
+      </QueryClientProvider>
     </StrictMode>,
   );
 }

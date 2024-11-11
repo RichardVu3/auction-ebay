@@ -21,6 +21,7 @@ import { Route as DashboardSellImport } from './routes/dashboard/sell'
 import { Route as DashboardAuctionsIndexImport } from './routes/dashboard/auctions/index'
 import { Route as DashboardAuctionsAuctionsImport } from './routes/dashboard/auctions/auctions'
 import { Route as DashboardAuctionsAuctionIdImport } from './routes/dashboard/auctions/$auctionId'
+import { Route as DashboardAuctionsAuctionIdEditImport } from './routes/dashboard/auctions/$auctionId.edit'
 
 // Create/Update Routes
 
@@ -85,6 +86,13 @@ const DashboardAuctionsAuctionIdRoute = DashboardAuctionsAuctionIdImport.update(
     getParentRoute: () => DashboardRoute,
   } as any,
 )
+
+const DashboardAuctionsAuctionIdEditRoute =
+  DashboardAuctionsAuctionIdEditImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => DashboardAuctionsAuctionIdRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -160,17 +168,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardAuctionsIndexImport
       parentRoute: typeof DashboardImport
     }
+    '/dashboard/auctions/$auctionId/edit': {
+      id: '/dashboard/auctions/$auctionId/edit'
+      path: '/edit'
+      fullPath: '/dashboard/auctions/$auctionId/edit'
+      preLoaderRoute: typeof DashboardAuctionsAuctionIdEditImport
+      parentRoute: typeof DashboardAuctionsAuctionIdImport
+    }
   }
 }
 
 // Create and export the route tree
+
+interface DashboardAuctionsAuctionIdRouteChildren {
+  DashboardAuctionsAuctionIdEditRoute: typeof DashboardAuctionsAuctionIdEditRoute
+}
+
+const DashboardAuctionsAuctionIdRouteChildren: DashboardAuctionsAuctionIdRouteChildren =
+  {
+    DashboardAuctionsAuctionIdEditRoute: DashboardAuctionsAuctionIdEditRoute,
+  }
+
+const DashboardAuctionsAuctionIdRouteWithChildren =
+  DashboardAuctionsAuctionIdRoute._addFileChildren(
+    DashboardAuctionsAuctionIdRouteChildren,
+  )
 
 interface DashboardRouteChildren {
   DashboardSellRoute: typeof DashboardSellRoute
   DashboardSummaryRoute: typeof DashboardSummaryRoute
   DashboardWatchlistRoute: typeof DashboardWatchlistRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardAuctionsAuctionIdRoute: typeof DashboardAuctionsAuctionIdRoute
+  DashboardAuctionsAuctionIdRoute: typeof DashboardAuctionsAuctionIdRouteWithChildren
   DashboardAuctionsAuctionsRoute: typeof DashboardAuctionsAuctionsRoute
   DashboardAuctionsIndexRoute: typeof DashboardAuctionsIndexRoute
 }
@@ -180,7 +209,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardSummaryRoute: DashboardSummaryRoute,
   DashboardWatchlistRoute: DashboardWatchlistRoute,
   DashboardIndexRoute: DashboardIndexRoute,
-  DashboardAuctionsAuctionIdRoute: DashboardAuctionsAuctionIdRoute,
+  DashboardAuctionsAuctionIdRoute: DashboardAuctionsAuctionIdRouteWithChildren,
   DashboardAuctionsAuctionsRoute: DashboardAuctionsAuctionsRoute,
   DashboardAuctionsIndexRoute: DashboardAuctionsIndexRoute,
 }
@@ -197,9 +226,10 @@ export interface FileRoutesByFullPath {
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRoute
+  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRouteWithChildren
   '/dashboard/auctions/auctions': typeof DashboardAuctionsAuctionsRoute
   '/dashboard/auctions': typeof DashboardAuctionsIndexRoute
+  '/dashboard/auctions/$auctionId/edit': typeof DashboardAuctionsAuctionIdEditRoute
 }
 
 export interface FileRoutesByTo {
@@ -209,9 +239,10 @@ export interface FileRoutesByTo {
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
   '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRoute
+  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRouteWithChildren
   '/dashboard/auctions/auctions': typeof DashboardAuctionsAuctionsRoute
   '/dashboard/auctions': typeof DashboardAuctionsIndexRoute
+  '/dashboard/auctions/$auctionId/edit': typeof DashboardAuctionsAuctionIdEditRoute
 }
 
 export interface FileRoutesById {
@@ -223,9 +254,10 @@ export interface FileRoutesById {
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
   '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRoute
+  '/dashboard/auctions/$auctionId': typeof DashboardAuctionsAuctionIdRouteWithChildren
   '/dashboard/auctions/auctions': typeof DashboardAuctionsAuctionsRoute
   '/dashboard/auctions/': typeof DashboardAuctionsIndexRoute
+  '/dashboard/auctions/$auctionId/edit': typeof DashboardAuctionsAuctionIdEditRoute
 }
 
 export interface FileRouteTypes {
@@ -241,6 +273,7 @@ export interface FileRouteTypes {
     | '/dashboard/auctions/$auctionId'
     | '/dashboard/auctions/auctions'
     | '/dashboard/auctions'
+    | '/dashboard/auctions/$auctionId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -252,6 +285,7 @@ export interface FileRouteTypes {
     | '/dashboard/auctions/$auctionId'
     | '/dashboard/auctions/auctions'
     | '/dashboard/auctions'
+    | '/dashboard/auctions/$auctionId/edit'
   id:
     | '__root__'
     | '/'
@@ -264,6 +298,7 @@ export interface FileRouteTypes {
     | '/dashboard/auctions/$auctionId'
     | '/dashboard/auctions/auctions'
     | '/dashboard/auctions/'
+    | '/dashboard/auctions/$auctionId/edit'
   fileRoutesById: FileRoutesById
 }
 
@@ -330,7 +365,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/auctions/$auctionId": {
       "filePath": "dashboard/auctions/$auctionId.tsx",
-      "parent": "/dashboard"
+      "parent": "/dashboard",
+      "children": [
+        "/dashboard/auctions/$auctionId/edit"
+      ]
     },
     "/dashboard/auctions/auctions": {
       "filePath": "dashboard/auctions/auctions.tsx",
@@ -339,6 +377,10 @@ export const routeTree = rootRoute
     "/dashboard/auctions/": {
       "filePath": "dashboard/auctions/index.tsx",
       "parent": "/dashboard"
+    },
+    "/dashboard/auctions/$auctionId/edit": {
+      "filePath": "dashboard/auctions/$auctionId.edit.tsx",
+      "parent": "/dashboard/auctions/$auctionId"
     }
   }
 }

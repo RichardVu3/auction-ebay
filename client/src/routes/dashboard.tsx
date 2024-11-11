@@ -4,7 +4,7 @@ import {
   useLocation,
   useNavigate,
 } from "@tanstack/react-router";
-import { Tabs, TabsTab } from "@mantine/core";
+import { Tabs, Container, TabsTab } from "@mantine/core";
 
 export const Route = createFileRoute("/dashboard")({
   component: RouteComponent,
@@ -54,8 +54,9 @@ function RouteComponent() {
             );
           })}
         </Tabs.List>
-
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </Tabs>
     </div>
   );
