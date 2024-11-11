@@ -105,13 +105,6 @@ function SiteHeader({ className }: Props) {
       <div className="flex h-14 items-center px-4 justify-center">
         {/*main/mobile nav items*/}
 
-        {/*<NavigationMenu className={cn("", className)}>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>*/}
-
         <MobileNav />
         <div className="flex items-center gap-2 justify-center">
           <div className="hidden md:flex w-16 mr-4">Logo</div>

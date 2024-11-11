@@ -1,8 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { auctionQueryOptions } from "../../../utils/queryOptions";
+import { auctionQueryOptions } from "../../utils/queryOptions";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 import { z } from "zod";
-export const Route = createFileRoute("/dashboard/auctions/$auctionId")({
+export const Route = createFileRoute("/auctions/$auctionId")({
   params: {},
   loader: (opts) => {
     opts.context.queryClient.ensureQueryData(
