@@ -102,9 +102,38 @@ type Props = { className?: string };
 function SiteHeader({ className }: Props) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:border-border">
-      <div className="flex h-14 items-center px-4">
+      <div className="flex h-14 items-center px-4 justify-center">
         {/*main/mobile nav items*/}
 
+        {/*<NavigationMenu className={cn("", className)}>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>*/}
+
+        <MobileNav />
+        <div className="flex items-center gap-2 justify-center">
+          <div className="hidden md:flex w-16 mr-4">Logo</div>
+
+          <div className="flex-1 w-full max-w-full">
+            <CommandMenu />
+          </div>
+
+          <nav className="flex items-center gap-0.5">
+            <Button variant="ghost" size="icon" className="h-8  px-0">
+              <Link to="/">
+                <Icons.gitHub className="h-4 w-4" />
+                <span className="sr-only">GitHub</span>
+              </Link>
+            </Button>
+            <ModeToggle />
+          </nav>
+        </div>
+      </div>
+
+      {/*Secondary Bar*/}
+      <div className="hidden justify-center md:flex h-14 items-center px-4">
         <NavigationMenu className={cn("", className)}>
           <NavigationMenuList>
             <HeaderMenuList />
@@ -121,25 +150,15 @@ function SiteHeader({ className }: Props) {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <MobileNav />
+              <NavigationMenuLink
+                className={navigationMenuTriggerStyle()}
+                asChild
+              >
+                <Link to="/dashboard">Dashboard</Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-
-        <div className="flex flex-1 items-center justify-between gap-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            <CommandMenu />
-          </div>
-          <nav className="flex items-center gap-0.5">
-            <Button variant="ghost" size="icon" className="h-8 w-8 px-0">
-              <Link to="/">
-                <Icons.gitHub className="h-4 w-4" />
-                <span className="sr-only">GitHub</span>
-              </Link>
-            </Button>
-            <ModeToggle />
-          </nav>
-        </div>
       </div>
     </header>
   );
