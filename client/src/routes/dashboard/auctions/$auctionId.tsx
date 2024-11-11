@@ -18,5 +18,5 @@ function RouteComponent() {
   const auction = auctionQuery.data[0];
   console.log(auction, "???");
 
-  return <>{auction.title}</>;
+  return <div className="text-white">{auction.title}</div>;
 }
