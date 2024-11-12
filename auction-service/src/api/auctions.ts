@@ -1,7 +1,10 @@
 import prisma from "@/db/index";
 async function auctionsRouter(fastify, options) {
   fastify.get("/", async (request, reply) => {
-    return { route: "auctions" };
+    console.log("request", request);
+    const auctions = await prisma.auction.findMany();
+    console.log("auctions?", auctions);
+    reply.code(200).send({ data: auctions });
   });
 }
 
