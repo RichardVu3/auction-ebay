@@ -12,6 +12,7 @@ export interface Auction {
   end_time: Date;
   description: string;
   category: Category[];
+  starting_price: number;
 }
 
 export interface Bid {

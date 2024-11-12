@@ -20,6 +20,7 @@ import { Route as DashboardSummaryImport } from './routes/dashboard/summary'
 import { Route as DashboardSellImport } from './routes/dashboard/sell'
 import { Route as AuctionsAuctionIdImport } from './routes/auctions/$auctionId'
 import { Route as DashboardAuctionsIndexImport } from './routes/dashboard/auctions.index'
+import { Route as AuctionsAuctionIdIndexImport } from './routes/auctions/$auctionId.index'
 import { Route as AuctionsAuctionIdEditImport } from './routes/auctions/$auctionId.edit'
 
 // Create/Update Routes
@@ -76,6 +77,12 @@ const DashboardAuctionsIndexRoute = DashboardAuctionsIndexImport.update({
   id: '/auctions/',
   path: '/auctions/',
   getParentRoute: () => DashboardRoute,
+} as any)
+
+const AuctionsAuctionIdIndexRoute = AuctionsAuctionIdIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuctionsAuctionIdRoute,
 } as any)
 
 const AuctionsAuctionIdEditRoute = AuctionsAuctionIdEditImport.update({
@@ -151,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuctionsAuctionIdEditImport
       parentRoute: typeof AuctionsAuctionIdImport
     }
+    '/auctions/$auctionId/': {
+      id: '/auctions/$auctionId/'
+      path: '/'
+      fullPath: '/auctions/$auctionId/'
+      preLoaderRoute: typeof AuctionsAuctionIdIndexImport
+      parentRoute: typeof AuctionsAuctionIdImport
+    }
     '/dashboard/auctions/': {
       id: '/dashboard/auctions/'
       path: '/auctions'
@@ -185,10 +199,12 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 interface AuctionsAuctionIdRouteChildren {
   AuctionsAuctionIdEditRoute: typeof AuctionsAuctionIdEditRoute
+  AuctionsAuctionIdIndexRoute: typeof AuctionsAuctionIdIndexRoute
 }
 
 const AuctionsAuctionIdRouteChildren: AuctionsAuctionIdRouteChildren = {
   AuctionsAuctionIdEditRoute: AuctionsAuctionIdEditRoute,
+  AuctionsAuctionIdIndexRoute: AuctionsAuctionIdIndexRoute,
 }
 
 const AuctionsAuctionIdRouteWithChildren =
@@ -204,18 +220,19 @@ export interface FileRoutesByFullPath {
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/auctions/$auctionId/edit': typeof AuctionsAuctionIdEditRoute
+  '/auctions/$auctionId/': typeof AuctionsAuctionIdIndexRoute
   '/dashboard/auctions': typeof DashboardAuctionsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auctions/$auctionId': typeof AuctionsAuctionIdRouteWithChildren
   '/dashboard/sell': typeof DashboardSellRoute
   '/dashboard/summary': typeof DashboardSummaryRoute
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
   '/dashboard': typeof DashboardIndexRoute
   '/auctions/$auctionId/edit': typeof AuctionsAuctionIdEditRoute
+  '/auctions/$auctionId': typeof AuctionsAuctionIdIndexRoute
   '/dashboard/auctions': typeof DashboardAuctionsIndexRoute
 }
 
@@ -230,6 +247,7 @@ export interface FileRoutesById {
   '/dashboard/watchlist': typeof DashboardWatchlistRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/auctions/$auctionId/edit': typeof AuctionsAuctionIdEditRoute
+  '/auctions/$auctionId/': typeof AuctionsAuctionIdIndexRoute
   '/dashboard/auctions/': typeof DashboardAuctionsIndexRoute
 }
 
@@ -245,17 +263,18 @@ export interface FileRouteTypes {
     | '/dashboard/watchlist'
     | '/dashboard/'
     | '/auctions/$auctionId/edit'
+    | '/auctions/$auctionId/'
     | '/dashboard/auctions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/auctions/$auctionId'
     | '/dashboard/sell'
     | '/dashboard/summary'
     | '/dashboard/watchlist'
     | '/dashboard'
     | '/auctions/$auctionId/edit'
+    | '/auctions/$auctionId'
     | '/dashboard/auctions'
   id:
     | '__root__'
@@ -268,6 +287,7 @@ export interface FileRouteTypes {
     | '/dashboard/watchlist'
     | '/dashboard/'
     | '/auctions/$auctionId/edit'
+    | '/auctions/$auctionId/'
     | '/dashboard/auctions/'
   fileRoutesById: FileRoutesById
 }
@@ -321,7 +341,8 @@ export const routeTree = rootRoute
     "/auctions/$auctionId": {
       "filePath": "auctions/$auctionId.tsx",
       "children": [
-        "/auctions/$auctionId/edit"
+        "/auctions/$auctionId/edit",
+        "/auctions/$auctionId/"
       ]
     },
     "/dashboard/sell": {
@@ -342,6 +363,10 @@ export const routeTree = rootRoute
     },
     "/auctions/$auctionId/edit": {
       "filePath": "auctions/$auctionId.edit.tsx",
+      "parent": "/auctions/$auctionId"
+    },
+    "/auctions/$auctionId/": {
+      "filePath": "auctions/$auctionId.index.tsx",
       "parent": "/auctions/$auctionId"
     },
     "/dashboard/auctions/": {

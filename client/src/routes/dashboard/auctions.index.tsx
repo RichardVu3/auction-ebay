@@ -31,7 +31,10 @@ function RouteComponent() {
                   <Link to={`/auctions/${auction._id}`}>
                     <Button className="my-4">View</Button>
                   </Link>
-                  <Button className="my-4">Edit</Button>
+
+                  <Link to={`/auctions/${auction._id}/edit`}>
+                    <Button className="my-4">Edit</Button>
+                  </Link>
                   <Button className="my-4">End</Button>
                 </div>
               </div>
