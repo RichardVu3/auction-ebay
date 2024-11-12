@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "rootDir": "src",
     "outDir": "dist",
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
+	"esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "noErrorTruncation": true,
     "lib": ["ESNext", "DOM"],
@@ -14,9 +14,12 @@
     "strict": true,
     "target": "ES2022",
     "incremental": true,
+	"exclude": ["node_modules", "dist"],
+	"baseUrl":".",
     "paths": {
-      "bot": ["./src/index.js"],
-      "bot/*": ["./src/*.js"]
+	"@/*": [
+        "./src/*"
+		]
     },
     "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
     "plugins": [{ "name": "@effect/language-service" }]

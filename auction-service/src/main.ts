@@ -1,7 +1,9 @@
-// import express, { NextFunction, Request, Response } from "express";
 import Fastify from "fastify";
-import apiRouter from "./api/index.js";
 import fastifyHelmet from "@fastify/helmet";
+import cors from "@fastify/cors";
+
+import apiRouter from "./api/index.js";
+
 const colors = {
   red: "\x1b[31m ",
   blue: "\x1b[34m ",
@@ -19,6 +21,7 @@ const startServer = () => {
     logger: true,
   });
 
+  fastify.register(cors);
   fastify.register(fastifyHelmet, {
     global: true,
     contentSecurityPolicy: false,
