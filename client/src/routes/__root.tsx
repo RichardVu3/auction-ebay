@@ -138,7 +138,7 @@ function SiteHeader({ className }: Props) {
                 className={navigationMenuTriggerStyle()}
                 asChild
               >
-                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/dashboard/auctions">Dashboard</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
 
@@ -147,7 +147,7 @@ function SiteHeader({ className }: Props) {
                 className={navigationMenuTriggerStyle()}
                 asChild
               >
-                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/dashboard/sell">Dashboard</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>

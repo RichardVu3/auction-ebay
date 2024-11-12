@@ -1,15 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { auctionsQueryOptions } from "../../utils/queryOptions";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  Card,
-  CardTitle,
-  CardFooter,
-  CardHeader,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardTitle, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/auctions/")({
   loader: ({ context: { queryClient } }) => {
@@ -34,7 +28,9 @@ function RouteComponent() {
                 <img src="https://i.ebayimg.com/images/g/Uw4AAOSwscxnGWRH/s-l500.webp" />
                 <div>{auction.description}</div>
                 <div className="flex flex-col">
-                  <Button className="my-4">View</Button>
+                  <Link to={`/auctions/${auction._id}`}>
+                    <Button className="my-4">View</Button>
+                  </Link>
                   <Button className="my-4">Edit</Button>
                   <Button className="my-4">End</Button>
                 </div>
