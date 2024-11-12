@@ -10,226 +10,165 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root";
-import { Route as DashboardImport } from "./routes/dashboard";
-import { Route as AboutImport } from "./routes/about";
-import { Route as IndexImport } from "./routes/index";
-import { Route as DashboardIndexImport } from "./routes/dashboard/index";
-import { Route as DashboardWatchlistImport } from "./routes/dashboard/watchlist";
-import { Route as DashboardSummaryImport } from "./routes/dashboard/summary";
-import { Route as DashboardSellImport } from "./routes/dashboard/sell";
-import { Route as AuctionsAuctionIdImport } from "./routes/auctions/$auctionId";
-import { Route as DashboardAuctionsIndexImport } from "./routes/dashboard/auctions/index";
-import { Route as DashboardAuctionsAuctionsImport } from "./routes/dashboard/auctions/auctions";
-import { Route as DashboardAuctionsAuctionIdImport } from "./routes/auctions/$auctionId";
-import { Route as AuctionsAuctionIdEditImport } from "./routes/auctions/$auctionId.edit";
-import { Route as DashboardAuctionsAuctionIdEditImport } from "./routes/auctions/$auctionId.edit";
+import { Route as rootRoute } from './routes/__root'
+import { Route as DashboardImport } from './routes/dashboard'
+import { Route as AboutImport } from './routes/about'
+import { Route as IndexImport } from './routes/index'
+import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as DashboardWatchlistImport } from './routes/dashboard/watchlist'
+import { Route as DashboardSummaryImport } from './routes/dashboard/summary'
+import { Route as DashboardSellImport } from './routes/dashboard/sell'
+import { Route as AuctionsAuctionIdImport } from './routes/auctions/$auctionId'
+import { Route as DashboardAuctionsIndexImport } from './routes/dashboard/auctions.index'
+import { Route as AuctionsAuctionIdEditImport } from './routes/auctions/$auctionId.edit'
 
 // Create/Update Routes
 
 const DashboardRoute = DashboardImport.update({
-  id: "/dashboard",
-  path: "/dashboard",
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const AboutRoute = AboutImport.update({
-  id: "/about",
-  path: "/about",
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const IndexRoute = IndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const DashboardIndexRoute = DashboardIndexImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => DashboardRoute,
-} as any);
+} as any)
 
 const DashboardWatchlistRoute = DashboardWatchlistImport.update({
-  id: "/watchlist",
-  path: "/watchlist",
+  id: '/watchlist',
+  path: '/watchlist',
   getParentRoute: () => DashboardRoute,
-} as any);
+} as any)
 
 const DashboardSummaryRoute = DashboardSummaryImport.update({
-  id: "/summary",
-  path: "/summary",
+  id: '/summary',
+  path: '/summary',
   getParentRoute: () => DashboardRoute,
-} as any);
+} as any)
 
 const DashboardSellRoute = DashboardSellImport.update({
-  id: "/sell",
-  path: "/sell",
+  id: '/sell',
+  path: '/sell',
   getParentRoute: () => DashboardRoute,
-} as any);
+} as any)
 
 const AuctionsAuctionIdRoute = AuctionsAuctionIdImport.update({
-  id: "/auctions/$auctionId",
-  path: "/auctions/$auctionId",
+  id: '/auctions/$auctionId',
+  path: '/auctions/$auctionId',
   getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 const DashboardAuctionsIndexRoute = DashboardAuctionsIndexImport.update({
-  id: "/auctions/",
-  path: "/auctions/",
+  id: '/auctions/',
+  path: '/auctions/',
   getParentRoute: () => DashboardRoute,
-} as any);
-
-const DashboardAuctionsAuctionsRoute = DashboardAuctionsAuctionsImport.update({
-  id: "/auctions/auctions",
-  path: "/auctions/auctions",
-  getParentRoute: () => DashboardRoute,
-} as any);
-
-const DashboardAuctionsAuctionIdRoute = DashboardAuctionsAuctionIdImport.update(
-  {
-    id: "/auctions/$auctionId",
-    path: "/auctions/$auctionId",
-    getParentRoute: () => DashboardRoute,
-  } as any,
-);
+} as any)
 
 const AuctionsAuctionIdEditRoute = AuctionsAuctionIdEditImport.update({
-  id: "/edit",
-  path: "/edit",
+  id: '/edit',
+  path: '/edit',
   getParentRoute: () => AuctionsAuctionIdRoute,
-} as any);
-
-const DashboardAuctionsAuctionIdEditRoute =
-  DashboardAuctionsAuctionIdEditImport.update({
-    id: "/edit",
-    path: "/edit",
-    getParentRoute: () => DashboardAuctionsAuctionIdRoute,
-  } as any);
+} as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/about": {
-      id: "/about";
-      path: "/about";
-      fullPath: "/about";
-      preLoaderRoute: typeof AboutImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/dashboard": {
-      id: "/dashboard";
-      path: "/dashboard";
-      fullPath: "/dashboard";
-      preLoaderRoute: typeof DashboardImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/auctions/$auctionId": {
-      id: "/auctions/$auctionId";
-      path: "/auctions/$auctionId";
-      fullPath: "/auctions/$auctionId";
-      preLoaderRoute: typeof AuctionsAuctionIdImport;
-      parentRoute: typeof rootRoute;
-    };
-    "/dashboard/sell": {
-      id: "/dashboard/sell";
-      path: "/sell";
-      fullPath: "/dashboard/sell";
-      preLoaderRoute: typeof DashboardSellImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/dashboard/summary": {
-      id: "/dashboard/summary";
-      path: "/summary";
-      fullPath: "/dashboard/summary";
-      preLoaderRoute: typeof DashboardSummaryImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/dashboard/watchlist": {
-      id: "/dashboard/watchlist";
-      path: "/watchlist";
-      fullPath: "/dashboard/watchlist";
-      preLoaderRoute: typeof DashboardWatchlistImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/dashboard/": {
-      id: "/dashboard/";
-      path: "/";
-      fullPath: "/dashboard/";
-      preLoaderRoute: typeof DashboardIndexImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/auctions/$auctionId/edit": {
-      id: "/auctions/$auctionId/edit";
-      path: "/edit";
-      fullPath: "/auctions/$auctionId/edit";
-      preLoaderRoute: typeof AuctionsAuctionIdEditImport;
-      parentRoute: typeof AuctionsAuctionIdImport;
-    };
-    "/dashboard/auctions/$auctionId": {
-      id: "/dashboard/auctions/$auctionId";
-      path: "/auctions/$auctionId";
-      fullPath: "/dashboard/auctions/$auctionId";
-      preLoaderRoute: typeof DashboardAuctionsAuctionIdImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/dashboard/auctions/auctions": {
-      id: "/dashboard/auctions/auctions";
-      path: "/auctions/auctions";
-      fullPath: "/dashboard/auctions/auctions";
-      preLoaderRoute: typeof DashboardAuctionsAuctionsImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/dashboard/auctions/": {
-      id: "/dashboard/auctions/";
-      path: "/auctions";
-      fullPath: "/dashboard/auctions";
-      preLoaderRoute: typeof DashboardAuctionsIndexImport;
-      parentRoute: typeof DashboardImport;
-    };
-    "/dashboard/auctions/$auctionId/edit": {
-      id: "/dashboard/auctions/$auctionId/edit";
-      path: "/edit";
-      fullPath: "/dashboard/auctions/$auctionId/edit";
-      preLoaderRoute: typeof DashboardAuctionsAuctionIdEditImport;
-      parentRoute: typeof DashboardAuctionsAuctionIdImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/auctions/$auctionId': {
+      id: '/auctions/$auctionId'
+      path: '/auctions/$auctionId'
+      fullPath: '/auctions/$auctionId'
+      preLoaderRoute: typeof AuctionsAuctionIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard/sell': {
+      id: '/dashboard/sell'
+      path: '/sell'
+      fullPath: '/dashboard/sell'
+      preLoaderRoute: typeof DashboardSellImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/summary': {
+      id: '/dashboard/summary'
+      path: '/summary'
+      fullPath: '/dashboard/summary'
+      preLoaderRoute: typeof DashboardSummaryImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/watchlist': {
+      id: '/dashboard/watchlist'
+      path: '/watchlist'
+      fullPath: '/dashboard/watchlist'
+      preLoaderRoute: typeof DashboardWatchlistImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof DashboardImport
+    }
+    '/auctions/$auctionId/edit': {
+      id: '/auctions/$auctionId/edit'
+      path: '/edit'
+      fullPath: '/auctions/$auctionId/edit'
+      preLoaderRoute: typeof AuctionsAuctionIdEditImport
+      parentRoute: typeof AuctionsAuctionIdImport
+    }
+    '/dashboard/auctions/': {
+      id: '/dashboard/auctions/'
+      path: '/auctions'
+      fullPath: '/dashboard/auctions'
+      preLoaderRoute: typeof DashboardAuctionsIndexImport
+      parentRoute: typeof DashboardImport
+    }
   }
 }
 
 // Create and export the route tree
 
-interface DashboardAuctionsAuctionIdRouteChildren {
-  DashboardAuctionsAuctionIdEditRoute: typeof DashboardAuctionsAuctionIdEditRoute;
-}
-
-const DashboardAuctionsAuctionIdRouteChildren: DashboardAuctionsAuctionIdRouteChildren =
-  {
-    DashboardAuctionsAuctionIdEditRoute: DashboardAuctionsAuctionIdEditRoute,
-  };
-
-const DashboardAuctionsAuctionIdRouteWithChildren =
-  DashboardAuctionsAuctionIdRoute._addFileChildren(
-    DashboardAuctionsAuctionIdRouteChildren,
-  );
-
 interface DashboardRouteChildren {
-  DashboardSellRoute: typeof DashboardSellRoute;
-  DashboardSummaryRoute: typeof DashboardSummaryRoute;
-  DashboardWatchlistRoute: typeof DashboardWatchlistRoute;
-  DashboardIndexRoute: typeof DashboardIndexRoute;
-  DashboardAuctionsAuctionIdRoute: typeof DashboardAuctionsAuctionIdRouteWithChildren;
-  DashboardAuctionsAuctionsRoute: typeof DashboardAuctionsAuctionsRoute;
-  DashboardAuctionsIndexRoute: typeof DashboardAuctionsIndexRoute;
+  DashboardSellRoute: typeof DashboardSellRoute
+  DashboardSummaryRoute: typeof DashboardSummaryRoute
+  DashboardWatchlistRoute: typeof DashboardWatchlistRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardAuctionsIndexRoute: typeof DashboardAuctionsIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
@@ -237,127 +176,107 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardSummaryRoute: DashboardSummaryRoute,
   DashboardWatchlistRoute: DashboardWatchlistRoute,
   DashboardIndexRoute: DashboardIndexRoute,
-  DashboardAuctionsAuctionIdRoute: DashboardAuctionsAuctionIdRouteWithChildren,
-  DashboardAuctionsAuctionsRoute: DashboardAuctionsAuctionsRoute,
   DashboardAuctionsIndexRoute: DashboardAuctionsIndexRoute,
-};
+}
 
 const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
   DashboardRouteChildren,
-);
+)
 
 interface AuctionsAuctionIdRouteChildren {
-  AuctionsAuctionIdEditRoute: typeof AuctionsAuctionIdEditRoute;
+  AuctionsAuctionIdEditRoute: typeof AuctionsAuctionIdEditRoute
 }
 
 const AuctionsAuctionIdRouteChildren: AuctionsAuctionIdRouteChildren = {
   AuctionsAuctionIdEditRoute: AuctionsAuctionIdEditRoute,
-};
+}
 
 const AuctionsAuctionIdRouteWithChildren =
-  AuctionsAuctionIdRoute._addFileChildren(AuctionsAuctionIdRouteChildren);
+  AuctionsAuctionIdRoute._addFileChildren(AuctionsAuctionIdRouteChildren)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/dashboard": typeof DashboardRouteWithChildren;
-  "/auctions/$auctionId": typeof AuctionsAuctionIdRouteWithChildren;
-  "/dashboard/sell": typeof DashboardSellRoute;
-  "/dashboard/summary": typeof DashboardSummaryRoute;
-  "/dashboard/watchlist": typeof DashboardWatchlistRoute;
-  "/dashboard/": typeof DashboardIndexRoute;
-  "/auctions/$auctionId/edit": typeof AuctionsAuctionIdEditRoute;
-  "/dashboard/auctions/$auctionId": typeof DashboardAuctionsAuctionIdRouteWithChildren;
-  "/dashboard/auctions/auctions": typeof DashboardAuctionsAuctionsRoute;
-  "/dashboard/auctions": typeof DashboardAuctionsIndexRoute;
-  "/dashboard/auctions/$auctionId/edit": typeof DashboardAuctionsAuctionIdEditRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/auctions/$auctionId': typeof AuctionsAuctionIdRouteWithChildren
+  '/dashboard/sell': typeof DashboardSellRoute
+  '/dashboard/summary': typeof DashboardSummaryRoute
+  '/dashboard/watchlist': typeof DashboardWatchlistRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/auctions/$auctionId/edit': typeof AuctionsAuctionIdEditRoute
+  '/dashboard/auctions': typeof DashboardAuctionsIndexRoute
 }
 
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/auctions/$auctionId": typeof AuctionsAuctionIdRouteWithChildren;
-  "/dashboard/sell": typeof DashboardSellRoute;
-  "/dashboard/summary": typeof DashboardSummaryRoute;
-  "/dashboard/watchlist": typeof DashboardWatchlistRoute;
-  "/dashboard": typeof DashboardIndexRoute;
-  "/auctions/$auctionId/edit": typeof AuctionsAuctionIdEditRoute;
-  "/dashboard/auctions/$auctionId": typeof DashboardAuctionsAuctionIdRouteWithChildren;
-  "/dashboard/auctions/auctions": typeof DashboardAuctionsAuctionsRoute;
-  "/dashboard/auctions": typeof DashboardAuctionsIndexRoute;
-  "/dashboard/auctions/$auctionId/edit": typeof DashboardAuctionsAuctionIdEditRoute;
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/auctions/$auctionId': typeof AuctionsAuctionIdRouteWithChildren
+  '/dashboard/sell': typeof DashboardSellRoute
+  '/dashboard/summary': typeof DashboardSummaryRoute
+  '/dashboard/watchlist': typeof DashboardWatchlistRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/auctions/$auctionId/edit': typeof AuctionsAuctionIdEditRoute
+  '/dashboard/auctions': typeof DashboardAuctionsIndexRoute
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute;
-  "/": typeof IndexRoute;
-  "/about": typeof AboutRoute;
-  "/dashboard": typeof DashboardRouteWithChildren;
-  "/auctions/$auctionId": typeof AuctionsAuctionIdRouteWithChildren;
-  "/dashboard/sell": typeof DashboardSellRoute;
-  "/dashboard/summary": typeof DashboardSummaryRoute;
-  "/dashboard/watchlist": typeof DashboardWatchlistRoute;
-  "/dashboard/": typeof DashboardIndexRoute;
-  "/auctions/$auctionId/edit": typeof AuctionsAuctionIdEditRoute;
-  "/dashboard/auctions/$auctionId": typeof DashboardAuctionsAuctionIdRouteWithChildren;
-  "/dashboard/auctions/auctions": typeof DashboardAuctionsAuctionsRoute;
-  "/dashboard/auctions/": typeof DashboardAuctionsIndexRoute;
-  "/dashboard/auctions/$auctionId/edit": typeof DashboardAuctionsAuctionIdEditRoute;
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/auctions/$auctionId': typeof AuctionsAuctionIdRouteWithChildren
+  '/dashboard/sell': typeof DashboardSellRoute
+  '/dashboard/summary': typeof DashboardSummaryRoute
+  '/dashboard/watchlist': typeof DashboardWatchlistRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/auctions/$auctionId/edit': typeof AuctionsAuctionIdEditRoute
+  '/dashboard/auctions/': typeof DashboardAuctionsIndexRoute
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/about"
-    | "/dashboard"
-    | "/auctions/$auctionId"
-    | "/dashboard/sell"
-    | "/dashboard/summary"
-    | "/dashboard/watchlist"
-    | "/dashboard/"
-    | "/auctions/$auctionId/edit"
-    | "/dashboard/auctions/$auctionId"
-    | "/dashboard/auctions/auctions"
-    | "/dashboard/auctions"
-    | "/dashboard/auctions/$auctionId/edit";
-  fileRoutesByTo: FileRoutesByTo;
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/auctions/$auctionId'
+    | '/dashboard/sell'
+    | '/dashboard/summary'
+    | '/dashboard/watchlist'
+    | '/dashboard/'
+    | '/auctions/$auctionId/edit'
+    | '/dashboard/auctions'
+  fileRoutesByTo: FileRoutesByTo
   to:
-    | "/"
-    | "/about"
-    | "/auctions/$auctionId"
-    | "/dashboard/sell"
-    | "/dashboard/summary"
-    | "/dashboard/watchlist"
-    | "/dashboard"
-    | "/auctions/$auctionId/edit"
-    | "/dashboard/auctions/$auctionId"
-    | "/dashboard/auctions/auctions"
-    | "/dashboard/auctions"
-    | "/dashboard/auctions/$auctionId/edit";
+    | '/'
+    | '/about'
+    | '/auctions/$auctionId'
+    | '/dashboard/sell'
+    | '/dashboard/summary'
+    | '/dashboard/watchlist'
+    | '/dashboard'
+    | '/auctions/$auctionId/edit'
+    | '/dashboard/auctions'
   id:
-    | "__root__"
-    | "/"
-    | "/about"
-    | "/dashboard"
-    | "/auctions/$auctionId"
-    | "/dashboard/sell"
-    | "/dashboard/summary"
-    | "/dashboard/watchlist"
-    | "/dashboard/"
-    | "/auctions/$auctionId/edit"
-    | "/dashboard/auctions/$auctionId"
-    | "/dashboard/auctions/auctions"
-    | "/dashboard/auctions/"
-    | "/dashboard/auctions/$auctionId/edit";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/dashboard'
+    | '/auctions/$auctionId'
+    | '/dashboard/sell'
+    | '/dashboard/summary'
+    | '/dashboard/watchlist'
+    | '/dashboard/'
+    | '/auctions/$auctionId/edit'
+    | '/dashboard/auctions/'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AboutRoute: typeof AboutRoute;
-  DashboardRoute: typeof DashboardRouteWithChildren;
-  AuctionsAuctionIdRoute: typeof AuctionsAuctionIdRouteWithChildren;
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+  AuctionsAuctionIdRoute: typeof AuctionsAuctionIdRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -365,11 +284,11 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   DashboardRoute: DashboardRouteWithChildren,
   AuctionsAuctionIdRoute: AuctionsAuctionIdRouteWithChildren,
-};
+}
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -396,8 +315,6 @@ export const routeTree = rootRoute
         "/dashboard/summary",
         "/dashboard/watchlist",
         "/dashboard/",
-        "/dashboard/auctions/$auctionId",
-        "/dashboard/auctions/auctions",
         "/dashboard/auctions/"
       ]
     },
@@ -427,24 +344,9 @@ export const routeTree = rootRoute
       "filePath": "auctions/$auctionId.edit.tsx",
       "parent": "/auctions/$auctionId"
     },
-    "/dashboard/auctions/$auctionId": {
-      "filePath": "dashboard/auctions/$auctionId.tsx",
-      "parent": "/dashboard",
-      "children": [
-        "/dashboard/auctions/$auctionId/edit"
-      ]
-    },
-    "/dashboard/auctions/auctions": {
-      "filePath": "dashboard/auctions/auctions.tsx",
-      "parent": "/dashboard"
-    },
     "/dashboard/auctions/": {
-      "filePath": "dashboard/auctions/index.tsx",
+      "filePath": "dashboard/auctions.index.tsx",
       "parent": "/dashboard"
-    },
-    "/dashboard/auctions/$auctionId/edit": {
-      "filePath": "dashboard/auctions/$auctionId.edit.tsx",
-      "parent": "/dashboard/auctions/$auctionId"
     }
   }
 }
