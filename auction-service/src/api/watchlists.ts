@@ -1,5 +1,8 @@
-import express, { Router } from "express";
+async function watchlistRouter(fastify, options) {
+  fastify.get("/api/auctions", async (request, reply) => {
+    return { route: "auctions" };
+  });
+}
 
-export const router: Router = express.Router();
-
-router.get("/watchlists/", (req, res, next) => {});
+//ESM
+export default watchlistRouter;

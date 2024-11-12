@@ -1,16 +1,12 @@
-import express from "express";
-import type { Error } from "../error.js";
-import { router as auctionsRouter } from "./auctions.js";
-import { router as categoriesRouter } from "./categories.js";
-import { router as watchlistsRouter } from "./watchlists.js";
-export const router = express.Router();
+import auctionsRouter from "./auctions.js";
+import watchlistRouter from "./watchlists.js";
+import categoriesRouter from "./categories.js";
 
-router.use("/auctions", auctionsRouter);
-router.use("/categories", categoriesRouter);
-router.use("/watchlists", watchlistsRouter);
+async function apiRouter(fastify, options) {
+  fastify.register(auctionsRouter, { prefix: "/auctions" });
+  fastify.register(categoriesRouter, { prefix: "/categories" });
+  fastify.register(watchlistRouter, { prefix: "/watchlist" });
+}
 
-router.use((req, res, next) => {
-  const error: Error = new Error("Not Found");
-  error.status = 404;
-  next(error);
-});
+//ESM
+export default apiRouter;

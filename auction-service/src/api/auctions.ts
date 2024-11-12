@@ -1,7 +1,8 @@
-import express, { Router } from "express";
+async function auctionsRouter(fastify, options) {
+  fastify.get("/", async (request, reply) => {
+    return { route: "auctions" };
+  });
+}
 
-export const router: Router = express.Router();
-
-router.get("/", async (req, res, next) => {
-  res.send("hit auctions");
-});
+//ESM
+export default auctionsRouter;

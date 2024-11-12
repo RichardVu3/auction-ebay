@@ -1,39 +1,63 @@
-import express, { NextFunction, Request, Response } from "express";
-import prisma from "./db.js";
-import type { Error } from "./error.js";
-import { router as apiRouter } from "./api/index.js";
-
-const red = "\x1b[31m ";
-const blue = "\x1b[34m ";
-const green = "\x1b[32m";
-const yellow = "\x1b[33m";
-const magenta = "\x1b[35m";
-const cyan = "\x1b[36m";
-const white = "\x1b[37m";
-const reset = " \x1b[0m";
+// import express, { NextFunction, Request, Response } from "express";
+import Fastify from "fastify";
+import apiRouter from "./api/index.js";
+import fastifyHelmet from "@fastify/helmet";
+const colors = {
+  red: "\x1b[31m ",
+  blue: "\x1b[34m ",
+  green: "\x1b[32m ",
+  yellow: "\x1b[33m ",
+  magenta: "\x1b[35m ",
+  cyan: "\x1b[36m ",
+  white: "\x1b[37m ",
+  reset: " \x1b[0m",
+};
 
 const startServer = () => {
-  const app = express();
   const PORT = process.env.PORT || 3000;
-
-  app.use("/api", apiRouter);
-  app.get("/", (req, res, next) => {
-    res.send("hello world");
+  const fastify = Fastify({
+    logger: true,
   });
 
-  // error handling endware. Just propogate errors until they hit here
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
-    console.error(err.stack);
-    res.status(err.status || 500).send(err.message || "Internal server error.");
+  fastify.register(fastifyHelmet, {
+    global: true,
+    contentSecurityPolicy: false,
   });
-  if (!prisma) {
-    console.error("Could not initialize prisma client");
-  }
 
-  console.log(green + `Server started on port:${PORT}` + reset);
+  fastify.register(apiRouter, { prefix: "/api" });
 
-  app.listen(3000);
+  // Declare a route
+  fastify.get("/", function (request, reply) {
+    reply.send({ hello: "world" });
+  });
+
+  // Centralized error handler
+  fastify.setErrorHandler((error, request, reply) => {
+    // Customize response based on error type or statusCode
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "An unexpected error occurred";
+
+    // Log error (optional)
+    fastify.log.error(error);
+
+    // Send a unified error response
+    reply.status(statusCode).send({
+      statusCode,
+      error: error.name || "InternalServerError",
+      message,
+    });
+  });
+
+  // Run the server!
+  fastify.listen({ port: PORT as number }, function (err, address) {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1);
+    }
+    console.log(
+      colors.yellow + `Server is now listening on ${address}` + colors.reset,
+    );
+  });
 };
 
 startServer();
