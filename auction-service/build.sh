@@ -1,5 +1,4 @@
-docker run -d -p 27017:27017 \
-	--name auction-service-db \
-	-e MONGO_INITDB_ROOT_USERNAME=mongoadmin \
-	-e MONGO_INITDB_ROOT_PASSWORD=password \
-	mongo:latest
+docker run -d -e POSTGRES_DB=auction-service-db \
+	-e POSTGRES_PASSWORD=password \
+	-e POSTGRES_USER=postgres \
+	-p "8080:5432" postgres
