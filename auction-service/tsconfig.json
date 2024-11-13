@@ -1,33 +1,15 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-	"moduleResolution": "bundler",
-	"esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "noErrorTruncation": true,
-    "lib": ["ESNext", "DOM"],
-    "sourceMap": true,
+    "target": "ESNext",
+    "module": "NodeNext",
     "strict": true,
-    "target": "ES2022",
-    "incremental": true,
-	"exclude": ["node_modules", "dist"],
-	"baseUrl":".",
-    "paths": {
-	"@/*": [
-        "./src/*"
-		]
-    },
-    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
-    "plugins": [{ "name": "@effect/language-service" }],
-    "parserOptions":  {
-		"ecmaVersion":  "2020",  // Allows for the parsing of modern ECMAScript features
-		"sourceType":  "module"  // Allows for the use of imports
-	}
-  },
-  "include": ["src/**/*"]
+    "verbatimModuleSyntax": true,
+	"moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+  }
 }
