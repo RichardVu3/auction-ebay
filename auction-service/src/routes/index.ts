@@ -9,6 +9,12 @@ router.use("/auctions", auctionsRouter);
 router.use("/categories", categoriesRouter);
 router.use("/watchlists", watchlistsRouter);
 
+router.get("/checkHealth", (req, res, next) => {
+  res.status(200).json({
+    status: "ok",
+  });
+});
+
 router.use((req, res, next) => {
   const error: Error = new Error("Not Found");
   error.status = 404;

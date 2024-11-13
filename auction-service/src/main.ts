@@ -1,7 +1,9 @@
 import express, { NextFunction, Request, Response } from "express";
+import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./swagger_output.json";
 import prisma from "./db.js";
 import type { Error } from "./error.js";
-import { router as apiRouter } from "./api/index.js";
+import { router as apiRouter } from "./routes/index.js";
 
 const red = "\x1b[31m ";
 const blue = "\x1b[34m ";
@@ -17,10 +19,7 @@ const startServer = () => {
   const PORT = process.env.PORT || 3000;
 
   app.use("/api", apiRouter);
-  app.get("/", (req, res, next) => {
-    res.send("hello world");
-  });
-
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
   // error handling endware. Just propogate errors until they hit here
   app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err);
