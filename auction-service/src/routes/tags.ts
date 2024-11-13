@@ -2,7 +2,7 @@ import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { z } from "zod";
 
 const router = new OpenAPIHono();
-const Schema = z
+const TagSchema = z
   .object({
     id: z
       .number()
@@ -37,7 +37,7 @@ const getAuctionsRoute = createRoute({
       content: {
         "application/json": {
           schema: z.object({
-            data: z.array(AuctionSchema),
+            data: z.array(TagSchema),
           }),
         },
       },
@@ -65,7 +65,7 @@ const getAuctionByIdRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(TagSchema) }),
         },
       },
       description: "Retrieve an auction by Id",
@@ -89,7 +89,7 @@ const createAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: TagSchema,
         },
       },
     },
@@ -98,7 +98,7 @@ const createAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(TagSchema) }),
         },
       },
       description: "Retrieve an auction by Id",
@@ -123,7 +123,7 @@ const updateAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: TagSchema,
         },
       },
     },
@@ -132,7 +132,7 @@ const updateAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(TagSchema) }),
         },
       },
       description: "Update an auction with a matching Id",
@@ -157,7 +157,7 @@ const flagAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: TagSchema,
         },
       },
     },
@@ -166,7 +166,7 @@ const flagAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(TagSchema) }),
         },
       },
       description: "flag an auction for inappropriate content",
@@ -182,4 +182,4 @@ router.openapi(flagAuctionRoute, (c) => {
     200,
   );
 });
-export { router as categoriesRouter };
+export { router as tagsRouter };

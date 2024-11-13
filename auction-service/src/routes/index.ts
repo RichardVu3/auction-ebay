@@ -1,22 +1,6 @@
-import express from "express";
-import type { Error } from "../error.js";
-import { router as auctionsRouter } from "./auctions.js";
-import { router as categoriesRouter } from "./categories.js";
-import { router as watchlistsRouter } from "./watchlists.js";
-export const router = express.Router();
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { auctionsRouter } from "./auctions";
+const apiRouter = new OpenAPIHono();
 
-router.use("/auctions", auctionsRouter);
-router.use("/categories", categoriesRouter);
-router.use("/watchlists", watchlistsRouter);
-
-router.get("/checkHealth", (req, res, next) => {
-  res.status(200).json({
-    status: "ok",
-  });
-});
-
-router.use((req, res, next) => {
-  const error: Error = new Error("Not Found");
-  error.status = 404;
-  next(error);
-});
+apiRouter.route("/auctions", auctionsRouter);
+export { apiRouter };

@@ -1,32 +1,15 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-	"moduleResolution": "nodenext",
-    "target": "ES2022",
-	"incremental":true,
-    "outDir": "./dist",
-	"baseUrl": ".",
-    "paths":{
-		"@/*":["./src/*"]
-	},
-  },
-  "include": [
-    "src/swagger-output.json",
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
-  "lib": [
-    "es2015"
-  ],
-  "typeRoots": [
-    "node_modules/@types"
-  ],
-  "types": [
-    "node",
-    "express"
-  ]
+    "target": "ESNext",
+    "module": "NodeNext",
+    "strict": true,
+    "verbatimModuleSyntax": true,
+	"moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+  }
 }
