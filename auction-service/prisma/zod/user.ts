@@ -8,14 +8,23 @@ import {
   RelatedBidModel,
 } from "./index";
 
-export const UserModel = z.object({
-  id: z.number().int(),
-  name: z.string(),
-  isAdmin: z.boolean(),
-  suspended: z.boolean(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-});
+export const UserModelInput = z
+  .object({
+    name: z.string(),
+    isAdmin: z.boolean(),
+    suspended: z.boolean(),
+  })
+  .openapi("User Input");
+export const UserModel = z
+  .object({
+    id: z.number().int(),
+    name: z.string(),
+    isAdmin: z.boolean(),
+    suspended: z.boolean(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+  })
+  .openapi("User");
 
 export interface CompleteUser extends z.infer<typeof UserModel> {
   items: CompleteAuction[];

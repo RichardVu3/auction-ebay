@@ -10,12 +10,14 @@ export const CategoryModelInput = z
   .object({
     name: z.string(),
   })
-  .openapi("CategoryInput");
+  .openapi("Category Input");
 
-export const CategoryModel = z.object({
-  id: z.number().int(),
-  name: z.string(),
-});
+export const CategoryModel = z
+  .object({
+    id: z.number().int(),
+    name: z.string(),
+  })
+  .openapi("Category");
 
 export interface CompleteCategory extends z.infer<typeof CategoryModel> {
   auctions: CompleteAuction[];

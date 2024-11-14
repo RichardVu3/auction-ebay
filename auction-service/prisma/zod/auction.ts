@@ -22,10 +22,14 @@ export const AuctionModelInput = z
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
     isActive: z.boolean(),
-    sellerId: z.number().int(),
+    winnerId: z.number().int().openapi({ example: 1111 }),
+    sellerId: z.number().int().openapi({ example: 1112 }),
     quantity: z.number().int().openapi({ example: 10 }),
     buyItNowEnabled: z.boolean().openapi({ example: false }),
     deleted: z.boolean().openapi({ example: false }),
+    closedAt: z.coerce
+      .date()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
     createdAt: z.coerce
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
@@ -33,7 +37,7 @@ export const AuctionModelInput = z
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
   })
-  .openapi("AuctionInput");
+  .openapi("Auction Input");
 
 // Input schema for client input (expects `startPrice` as `number`)
 export const AuctionModel = z

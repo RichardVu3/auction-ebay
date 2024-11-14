@@ -8,15 +8,19 @@ import {
   RelatedCategoriesOnWatchListsModel,
 } from "./index";
 
-export const WatchListModelInput = z.object({
-  userId: z.number().int(),
-  auctionId: z.number().int(),
-});
-export const WatchListModel = z.object({
-  id: z.number().int(),
-  userId: z.number().int(),
-  auctionId: z.number().int(),
-});
+export const WatchListModelInput = z
+  .object({
+    userId: z.number().int(),
+    auctionId: z.number().int(),
+  })
+  .openapi("Watchlist Input");
+export const WatchListModel = z
+  .object({
+    id: z.number().int(),
+    userId: z.number().int(),
+    auctionId: z.number().int(),
+  })
+  .openapi("Watchlist");
 
 export interface CompleteWatchList extends z.infer<typeof WatchListModel> {
   user: CompleteUser;

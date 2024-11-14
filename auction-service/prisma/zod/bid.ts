@@ -13,7 +13,7 @@ export const BidModelInput = z
     userId: z.number().int(),
     auctionId: z.number().int(),
   })
-  .openapi("BidInput");
+  .openapi("Bid Input");
 
 export const BidModel = z
   .object({

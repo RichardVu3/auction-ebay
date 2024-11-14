@@ -6,10 +6,12 @@ import {
   RelatedCategoryModel,
 } from "./index";
 
-export const CategoriesOnWatchListsModel = z.object({
-  watchlistId: z.number().int(),
-  categoryId: z.number().int(),
-});
+export const CategoriesOnWatchListsModel = z
+  .object({
+    watchlistId: z.number().int(),
+    categoryId: z.number().int(),
+  })
+  .openapi("Categories on Watchlist");
 
 export interface CompleteCategoriesOnWatchLists
   extends z.infer<typeof CategoriesOnWatchListsModel> {
