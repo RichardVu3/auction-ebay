@@ -1,4 +1,5 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
+import prisma from "../db";
 import { z } from "zod";
 import { CategoryModel } from "../../prisma/zod";
 import { ParamsSchema } from "./schemas";
@@ -21,10 +22,11 @@ const getCategorysRoute = createRoute({
   },
 });
 
-router.openapi(getCategorysRoute, (c) => {
+router.openapi(getCategorysRoute, async (c) => {
+  const category = await prisma.category.findMany();
   return c.json(
     {
-      data: [{ id: 1, title: "123", starting_price: 0.99 }],
+      data: category,
     },
     200,
   );
@@ -48,10 +50,17 @@ const getCategoryByIdRoute = createRoute({
   },
 });
 
-router.openapi(getCategoryByIdRoute, (c) => {
+router.openapi(getCategoryByIdRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const category = await prisma.category.findFirst({
+    where: {
+      id: id,
+    },
+  });
+
   return c.json(
     {
-      data: [{ id: 1, title: "123", starting_price: 0.99 }],
+      data: [category],
     },
     200,
   );
@@ -124,37 +133,4 @@ router.openapi(updateCategoryRoute, (c) => {
   );
 });
 
-const flagCategoryRoute = createRoute({
-  method: "put",
-  path: "/{auctionId}",
-  request: {
-    params: ParamsSchema,
-    body: {
-      content: {
-        "application/json": {
-          schema: CategoryModel,
-        },
-      },
-    },
-  },
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: z.object({ data: z.array(CategoryModel) }),
-        },
-      },
-      description: "flag an auction for inappropriate content",
-    },
-  },
-});
-
-router.openapi(flagCategoryRoute, (c) => {
-  return c.json(
-    {
-      data: [{ id: 1, title: "123", starting_price: 0.99 }],
-    },
-    200,
-  );
-});
 export { router as categoriesRouter };

@@ -1,15 +1,26 @@
 import { z } from "zod";
-import { Decimal } from "@prisma/client/runtime/library";
-export const ParamsSchema = z.object({
-  id: z.coerce
-    .number()
-    .int()
-    .openapi({
-      param: {
-        name: "id",
-        in: "path",
-      },
-      description: "The auction identifier.",
-      example: 123,
-    }),
-});
+export const ParamsSchema = z
+  .object({
+    id: z
+      .preprocess((val) => {
+        if (typeof val === "string") {
+          const num = Number(val);
+          if (Number.isInteger(num)) {
+            return num;
+          } else {
+            return NaN;
+          }
+        }
+        return val;
+      }, z.number().int())
+      .openapi({
+        param: {
+          in: "path",
+          name: "id",
+          required: true,
+        },
+        description: "The unique resource identifier.",
+        example: 123,
+      }),
+  })
+  .strict();

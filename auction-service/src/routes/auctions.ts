@@ -160,7 +160,7 @@ const updateAuctionRoute = createRoute({
           schema: z.object({ message: z.string() }),
         },
       },
-      description: "Could not update auuction",
+      description: "Could not update auction",
     },
   },
 });
@@ -178,12 +178,17 @@ router.openapi(updateAuctionRoute, async (c) => {
   if (!updatedAuction) {
     return c.json({ message: "Could not update auction" }, 422);
   }
-  return c.json(
+
+  const responseData = [
     {
-      data: { auctions: [updatedAuction] },
+      ...updatedAuction,
+      createdAt: updatedAuction.createdAt.toString(),
+      updatedAt: updatedAuction.updatedAt.toString(),
+      startTime: updatedAuction.startTime.toString(),
+      endTime: updatedAuction.endTime.toString(),
     },
-    200,
-  );
+  ];
+  return c.json({ auctions: responseData }, 200);
 });
 
 const flagAuctionRoute = createRoute({
@@ -203,7 +208,7 @@ const flagAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionModel) }),
+          schema: z.object({ auctions: z.array(AuctionModel) }),
         },
       },
       description: "flag an auction for inappropriate content",
@@ -233,9 +238,18 @@ router.openapi(flagAuctionRoute, async (c) => {
   if (!updatedAuction) {
     return c.json({ message: "Could not update auction" }, 422);
   }
+  const responseData = [
+    {
+      ...updatedAuction,
+      createdAt: updatedAuction.createdAt.toString(),
+      updatedAt: updatedAuction.updatedAt.toString(),
+      startTime: updatedAuction.startTime.toString(),
+      endTime: updatedAuction.endTime.toString(),
+    },
+  ];
   return c.json(
     {
-      data: { auctions: [updatedAuction] },
+      auctions: responseData,
     },
     200,
   );
