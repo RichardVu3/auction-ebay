@@ -4,7 +4,9 @@ import {
   type CompleteAuction,
   RelatedUserModel,
   RelatedAuctionModel,
+  AuctionModel,
 } from "./index";
+import type { Auction } from "@prisma/client";
 
 export const BidModelInput = z
   .object({
@@ -24,6 +26,20 @@ export const BidModel = z
     auctionId: z.number().int(),
   })
   .openapi("Bid");
+
+export const BidModelWithAuction = z.object({
+  id: z.number().int(),
+  amount: z.number(),
+  placedAt: z.date(),
+  userId: z.number().int(),
+  auctionId: z.number().int(),
+  auction: AuctionModel,
+});
+
+export interface BidModelWithAuction
+  extends z.infer<typeof BidModelWithAuction> {
+  auction: Auction;
+}
 
 export interface CompleteBid extends z.infer<typeof BidModel> {
   bidder: CompleteUser;

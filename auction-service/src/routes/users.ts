@@ -1,23 +1,39 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import prisma from "../db";
 import { z } from "zod";
-import { UserModel, AuctionModel, BidModel } from "../../prisma/zod";
+import { AuctionModel, UserModel, BidModel } from "../../prisma/zod";
 import { ParamsSchema } from "./schemas";
 const router = new OpenAPIHono();
 
-const getUsersRoute = createRoute({
+const getUserAuctionsRoute = createRoute({
   method: "get",
   path: "/",
+  request: {
+    query: z.object({
+      userId: z.preprocess((val) => {
+        if (typeof val === "string") {
+          const num = Number(val);
+          if (Number.isInteger(num)) {
+            return num;
+          } else {
+            return NaN;
+          }
+        }
+        return val;
+      }, z.number().int()),
+    }),
+  },
+
   responses: {
     200: {
       content: {
         "application/json": {
           schema: z.object({
-            auctions: z.array(UserModel),
+            auctions: z.array(AuctionModel),
           }),
         },
       },
-      description: "Retrieve all Users",
+      description: "Retrieve all of a user's auction based on their unique ID",
     },
     404: {
       content: {
@@ -30,8 +46,13 @@ const getUsersRoute = createRoute({
   },
 });
 
-router.openapi(getUsersRoute, async (c) => {
-  const auctions = await prisma.user.findMany();
+router.openapi(getUserAuctionsRoute, async (c) => {
+  const { userId } = c.req.query();
+  const auctions = await prisma.auction.findMany({
+    where: {
+      sellerId: userId,
+    },
+  });
   if (!auctions.length) {
     return c.json({ message: "No Users Found" }, 404);
   }
@@ -62,172 +83,6 @@ const getUserByIdRoute = createRoute({
       description: "Get an user by Id",
     },
   },
-});
-
-router.openapi(getUserByIdRoute, async (c) => {
-  const { id } = c.req.valid("param");
-  const auction = await prisma.user.findFirst({
-    where: {
-      id: id,
-    },
-  });
-  if (!auction) {
-    return c.json({ message: "Could not find auction" }, 400);
-  }
-  return c.json(
-    {
-      data: [auction],
-    },
-    200,
-  );
-});
-
-const createUserRoute = createRoute({
-  method: "post",
-  path: "/",
-  request: {
-    body: {
-      content: {
-        "application/json": {
-          schema: UserModel,
-        },
-      },
-    },
-  },
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: z.object({ user: z.array(UserModel) }),
-        },
-      },
-      description: "Create a new user",
-    },
-    400: {
-      content: {
-        "application/json": {
-          schema: z.object({ message: z.string() }),
-        },
-      },
-      description: "Failed to create a new user",
-    },
-  },
-});
-
-router.openapi(createUserRoute, async (c) => {
-  const body = await c.req.json();
-  const newUser = await prisma.user.create({
-    data: body,
-  });
-  if (!newUser) {
-    return c.json({ message: "Could not create auction" }, 400);
-  }
-
-  return c.json(
-    {
-      user: [newUser],
-    },
-    200,
-  );
-});
-
-const getUserAuctions = createRoute({
-  method: "get",
-  path: "/{id}/auctions",
-  request: {
-    params: ParamsSchema,
-  },
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: z.object({ auctions: z.array(AuctionModel) }),
-        },
-      },
-      description: "Get the specified user's auctions",
-    },
-    404: {
-      content: {
-        "application/json": {
-          schema: z.object({ message: z.string() }),
-        },
-      },
-      description: "Could not find any auctions for the specified user",
-    },
-  },
-});
-
-router.openapi(getUserAuctions, async (c) => {
-  const { id } = c.req.valid("param");
-  const userAuctions = await prisma.auction.findMany({
-    where: {
-      sellerId: id,
-    },
-  });
-  if (!userAuctions) {
-    return c.json(
-      { message: "Could not find any auctions for the specified user" },
-      404,
-    );
-  }
-
-  return c.json(
-    {
-      auctions: userAuctions,
-    },
-    200,
-  );
-});
-
-const getUserBidAuctionsRoute = createRoute({
-  method: "get",
-  path: "/{id}/bids",
-  request: {
-    params: ParamsSchema,
-  },
-  responses: {
-    200: {
-      content: {
-        "application/json": {
-          schema: z.object({ userBidAuctions: z.array(BidModel) }),
-        },
-      },
-      description: "Get the specified user's auctions",
-    },
-    404: {
-      content: {
-        "application/json": {
-          schema: z.object({ message: z.string() }),
-        },
-      },
-      description: "Could not find any bids for the specified user",
-    },
-  },
-});
-
-router.openapi(getUserBidAuctionsRoute, async (c) => {
-  const { id } = c.req.valid("param");
-  const auctions = await prisma.bid.findMany({
-    where: {
-      userId: id,
-    },
-    include: {
-      auction: true,
-    },
-  });
-  if (!auctions) {
-    return c.json(
-      { message: "Could not find any auctions with bids from specified user" },
-      404,
-    );
-  }
-
-  return c.json(
-    {
-      userBidAuctions: auctions,
-    },
-    200,
-  );
 });
 
 export { router as userRouter };
