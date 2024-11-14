@@ -3,7 +3,6 @@ import prisma from "../db";
 import { z } from "zod";
 import { UserModel } from "../../prisma/zod";
 import { ParamsSchema } from "./schemas";
-import { Decimal } from "@prisma/client/runtime/library";
 const router = new OpenAPIHono();
 
 const getUsersRoute = createRoute({
@@ -54,6 +53,14 @@ const getUserByIdRoute = createRoute({
       },
       description: "Retrieve an auction by Id",
     },
+    400: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Get an user by Id",
+    },
   },
 });
 
@@ -69,7 +76,7 @@ router.openapi(getUserByIdRoute, async (c) => {
   }
   return c.json(
     {
-      auctions: [auction],
+      data: [auction],
     },
     200,
   );
@@ -91,10 +98,18 @@ const createUserRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ user: z.object({ UserModel }) }),
+          schema: z.object({ user: z.array(UserModel) }),
         },
       },
-      description: "Create an auction",
+      description: "Create a new user",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Failed to create a new user",
     },
   },
 });
@@ -102,19 +117,17 @@ const createUserRoute = createRoute({
 router.openapi(createUserRoute, async (c) => {
   const body = await c.req.json();
   const newUser = await prisma.user.create({
-    data: {
-      ...body,
-    },
+    data: body,
   });
   if (!newUser) {
-    return c.json({ message: "Could not create auction" });
+    return c.json({ message: "Could not create auction" }, 400);
   }
 
   // Convert data to match the response type
 
   return c.json(
     {
-      data: newUser,
+      user: [newUser],
     },
     200,
   );

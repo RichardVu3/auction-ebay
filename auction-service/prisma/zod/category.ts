@@ -1,12 +1,18 @@
 import * as z from "zod";
 import { type CompleteAuction, RelatedAuctionModel } from "./index";
 
-export const CategoryModel = z
+export const CategoryModelInput = z
   .object({
-    id: z.number().int(),
     name: z.string(),
   })
-  .openapi("category");
+  .openapi("CategoryInput");
+
+export const CategoryModel = z
+  .object({
+    id: z.number().int().optional(),
+    name: z.string(),
+  })
+  .openapi("Category");
 
 export interface CompleteCategory extends z.infer<typeof CategoryModel> {
   auctions: CompleteAuction[];

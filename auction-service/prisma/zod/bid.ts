@@ -6,6 +6,15 @@ import {
   RelatedAuctionModel,
 } from "./index";
 
+export const BidModelInput = z
+  .object({
+    amount: z.number(),
+    placedAt: z.date(),
+    userId: z.number().int(),
+    auctionId: z.number().int(),
+  })
+  .openapi("BidInput");
+
 export const BidModel = z
   .object({
     id: z.number().int(),

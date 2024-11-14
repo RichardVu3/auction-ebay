@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import prisma from "../db";
 import { z } from "zod";
-import { CategoryModel } from "../../prisma/zod";
+import { CategoryModel, CategoryModelInput } from "../../prisma/zod";
 import { ParamsSchema } from "./schemas";
 const router = new OpenAPIHono();
 
@@ -34,7 +34,7 @@ router.openapi(getCategorysRoute, async (c) => {
 
 const getCategoryByIdRoute = createRoute({
   method: "get",
-  path: "/{auctionId}",
+  path: "/{id}",
   request: {
     params: ParamsSchema,
   },
@@ -45,7 +45,15 @@ const getCategoryByIdRoute = createRoute({
           schema: z.object({ data: z.array(CategoryModel) }),
         },
       },
-      description: "Retrieve an auction by Id",
+      description: "Retrieve a category tag by Id",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Could not find category tag",
     },
   },
 });
@@ -57,7 +65,9 @@ router.openapi(getCategoryByIdRoute, async (c) => {
       id: id,
     },
   });
-
+  if (!category) {
+    return c.json({ message: "Could not find category tag" }, 404);
+  }
   return c.json(
     {
       data: [category],
@@ -85,15 +95,33 @@ const createCategoryRoute = createRoute({
           schema: z.object({ data: z.array(CategoryModel) }),
         },
       },
-      description: "Retrieve an auction by Id",
+      description: "Create a new category tag",
+    },
+    400: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Unable to create new category tag",
     },
   },
 });
 
-router.openapi(createCategoryRoute, (c) => {
+router.openapi(createCategoryRoute, async (c) => {
+  const body = await c.req.json();
+  const newCategory = await prisma.category.create({
+    data: {
+      ...body,
+    },
+  });
+  if (!newCategory) {
+    return c.json({ message: "unable to create category tag" }, 400);
+  }
+
   return c.json(
     {
-      data: [{ id: 1, title: "123", starting_price: 0.99 }],
+      data: [newCategory],
     },
     200,
   );
@@ -101,13 +129,13 @@ router.openapi(createCategoryRoute, (c) => {
 
 const updateCategoryRoute = createRoute({
   method: "put",
-  path: "/{auctionId}",
+  path: "/{id}",
   request: {
     params: ParamsSchema,
     body: {
       content: {
         "application/json": {
-          schema: CategoryModel,
+          schema: CategoryModelInput,
         },
       },
     },
@@ -116,21 +144,36 @@ const updateCategoryRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(CategoryModel) }),
+          schema: z.object({ category: z.array(CategoryModel) }),
         },
       },
-      description: "Update an auction with a matching Id",
+      description: "Unable to update category tag",
+    },
+    422: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Unable to create new category tag",
     },
   },
 });
 
-router.openapi(updateCategoryRoute, (c) => {
-  return c.json(
-    {
-      data: [{ id: 1, title: "123", starting_price: 0.99 }],
-    },
-    200,
-  );
+router.openapi(updateCategoryRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const body = await c.req.json();
+
+  const updatedCategory = await prisma.category.update({
+    where: { id: id },
+    data: { ...body },
+  });
+
+  if (!updatedCategory) {
+    return c.json({ message: "unable to update category tag" }, 422);
+  }
+
+  return c.json({ category: [updatedCategory] }, 200);
 });
 
 export { router as categoriesRouter };

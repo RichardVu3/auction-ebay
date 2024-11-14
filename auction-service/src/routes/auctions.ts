@@ -119,10 +119,6 @@ router.openapi(createAuctionRoute, async (c) => {
   const newAuction = await prisma.auction.create({
     data: {
       ...body,
-      // startTime: new Date(body.startTime).toISOString(),
-      // endTime: new Date(body.endTime).toISOString(),
-      // createdAt: new Date(body.createdAt).toISOString(),
-      // updatedAt: new Date(body.updatedAt).toISOString(),
     },
   });
   if (!newAuction) {
@@ -167,8 +163,8 @@ const updateAuctionRoute = createRoute({
 
 router.openapi(updateAuctionRoute, async (c) => {
   const { id } = c.req.valid("param");
-
   const body = await c.req.json();
+
   const updatedAuction = await prisma.auction.update({
     where: {
       id: id,
@@ -219,7 +215,7 @@ const flagAuctionRoute = createRoute({
           schema: z.object({ message: z.string() }),
         },
       },
-      description: "Could not process",
+      description: "Could not process body",
     },
   },
 });
