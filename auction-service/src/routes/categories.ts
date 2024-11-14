@@ -1,35 +1,10 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { z } from "zod";
-
+import { CategoryModel } from "../../prisma/zod";
+import { ParamsSchema } from "./schemas";
 const router = new OpenAPIHono();
-const Schema = z
-  .object({
-    id: z
-      .number()
-      .openapi({
-        example: 1,
-      })
-      .optional(),
-    title: z.string().openapi({
-      example: "My cool auction",
-    }),
-    starting_price: z.number().openapi({
-      example: 0.99,
-    }),
-  })
-  .openapi("Auction");
 
-const ParamsSchema = z.object({
-  id: z.number().openapi({
-    param: {
-      name: "id",
-      in: "path",
-    },
-    example: 1,
-  }),
-});
-
-const getAuctionsRoute = createRoute({
+const getCategorysRoute = createRoute({
   method: "get",
   path: "/",
   responses: {
@@ -37,16 +12,16 @@ const getAuctionsRoute = createRoute({
       content: {
         "application/json": {
           schema: z.object({
-            data: z.array(AuctionSchema),
+            data: z.array(CategoryModel),
           }),
         },
       },
-      description: "Retrieve all Auctions",
+      description: "Retrieve all Categorys",
     },
   },
 });
 
-router.openapi(getAuctionsRoute, (c) => {
+router.openapi(getCategorysRoute, (c) => {
   return c.json(
     {
       data: [{ id: 1, title: "123", starting_price: 0.99 }],
@@ -55,7 +30,7 @@ router.openapi(getAuctionsRoute, (c) => {
   );
 });
 
-const getAuctionByIdRoute = createRoute({
+const getCategoryByIdRoute = createRoute({
   method: "get",
   path: "/{auctionId}",
   request: {
@@ -65,7 +40,7 @@ const getAuctionByIdRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(CategoryModel) }),
         },
       },
       description: "Retrieve an auction by Id",
@@ -73,7 +48,7 @@ const getAuctionByIdRoute = createRoute({
   },
 });
 
-router.openapi(getAuctionByIdRoute, (c) => {
+router.openapi(getCategoryByIdRoute, (c) => {
   return c.json(
     {
       data: [{ id: 1, title: "123", starting_price: 0.99 }],
@@ -82,14 +57,14 @@ router.openapi(getAuctionByIdRoute, (c) => {
   );
 });
 
-const createAuctionRoute = createRoute({
+const createCategoryRoute = createRoute({
   method: "post",
   path: "/",
   request: {
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: CategoryModel,
         },
       },
     },
@@ -98,7 +73,7 @@ const createAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(CategoryModel) }),
         },
       },
       description: "Retrieve an auction by Id",
@@ -106,7 +81,7 @@ const createAuctionRoute = createRoute({
   },
 });
 
-router.openapi(createAuctionRoute, (c) => {
+router.openapi(createCategoryRoute, (c) => {
   return c.json(
     {
       data: [{ id: 1, title: "123", starting_price: 0.99 }],
@@ -115,7 +90,7 @@ router.openapi(createAuctionRoute, (c) => {
   );
 });
 
-const updateAuctionRoute = createRoute({
+const updateCategoryRoute = createRoute({
   method: "put",
   path: "/{auctionId}",
   request: {
@@ -123,7 +98,7 @@ const updateAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: CategoryModel,
         },
       },
     },
@@ -132,7 +107,7 @@ const updateAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(CategoryModel) }),
         },
       },
       description: "Update an auction with a matching Id",
@@ -140,7 +115,7 @@ const updateAuctionRoute = createRoute({
   },
 });
 
-router.openapi(updateAuctionRoute, (c) => {
+router.openapi(updateCategoryRoute, (c) => {
   return c.json(
     {
       data: [{ id: 1, title: "123", starting_price: 0.99 }],
@@ -149,7 +124,7 @@ router.openapi(updateAuctionRoute, (c) => {
   );
 });
 
-const flagAuctionRoute = createRoute({
+const flagCategoryRoute = createRoute({
   method: "put",
   path: "/{auctionId}",
   request: {
@@ -157,7 +132,7 @@ const flagAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: CategoryModel,
         },
       },
     },
@@ -166,7 +141,7 @@ const flagAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(CategoryModel) }),
         },
       },
       description: "flag an auction for inappropriate content",
@@ -174,7 +149,7 @@ const flagAuctionRoute = createRoute({
   },
 });
 
-router.openapi(flagAuctionRoute, (c) => {
+router.openapi(flagCategoryRoute, (c) => {
   return c.json(
     {
       data: [{ id: 1, title: "123", starting_price: 0.99 }],

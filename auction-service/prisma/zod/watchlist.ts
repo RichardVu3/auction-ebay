@@ -6,12 +6,14 @@ import {
   RelatedAuctionModel,
 } from "./index";
 
-export const WatchListModel = z.object({
-  id: z.number().int(),
-  userId: z.number().int(),
-  auctionId: z.number().int(),
-  priceLimit: z.number().nullish(),
-});
+export const WatchListModel = z
+  .object({
+    id: z.number().int(),
+    userId: z.number().int(),
+    auctionId: z.number().int(),
+    priceLimit: z.number().nullish(),
+  })
+  .openapi("Watchlist");
 
 export interface CompleteWatchList extends z.infer<typeof WatchListModel> {
   user: CompleteUser;

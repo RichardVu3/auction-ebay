@@ -5,15 +5,16 @@ import {
   RelatedUserModel,
   RelatedAuctionModel,
 } from "./index";
-import Decimal from "decimal.js";
 
-export const BidModel = z.object({
-  id: z.number().int(),
-  amount: z.number(),
-  placedAt: z.date(),
-  userId: z.number().int(),
-  auctionId: z.number().int(),
-});
+export const BidModel = z
+  .object({
+    id: z.number().int(),
+    amount: z.number(),
+    placedAt: z.date(),
+    userId: z.number().int(),
+    auctionId: z.number().int(),
+  })
+  .openapi("Bid");
 
 export interface CompleteBid extends z.infer<typeof BidModel> {
   bidder: CompleteUser;

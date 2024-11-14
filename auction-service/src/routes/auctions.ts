@@ -49,10 +49,18 @@ const getAuctionByIdRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionModel) }),
+          schema: z.object({ auctions: z.array(AuctionModel) }),
         },
       },
       description: "Retrieve an auction by Id",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Not found",
     },
   },
 });
@@ -65,7 +73,7 @@ router.openapi(getAuctionByIdRoute, async (c) => {
     },
   });
   if (!auction) {
-    return c.json({ message: "Could not find auction" }, 400);
+    return c.json({ message: "Could not find auction" }, 404);
   }
   return c.json(
     {
@@ -96,6 +104,14 @@ const createAuctionRoute = createRoute({
       },
       description: "Create an auction",
     },
+    422: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Could not create auction",
+    },
   },
 });
 
@@ -110,31 +126,10 @@ router.openapi(createAuctionRoute, async (c) => {
     },
   });
   if (!newAuction) {
-    return c.json({ message: "Could not create auction" });
+    return c.json({ message: "Could not create auction" }, 422);
   }
 
-  // Convert data to match the response type
-  const responseData = {
-    auctions: {
-      id: newAuction.id,
-      title: newAuction.title,
-      description: newAuction.description,
-      startPrice: new Decimal(newAuction.startPrice).toNumber(), // Convert Decimal to number
-      startTime: newAuction.startTime.toISOString(), // Convert Date to string
-      endTime: newAuction.endTime.toISOString(), // Convert Date to string
-      isActive: newAuction.isActive,
-      sellerId: newAuction.sellerId,
-      createdAt: newAuction.createdAt.toISOString(), // Convert Date to string
-      updatedAt: newAuction.updatedAt.toISOString(), // Convert Date to string
-    },
-  };
-
-  return c.json(
-    {
-      data: responseData,
-    },
-    200,
-  );
+  return c.json({ auctions: [newAuction] }, 200);
 });
 
 const updateAuctionRoute = createRoute({
@@ -159,6 +154,14 @@ const updateAuctionRoute = createRoute({
       },
       description: "Update an auction with a matching Id",
     },
+    422: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Could not update auuction",
+    },
   },
 });
 
@@ -168,17 +171,12 @@ router.openapi(updateAuctionRoute, async (c) => {
   const body = await c.req.json();
   const updatedAuction = await prisma.auction.update({
     where: {
-      id: parseInt(body.id),
+      id: id,
     },
-    data: {
-      ...body,
-      startPrice: new Decimal(body.startPrice),
-      startTime: new Date(body.startTime),
-      endTime: new Date(body.endTime),
-    },
+    data: body,
   });
   if (!updatedAuction) {
-    return c.json({ message: "Could not update auction" });
+    return c.json({ message: "Could not update auction" }, 422);
   }
   return c.json(
     {
@@ -210,12 +208,19 @@ const flagAuctionRoute = createRoute({
       },
       description: "flag an auction for inappropriate content",
     },
+    422: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Could not process",
+    },
   },
 });
 
 router.openapi(flagAuctionRoute, async (c) => {
   const { id } = c.req.valid("param");
-
   const body = await c.req.json();
   const updatedAuction = await prisma.auction.update({
     where: {
@@ -223,13 +228,10 @@ router.openapi(flagAuctionRoute, async (c) => {
     },
     data: {
       ...body,
-      startPrice: new Decimal(body.startPrice),
-      startTime: new Date(body.startTime),
-      endTime: new Date(body.endTime),
     },
   });
   if (!updatedAuction) {
-    return c.json({ message: "Could not update auction" });
+    return c.json({ message: "Could not update auction" }, 422);
   }
   return c.json(
     {

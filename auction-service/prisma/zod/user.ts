@@ -8,14 +8,22 @@ import {
   RelatedWatchListModel,
 } from "./index";
 
-export const UserModel = z.object({
-  id: z.number().int(),
-  name: z.string(),
-  isAdmin: z.boolean(),
-  suspended: z.boolean(),
-  createdAt: z.string().date(),
-  updatedAt: z.string().date(),
-});
+export const UserModel = z
+  .object({
+    id: z.number().int().optional(),
+    name: z.string(),
+    isAdmin: z.boolean(),
+    suspended: z.boolean(),
+    createdAt: z
+      .string()
+      .date()
+      .openapi({ example: new Date(Date.now()).toString() }),
+    updatedAt: z
+      .string()
+      .date()
+      .openapi({ example: new Date(Date.now()).toString() }),
+  })
+  .openapi("user");
 
 export interface CompleteUser extends z.infer<typeof UserModel> {
   items: CompleteAuction[];
