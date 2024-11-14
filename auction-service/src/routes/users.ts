@@ -1,7 +1,7 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import prisma from "../db";
 import { z } from "zod";
-import { UserModel, AuctionModel } from "../../prisma/zod";
+import { UserModel, AuctionModel, BidModel } from "../../prisma/zod";
 import { ParamsSchema } from "./schemas";
 const router = new OpenAPIHono();
 
@@ -174,6 +174,57 @@ router.openapi(getUserAuctions, async (c) => {
   return c.json(
     {
       auctions: userAuctions,
+    },
+    200,
+  );
+});
+
+const getUserBidAuctionsRoute = createRoute({
+  method: "get",
+  path: "/{id}/bids",
+  request: {
+    params: ParamsSchema,
+  },
+  responses: {
+    200: {
+      content: {
+        "application/json": {
+          schema: z.object({ userBidAuctions: z.array(BidModel) }),
+        },
+      },
+      description: "Get the specified user's auctions",
+    },
+    404: {
+      content: {
+        "application/json": {
+          schema: z.object({ message: z.string() }),
+        },
+      },
+      description: "Could not find any bids for the specified user",
+    },
+  },
+});
+
+router.openapi(getUserBidAuctionsRoute, async (c) => {
+  const { id } = c.req.valid("param");
+  const auctions = await prisma.bid.findMany({
+    where: {
+      userId: id,
+    },
+    include: {
+      auction: true,
+    },
+  });
+  if (!auctions) {
+    return c.json(
+      { message: "Could not find any auctions with bids from specified user" },
+      404,
+    );
+  }
+
+  return c.json(
+    {
+      userBidAuctions: auctions,
     },
     200,
   );
