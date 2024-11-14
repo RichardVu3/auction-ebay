@@ -1,9 +1,8 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import prisma from "../db";
 import { z } from "zod";
-import { AuctionModel } from "../../prisma/zod";
+import { AuctionModel, AuctionModelInput } from "../../prisma/zod";
 import { ParamsSchema } from "./schemas";
-import { Decimal } from "@prisma/client/runtime/library";
 const router = new OpenAPIHono();
 
 const getAuctionsRoute = createRoute({
@@ -90,7 +89,7 @@ const createAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionModel,
+          schema: AuctionModelInput,
         },
       },
     },
@@ -120,9 +119,10 @@ router.openapi(createAuctionRoute, async (c) => {
   const newAuction = await prisma.auction.create({
     data: {
       ...body,
-      startPrice: new Decimal(body.startPrice),
-      startTime: new Date(body.startTime),
-      endTime: new Date(body.endTime),
+      // startTime: new Date(body.startTime).toISOString(),
+      // endTime: new Date(body.endTime).toISOString(),
+      // createdAt: new Date(body.createdAt).toISOString(),
+      // updatedAt: new Date(body.updatedAt).toISOString(),
     },
   });
   if (!newAuction) {
@@ -140,7 +140,7 @@ const updateAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionModel,
+          schema: AuctionModelInput,
         },
       },
     },
@@ -182,10 +182,10 @@ router.openapi(updateAuctionRoute, async (c) => {
   const responseData = [
     {
       ...updatedAuction,
-      createdAt: updatedAuction.createdAt.toString(),
-      updatedAt: updatedAuction.updatedAt.toString(),
-      startTime: updatedAuction.startTime.toString(),
-      endTime: updatedAuction.endTime.toString(),
+      createdAt: updatedAuction.createdAt.toDateString(),
+      updatedAt: updatedAuction.updatedAt.toDateString(),
+      startTime: updatedAuction.startTime.toDateString(),
+      endTime: updatedAuction.endTime.toDateString(),
     },
   ];
   return c.json({ auctions: responseData }, 200);
@@ -199,7 +199,7 @@ const flagAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionModel,
+          schema: AuctionModelInput,
         },
       },
     },
@@ -241,10 +241,10 @@ router.openapi(flagAuctionRoute, async (c) => {
   const responseData = [
     {
       ...updatedAuction,
-      createdAt: updatedAuction.createdAt.toString(),
-      updatedAt: updatedAuction.updatedAt.toString(),
-      startTime: updatedAuction.startTime.toString(),
-      endTime: updatedAuction.endTime.toString(),
+      createdAt: updatedAuction.createdAt.toDateString(),
+      updatedAt: updatedAuction.updatedAt.toDateString(),
+      startTime: updatedAuction.startTime.toDateString(),
+      endTime: updatedAuction.endTime.toDateString(),
     },
   ];
   return c.json(

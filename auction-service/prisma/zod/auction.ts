@@ -10,31 +10,49 @@ import {
   RelatedWatchListModel,
 } from "./index";
 
-// Input schema for client input (expects `startPrice` as `number`)
-export const AuctionModel = z
+export const AuctionModelInput = z
   .object({
-    id: z.number().int().optional(),
     title: z.string().openapi({ example: "Cool Auction Title" }),
     description: z.string().openapi({ example: "Cool description" }),
     startPrice: z.number().openapi({ example: 0.99 }), // Accepts number from client
-    startTime: z
-      .string()
+    startTime: z.coerce
       .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
-    endTime: z
-      .string()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
+    endTime: z.coerce
       .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
+      .openapi({ example: new Date(Date.now()).toISOString() }),
     isActive: z.boolean(),
     sellerId: z.number().int(),
-    createdAt: z
-      .string()
+    createdAt: z.coerce
       .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
-    updatedAt: z
-      .string()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
+    updatedAt: z.coerce
       .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
+      .openapi({ example: new Date(Date.now()).toISOString() }),
+  })
+  .openapi("AuctionInput");
+
+// Input schema for client input (expects `startPrice` as `number`)
+export const AuctionModel = z
+  .object({
+    id: z.number().int().optional().openapi({ example: 1 }),
+    title: z.string().openapi({ example: "Cool Auction Title" }),
+    description: z.string().openapi({ example: "Cool description" }),
+    startPrice: z.number().openapi({ example: 0.99 }), // Accepts number from client
+    startTime: z.coerce
+      .date()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
+    endTime: z.coerce
+      .date()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
+    isActive: z.boolean(),
+    sellerId: z.number().int(),
+    createdAt: z.coerce
+      .date()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
+    updatedAt: z.coerce
+      .date()
+      .openapi({ example: new Date(Date.now()).toISOString() }),
   })
   .openapi("Auction");
 
@@ -44,12 +62,12 @@ export interface CompleteAuction {
   title: string;
   description: string;
   startPrice: number;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   isActive: boolean;
   sellerId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   seller: CompleteUser;
   bids: CompleteBid[];
   categories: CompleteCategory[];
