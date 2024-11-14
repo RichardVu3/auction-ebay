@@ -13,8 +13,8 @@ export const UserModel = z.object({
   name: z.string(),
   isAdmin: z.boolean(),
   suspended: z.boolean(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().date(),
+  updatedAt: z.string().date(),
 });
 
 export interface CompleteUser extends z.infer<typeof UserModel> {

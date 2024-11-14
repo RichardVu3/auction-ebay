@@ -5,6 +5,7 @@ import {
   RelatedUserModel,
   RelatedAuctionModel,
 } from "./index";
+import Decimal from "decimal.js";
 
 export const BidModel = z.object({
   id: z.number().int(),

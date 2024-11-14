@@ -5,35 +5,44 @@ import {
   type CompleteCategory,
   type CompleteWatchList,
   RelatedBidModel,
+  RelatedUserModel,
   RelatedCategoryModel,
   RelatedWatchListModel,
 } from "./index";
 
+// Input schema for client input (expects `startPrice` as `number`)
 export const AuctionModel = z.object({
-  id: z.number().int(),
+  id: z.number().int().optional(),
   title: z.string(),
   description: z.string(),
-  startPrice: z.number(),
-  startTime: z.date(),
-  endTime: z.date(),
+  startPrice: z.number(), // Accepts number from client
+  startTime: z.string(),
+  endTime: z.string(),
   isActive: z.boolean(),
   sellerId: z.number().int(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().date(),
+  updatedAt: z.string().date(),
 });
 
-export interface CompleteAuction extends z.infer<typeof AuctionModel> {
+// CompleteAuction interface with explicit types
+export interface CompleteAuction {
+  id?: number;
+  title: string;
+  description: string;
+  startPrice: number;
+  startTime: string;
+  endTime: string;
+  isActive: boolean;
+  sellerId: number;
+  createdAt: string;
+  updatedAt: string;
   seller: CompleteUser;
   bids: CompleteBid[];
   categories: CompleteCategory[];
   watchlist: CompleteWatchList[];
 }
 
-/**
- * RelatedAuctionModel contains all relations on your model in addition to the scalars
- *
- * NOTE: Lazy required in case of potential circular dependencies within schema
- */
+// Related model with lazy loading and explicit type compatibility
 export const RelatedAuctionModel: z.ZodSchema<CompleteAuction> = z.lazy(() =>
   AuctionModel.extend({
     seller: RelatedUserModel,
