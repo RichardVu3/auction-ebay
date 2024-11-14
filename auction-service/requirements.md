@@ -53,10 +53,10 @@ Admin Functions:
     - [x] start time,
     - [x] time when the auction expires,
     - [x] quantity,
-    - [ ] shipping costs,
+    - [x] shipping costs,
     - [x] buy now feature if applicable,
     - [x] item description,
-    - [ ] seller rating)
+    - [ ] seller rating (have to get from daniel's service)
 
 - [ ] Start the auction when the current time matches the start time defined by the user
 
