@@ -1,56 +1,10 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import prisma from "../db";
-import { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
 import { AuctionModel } from "../../prisma/zod";
-
+import { ParamsSchema } from "./schemas";
+import { Decimal } from "@prisma/client/runtime/library";
 const router = new OpenAPIHono();
-const AuctionSchema = z
-  .object({
-    id: z.number().int().openapi({
-      example: 1,
-    }),
-    title: z.string().openapi({
-      example: "My cool auction",
-    }),
-    description: z
-      .string()
-      .nullish()
-      .openapi({ example: "My auction is cool" }),
-    published: z.boolean().openapi({ example: false }),
-    starting_amount: z
-      .instanceof(Decimal)
-      .or(z.string())
-      .or(z.number())
-      .refine((value) => {
-        return new Decimal(value);
-      })
-      .openapi({ example: 0.99 }),
-    start_time: z
-      .string()
-      .refine((value) => {
-        return new Date(value);
-      })
-      .openapi({ example: new Date(Date.now()).toString() }),
-    end_time: z
-      .string()
-      .refine((value) => {
-        return new Date(value);
-      })
-      .openapi({ example: new Date(Date.now()).toString() }),
-    sellerId: z.number().int().openapi({ example: 1 }),
-  })
-  .openapi("Auction");
-
-const ParamsSchema = z.object({
-  id: z.coerce.number().openapi({
-    param: {
-      name: "id",
-      in: "path",
-    },
-    example: 1,
-  }),
-});
 
 const getAuctionsRoute = createRoute({
   method: "get",
@@ -95,7 +49,7 @@ const getAuctionByIdRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(AuctionModel) }),
         },
       },
       description: "Retrieve an auction by Id",
@@ -128,7 +82,7 @@ const createAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: AuctionModel,
         },
       },
     },
@@ -137,7 +91,7 @@ const createAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ auctions: z.array(AuctionSchema) }),
+          schema: z.object({ auctions: z.array(AuctionModel) }),
         },
       },
       description: "Create an auction",
@@ -147,22 +101,37 @@ const createAuctionRoute = createRoute({
 
 router.openapi(createAuctionRoute, async (c) => {
   const body = await c.req.json();
-  console.log("body?", body);
   const newAuction = await prisma.auction.create({
     data: {
       ...body,
-      id: parseInt(body.id),
-      starting_amount: new Decimal(body.starting_amount),
-      start_time: new Date(body.start_time),
-      end_time: new Date(body.end_time),
+      startPrice: new Decimal(body.startPrice),
+      startTime: new Date(body.startTime),
+      endTime: new Date(body.endTime),
     },
   });
   if (!newAuction) {
     return c.json({ message: "Could not create auction" });
   }
+
+  // Convert data to match the response type
+  const responseData = {
+    auctions: {
+      id: newAuction.id,
+      title: newAuction.title,
+      description: newAuction.description,
+      startPrice: new Decimal(newAuction.startPrice).toNumber(), // Convert Decimal to number
+      startTime: newAuction.startTime.toISOString(), // Convert Date to string
+      endTime: newAuction.endTime.toISOString(), // Convert Date to string
+      isActive: newAuction.isActive,
+      sellerId: newAuction.sellerId,
+      createdAt: newAuction.createdAt.toISOString(), // Convert Date to string
+      updatedAt: newAuction.updatedAt.toISOString(), // Convert Date to string
+    },
+  };
+
   return c.json(
     {
-      data: { auctions: [newAuction] },
+      data: responseData,
     },
     200,
   );
@@ -176,7 +145,7 @@ const updateAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: AuctionModel,
         },
       },
     },
@@ -185,7 +154,7 @@ const updateAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ auctions: z.array(AuctionSchema) }),
+          schema: z.object({ auctions: z.array(AuctionModel) }),
         },
       },
       description: "Update an auction with a matching Id",
@@ -203,9 +172,9 @@ router.openapi(updateAuctionRoute, async (c) => {
     },
     data: {
       ...body,
-      start_time: new Date(body.start_time),
-      end_time: new Date(body.end_time),
-      starting_amount: new Decimal(body.starting_amount),
+      startPrice: new Decimal(body.startPrice),
+      startTime: new Date(body.startTime),
+      endTime: new Date(body.endTime),
     },
   });
   if (!updatedAuction) {
@@ -227,7 +196,7 @@ const flagAuctionRoute = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: AuctionSchema,
+          schema: AuctionModel,
         },
       },
     },
@@ -236,7 +205,7 @@ const flagAuctionRoute = createRoute({
     200: {
       content: {
         "application/json": {
-          schema: z.object({ data: z.array(AuctionSchema) }),
+          schema: z.object({ data: z.array(AuctionModel) }),
         },
       },
       description: "flag an auction for inappropriate content",
@@ -254,9 +223,9 @@ router.openapi(flagAuctionRoute, async (c) => {
     },
     data: {
       ...body,
-      starting_amount: new Decimal(body.starting_amount),
-      start_time: new Date(body.start_time),
-      end_time: new Date(body.end_time),
+      startPrice: new Decimal(body.startPrice),
+      startTime: new Date(body.startTime),
+      endTime: new Date(body.endTime),
     },
   });
   if (!updatedAuction) {
@@ -269,4 +238,5 @@ router.openapi(flagAuctionRoute, async (c) => {
     200,
   );
 });
+
 export { router as auctionsRouter };

@@ -1,27 +1,44 @@
 import * as z from "zod";
-import { Decimal } from "decimal.js";
-
-// Helper schema for Decimal fields
-z.instanceof(Decimal)
-  .or(z.string())
-  .or(z.number())
-  .refine((value) => {
-    try {
-      return new Decimal(value);
-    } catch (error) {
-      return false;
-    }
-  })
-  .transform((value) => new Decimal(value));
+import {
+  type CompleteUser,
+  type CompleteBid,
+  type CompleteCategory,
+  type CompleteWatchList,
+  RelatedBidModel,
+  RelatedCategoryModel,
+  RelatedWatchListModel,
+} from "./index";
 
 export const AuctionModel = z.object({
   id: z.number().int(),
   title: z.string(),
-  description: z.string().nullish(),
-  published: z.boolean(),
-  starting_amount: z.number(),
-  start_time: z.date(),
-  end_time: z.date(),
+  description: z.string(),
+  startPrice: z.number(),
+  startTime: z.date(),
+  endTime: z.date(),
+  isActive: z.boolean(),
   sellerId: z.number().int(),
   createdAt: z.date(),
+  updatedAt: z.date(),
 });
+
+export interface CompleteAuction extends z.infer<typeof AuctionModel> {
+  seller: CompleteUser;
+  bids: CompleteBid[];
+  categories: CompleteCategory[];
+  watchlist: CompleteWatchList[];
+}
+
+/**
+ * RelatedAuctionModel contains all relations on your model in addition to the scalars
+ *
+ * NOTE: Lazy required in case of potential circular dependencies within schema
+ */
+export const RelatedAuctionModel: z.ZodSchema<CompleteAuction> = z.lazy(() =>
+  AuctionModel.extend({
+    seller: RelatedUserModel,
+    bids: RelatedBidModel.array(),
+    categories: RelatedCategoryModel.array(),
+    watchlist: RelatedWatchListModel.array(),
+  }),
+);
