@@ -1,45 +1,21 @@
 import * as z from "zod";
 import {
   type CompleteAuction,
-  type CompleteWatchList,
-  type CompleteBid,
   RelatedAuctionModel,
+  type CompleteBid,
   RelatedBidModel,
+  type CompleteWatchList,
   RelatedWatchListModel,
 } from "./index";
 
-export const UserModelInput = z
-  .object({
-    name: z.string(),
-    isAdmin: z.boolean(),
-    suspended: z.boolean(),
-    createdAt: z
-      .string()
-      .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
-    updatedAt: z
-      .string()
-      .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
-  })
-  .openapi("user");
-
-export const UserModel = z
-  .object({
-    id: z.number().int().optional(),
-    name: z.string(),
-    isAdmin: z.boolean(),
-    suspended: z.boolean(),
-    createdAt: z
-      .string()
-      .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
-    updatedAt: z
-      .string()
-      .date()
-      .openapi({ example: new Date(Date.now()).toString() }),
-  })
-  .openapi("user");
+export const UserModel = z.object({
+  id: z.number().int(),
+  name: z.string(),
+  isAdmin: z.boolean(),
+  suspended: z.boolean(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
 
 export interface CompleteUser extends z.infer<typeof UserModel> {
   items: CompleteAuction[];

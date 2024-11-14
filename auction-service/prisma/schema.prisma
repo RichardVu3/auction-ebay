@@ -49,18 +49,28 @@ model Bid {
 }
 
 model Category {
-    id       Int       @id @default(autoincrement())
-    name     String    @unique
-    auctions Auction[] @relation("AuctionCategories")
+    id         Int                      @id @default(autoincrement())
+    name       String                   @unique
+    auctions   Auction[]                @relation("AuctionCategories")
+    watchlists CategoriesOnWatchLists[]
 }
 
 model WatchList {
-    id         Int     @id @default(autoincrement())
-    user       User    @relation(fields: [userId], references: [id])
+    id         Int                      @id @default(autoincrement())
+    user       User                     @relation(fields: [userId], references: [id])
     userId     Int
-    auction    Auction @relation(fields: [auctionId], references: [id])
+    auction    Auction                  @relation(fields: [auctionId], references: [id])
     auctionId  Int
-    priceLimit Float?
+    categories CategoriesOnWatchLists[]
+}
+
+model CategoriesOnWatchLists {
+    watchlist   WatchList @relation(fields: [watchlistId], references: [id])
+    watchlistId Int
+    category    Category  @relation(fields: [categoryId], references: [id])
+    categoryId  Int
+
+    @@id([watchlistId, categoryId])
 }
 
 generator zod {

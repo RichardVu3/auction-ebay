@@ -1,10 +1,5 @@
 import * as z from "zod";
-import {
-  type CompleteAuction,
-  type CompleteCategoriesOnWatchLists,
-  RelatedAuctionModel,
-  RelatedCategoriesOnWatchListsModel,
-} from "./index";
+import { type CompleteAuction, RelatedAuctionModel } from "./index";
 
 export const CategoryModelInput = z
   .object({
@@ -12,14 +7,15 @@ export const CategoryModelInput = z
   })
   .openapi("CategoryInput");
 
-export const CategoryModel = z.object({
-  id: z.number().int(),
-  name: z.string(),
-});
+export const CategoryModel = z
+  .object({
+    id: z.number().int().optional(),
+    name: z.string(),
+  })
+  .openapi("Category");
 
 export interface CompleteCategory extends z.infer<typeof CategoryModel> {
   auctions: CompleteAuction[];
-  watchlists: CompleteCategoriesOnWatchLists[];
 }
 
 /**
@@ -30,6 +26,5 @@ export interface CompleteCategory extends z.infer<typeof CategoryModel> {
 export const RelatedCategoryModel: z.ZodSchema<CompleteCategory> = z.lazy(() =>
   CategoryModel.extend({
     auctions: RelatedAuctionModel.array(),
-    watchlists: RelatedCategoriesOnWatchListsModel.array(),
   }),
 );
