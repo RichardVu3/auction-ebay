@@ -3,9 +3,11 @@ import {
   type CompleteUser,
   type CompleteAuction,
   type CompleteCategoriesOnWatchLists,
+  type IncludeAuction,
   RelatedUserModel,
   RelatedAuctionModel,
   RelatedCategoriesOnWatchListsModel,
+  AuctionModel,
 } from "./index";
 
 export const WatchListModelInput = z
@@ -14,6 +16,7 @@ export const WatchListModelInput = z
     auctionId: z.number().int(),
   })
   .openapi("Watchlist Input");
+
 export const WatchListModel = z
   .object({
     id: z.number().int(),
@@ -21,6 +24,20 @@ export const WatchListModel = z
     auctionId: z.number().int(),
   })
   .openapi("Watchlist");
+
+export const WatchListModelWithAuction = z
+  .object({
+    id: z.number().int(),
+    userId: z.number().int(),
+    auctionId: z.number().int(),
+    auctions: AuctionModel,
+  })
+  .openapi("Watchlist");
+
+export interface IWatchListWithAuction
+  extends z.infer<typeof WatchListModelWithAuction> {
+  auction: IncludeAuction;
+}
 
 export interface CompleteWatchList extends z.infer<typeof WatchListModel> {
   user: CompleteUser;
