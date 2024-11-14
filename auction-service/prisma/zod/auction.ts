@@ -25,6 +25,7 @@ export const AuctionModelInput = z
     sellerId: z.number().int(),
     quantity: z.number().int().openapi({ example: 10 }),
     buyItNowEnabled: z.boolean().openapi({ example: false }),
+    deleted: z.boolean().openapi({ example: false }),
     createdAt: z.coerce
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),

@@ -22,20 +22,22 @@ model User {
 }
 
 model Auction {
-    id          Int         @id @default(autoincrement())
-    title       String
-    description String
-    startPrice  Float       @default(0.00)
-    startTime   DateTime    @default(now())
-    endTime     DateTime    @default(now())
-    isActive    Boolean     @default(true)
-    seller      User        @relation("UserAuctions", fields: [sellerId], references: [id])
-    sellerId    Int
-    bids        Bid[]
-    categories  Category[]  @relation("AuctionCategories")
-    watchlist   WatchList[]
-    createdAt   DateTime    @default(now())
-    updatedAt   DateTime    @default(now()) @updatedAt
+    id              Int         @id @default(autoincrement())
+    title           String
+    description     String
+    startPrice      Float       @default(0.00)
+    startTime       DateTime    @default(now())
+    endTime         DateTime    @default(now())
+    isActive        Boolean     @default(true)
+    seller          User        @relation("UserAuctions", fields: [sellerId], references: [id])
+    sellerId        Int
+    buyItNowEnabeld Boolean     @default(false)
+    deleted         Boolean     @default(false)
+    bids            Bid[]
+    categories      Category[]  @relation("AuctionCategories")
+    watchlist       WatchList[]
+    createdAt       DateTime    @default(now())
+    updatedAt       DateTime    @default(now()) @updatedAt
 }
 
 model Bid {
@@ -75,7 +77,7 @@ model CategoriesOnWatchLists {
 
 generator zod {
     provider = "zod-prisma"
-    output   = "./zod" // (default) the directory where generated zod schemas will be saved
+    output   = "./zod_new" // (default) the directory where generated zod schemas will be saved
 
     relationModel = true // (default) Create and export both plain and related models.
     // relationModel         = "default" // Do not export model without relations.
@@ -87,7 +89,7 @@ generator zod {
     modelSuffix = "Model" // (default) Suffix to apply to your prisma models when naming Zod schemas
 
     // useDecimalJs          = false // (default) represent the prisma Decimal type using as a JS number
-    useDecimalJs = true // represent the prisma Decimal type using Decimal.js (as Prisma does)
+    useDecimalJs = false // represent the prisma Decimal type using Decimal.js (as Prisma does)
 
     // imports = index // (default) will import the referenced file in generated schemas to be used via imports.someExportedVariable
 

@@ -1,11 +1,11 @@
 import * as z from "zod";
 import {
   type CompleteAuction,
-  RelatedAuctionModel,
   type CompleteBid,
-  RelatedBidModel,
   type CompleteWatchList,
+  RelatedAuctionModel,
   RelatedWatchListModel,
+  RelatedBidModel,
 } from "./index";
 
 export const UserModel = z.object({

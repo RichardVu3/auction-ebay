@@ -1,10 +1,10 @@
 import * as z from "zod";
 import {
   type CompleteUser,
-  RelatedUserModel,
   type CompleteAuction,
-  RelatedAuctionModel,
   type CompleteCategoriesOnWatchLists,
+  RelatedUserModel,
+  RelatedAuctionModel,
   RelatedCategoriesOnWatchListsModel,
 } from "./index";
 
