@@ -15,6 +15,7 @@ export const AuctionModelInput = z
     title: z.string().openapi({ example: "Cool Auction Title" }),
     description: z.string().openapi({ example: "Cool description" }),
     startPrice: z.number().openapi({ example: 0.99 }), // Accepts number from client
+    shippingPrice: z.number().openapi({ example: 0.99 }),
     startTime: z.coerce
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
@@ -49,6 +50,7 @@ export const AuctionModel = z
     startTime: z.coerce
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
+    shippingPrice: z.number().openapi({ example: 0.99 }),
     endTime: z.coerce
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
@@ -69,6 +71,7 @@ export interface CompleteAuction {
   title: string;
   description: string;
   startPrice: number;
+  shippingPrice: number;
   startTime: Date;
   endTime: Date;
   isActive: boolean;
@@ -79,6 +82,20 @@ export interface CompleteAuction {
   bids: CompleteBid[];
   categories: CompleteCategory[];
   watchlist: CompleteWatchList[];
+}
+
+export interface IncludeAuction {
+  id?: number;
+  title: string;
+  description: string;
+  startPrice: number;
+  shippingPrice: number;
+  startTime: Date;
+  endTime: Date;
+  isActive: boolean;
+  sellerId: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Related model with lazy loading and explicit type compatibility

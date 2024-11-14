@@ -23,12 +23,13 @@ model User {
 }
 
 model Auction {
-    id          Int      @id @default(autoincrement())
-    title       String
-    description String
-    startPrice  Float    @default(0.00)
-    startTime   DateTime @default(now())
-    endTime     DateTime @default(now())
+    id            Int      @id @default(autoincrement())
+    title         String
+    description   String
+    startPrice    Float    @default(0.00)
+    shippingPrice Float    @default(0.00)
+    startTime     DateTime @default(now())
+    endTime       DateTime @default(now())
 
     seller   User  @relation("UserAsSeller", fields: [sellerId], references: [id])
     sellerId Int

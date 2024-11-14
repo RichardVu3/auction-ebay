@@ -4,7 +4,6 @@ import { z } from "zod";
 import {
   AuctionModel,
   AuctionModelInput,
-  type CompleteBid,
   BidModelWithAuction,
   type IBidModelWithAuction,
 } from "../../prisma/zod";
@@ -40,7 +39,9 @@ const getAuctionsRoute = createRoute({
         "application/json": {
           schema: z.object({
             auctions: z.array(AuctionModel),
-            bidOnAuctions: z.array(BidModelWithAuction).or(z.array(z.any())),
+            bidOnAuctions: z
+              .array(BidModelWithAuction)
+              .or(z.array(z.unknown())),
           }),
         },
       },
@@ -60,7 +61,7 @@ const getAuctionsRoute = createRoute({
 router.openapi(getAuctionsRoute, async (c) => {
   const { userId, includeBidOn } = c.req.query();
   if (!userId) {
-    return c.json({ message: "userId is required" }, 500);
+    return c.json({ error: "userId is required" }, 500);
   }
 
   try {

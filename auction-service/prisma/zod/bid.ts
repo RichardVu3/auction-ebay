@@ -5,8 +5,8 @@ import {
   RelatedUserModel,
   RelatedAuctionModel,
   AuctionModel,
+  type IncludeAuction,
 } from "./index";
-import type { Auction } from "@prisma/client";
 
 export const BidModelInput = z
   .object({
@@ -36,9 +36,9 @@ export const BidModelWithAuction = z.object({
   auction: AuctionModel,
 });
 
-export interface BidModelWithAuction
+export interface IBidModelWithAuction
   extends z.infer<typeof BidModelWithAuction> {
-  auction: Auction;
+  auction: IncludeAuction;
 }
 
 export interface CompleteBid extends z.infer<typeof BidModel> {
