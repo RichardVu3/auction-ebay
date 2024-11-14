@@ -65,7 +65,7 @@ Admin Functions:
 - [x] Allow bid to be placed, and increment bid amount as users enter new bids
 - [x] Allow item to be categorized by user
 
-- [ ] Allow search of items on the site by keyword, or item category
+- [x] Allow search of items on the site by keyword, or item category
 
 - [ ] Allow item to be placed on a watchlist for a user, that includes parameters defined by the user(i.e. Ray-Ban sunglasses less than $100 in starting price)
 - [ ] Remove auction once bidding is complete and user checkouts out
