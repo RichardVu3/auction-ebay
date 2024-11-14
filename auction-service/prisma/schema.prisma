@@ -20,7 +20,6 @@ model User {
     updatedAt   DateTime    @updatedAt
     items       Auction[]   @relation("UserAsSeller")
     boughtItems Auction[]   @relation("UserAsBuyer")
-    Auction     Auction[]
 }
 
 model Auction {
@@ -31,11 +30,10 @@ model Auction {
     startTime   DateTime @default(now())
     endTime     DateTime @default(now())
 
-    seller   User @relation("UserAsSeller", fields: [sellerId], references: [id])
+    seller   User  @relation("UserAsSeller", fields: [sellerId], references: [id])
     sellerId Int
-
-    buyer   User? @relation("UserAsBuyer", fields: [buyerId], references: [id])
-    buyerId Int? // Nullable to support auctions with no buyer yet
+    buyer    User? @relation("UserAsBuyer", fields: [buyerId], references: [id])
+    buyerId  Int? // Nullable to support auctions with no buyer yet
 
     isActive        Boolean     @default(true)
     buyItNowEnabeld Boolean     @default(false)
@@ -45,8 +43,6 @@ model Auction {
     watchlist       WatchList[]
     createdAt       DateTime    @default(now())
     updatedAt       DateTime    @default(now()) @updatedAt
-    User            User?       @relation(fields: [userId], references: [id])
-    userId          Int?
 }
 
 model Bid {

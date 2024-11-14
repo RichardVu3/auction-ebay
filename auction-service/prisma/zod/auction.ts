@@ -22,7 +22,7 @@ export const AuctionModelInput = z
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
     isActive: z.boolean(),
-    winnerId: z.number().int().openapi({ example: 1111 }),
+    buyerId: z.number().int().openapi({ example: 1111 }),
     sellerId: z.number().int().openapi({ example: 1112 }),
     quantity: z.number().int().openapi({ example: 10 }),
     buyItNowEnabled: z.boolean().openapi({ example: false }),
