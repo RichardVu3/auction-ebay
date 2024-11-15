@@ -394,4 +394,9 @@ router.openapi(searchAuctionsRoute, async (c) => {
   }
 });
 
+//TODO:
+//Create bid route. Post on through table
+//Added flagged col on auction table
+//Create an endpoint for setting an auction inactive after purchase
+
 export { router as auctionsRouter };

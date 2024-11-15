@@ -46,7 +46,7 @@ Admin Functions:
 ## Auction:
 
 - [x] Allow listing of items for bidding
-- [ ] List an item for auction:
+- [x] List an item for auction:
 
   - item should have:
     - [x] start price,
@@ -58,29 +58,30 @@ Admin Functions:
     - [x] item description,
     - [ ] seller rating (have to get from daniel's service)
 
-- [ ] Start the auction when the current time matches the start time defined by the user
-
-- [ ] Allowing auction window to be set by the bidder, and begin countdown to the end of the bidding window once auction begins
-
+- [x] Allowing auction window to be set by the seller,
 - [x] Allow bid to be placed, and increment bid amount as users enter new bids
 - [x] Allow item to be categorized by user
-
 - [x] Allow search of items on the site by keyword, or item category
+- [x] Allow multiple bids to be placed at once by different users
 
 - [ ] Allow item to be placed on a watchlist for a user, that includes parameters defined by the user(i.e. Ray-Ban sunglasses less than $100 in starting price)
-- [ ] Remove auction once bidding is complete and user checkouts out
 
-- [x] Allow multiple bids to be placed at once by different users
+- [ ] Remove auction once bidding is complete and user checkouts out (set
+      inactive)
+
+- [ ] Begin countdown to the end of the bidding window once auction begins
 
 ## User-Auction Interactions
 
-- [ ] Update an item properties, including quantity, description, shipping costs, buy now feature
-- [ ] Flag an item as inappropriate or counterfeit
+- [x] See a list of all items that are currently being bid on by that user
+- [x] Update an item properties, including quantity, description, shipping costs, buy now feature
+- [x] Flag an item as inappropriate or counterfeit
 - [ ] Categorize an item based on existing categories or create an new category if needed
+
 - [ ] Delete an item if there are no bids on it, but do not allow an item to be deleted if there are bids on it
 
-- [ ] Bid on an item, and update that bid if another user outbids that user
-- [ ] See a list of all items that are currently being bid on by that user
+- [x] Bid on an item
+  - [ ] update that bid if another user outbids that user
 
 ## Alerts
 

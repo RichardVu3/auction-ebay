@@ -183,6 +183,11 @@ router.openapi(addAuctionToWatchlistRoute, async (c) => {
       auctions: { include: { auction: true } },
     },
   });
+  if (!updatedWatchlist) {
+    if (!addedAuction) {
+      return c.json({ message: "Failed to add auction to watchlist" }, 500);
+    }
+  }
 
   return c.json(
     {
