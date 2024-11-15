@@ -12,6 +12,7 @@ This module contains routes related to querying for auctions in relation to cate
 const getCategorysRoute = createRoute({
   method: "get",
   path: "/",
+  tags: ["Category"],
   responses: {
     200: {
       content: {
@@ -39,6 +40,7 @@ router.openapi(getCategorysRoute, async (c) => {
 const getCategoryByIdRoute = createRoute({
   method: "get",
   path: "/{id}",
+  tags: ["Category"],
   request: {
     params: ParamsSchema,
   },
@@ -83,6 +85,7 @@ router.openapi(getCategoryByIdRoute, async (c) => {
 const createCategoryRoute = createRoute({
   method: "post",
   path: "/",
+  tags: ["Category"],
   request: {
     body: {
       content: {
@@ -134,6 +137,7 @@ router.openapi(createCategoryRoute, async (c) => {
 const updateCategoryRoute = createRoute({
   method: "put",
   path: "/{id}",
+  tags: ["Category"],
   request: {
     params: ParamsSchema,
     body: {

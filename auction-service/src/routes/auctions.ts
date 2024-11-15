@@ -13,6 +13,7 @@ const router = new OpenAPIHono();
 const getAuctionsRoute = createRoute({
   method: "get",
   path: "/",
+  tags: ["Auction"],
   request: {
     query: z
       .object({
@@ -99,6 +100,8 @@ router.openapi(getAuctionsRoute, async (c) => {
 const getAuctionByIdRoute = createRoute({
   method: "get",
   path: "/{id}",
+
+  tags: ["Auction"],
   request: {
     params: ParamsSchema,
   },
@@ -143,6 +146,7 @@ router.openapi(getAuctionByIdRoute, async (c) => {
 const createAuctionRoute = createRoute({
   method: "post",
   path: "/",
+  tags: ["Auction"],
   request: {
     body: {
       content: {
@@ -189,6 +193,7 @@ router.openapi(createAuctionRoute, async (c) => {
 const updateAuctionRoute = createRoute({
   method: "put",
   path: "/{id}",
+  tags: ["Auction"],
   request: {
     params: ParamsSchema,
     body: {
@@ -248,6 +253,7 @@ router.openapi(updateAuctionRoute, async (c) => {
 const flagAuctionRoute = createRoute({
   method: "put",
   path: "/{id}/flag",
+  tags: ["Auction"],
   request: {
     params: ParamsSchema,
     body: {
@@ -312,6 +318,7 @@ router.openapi(flagAuctionRoute, async (c) => {
 const searchAuctionsRoute = createRoute({
   method: "get",
   path: "/search",
+  tags: ["Auction"],
   request: {
     query: z
       .object({

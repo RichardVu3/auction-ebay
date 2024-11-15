@@ -15,7 +15,6 @@ import {
 export const WatchListModelInput = z
   .object({
     userId: z.number().int(),
-    auctionId: z.number().int(),
     name: z.string(),
   })
   .openapi("Watchlist Input");
@@ -40,7 +39,6 @@ export const WatchListModelWithAuctionAndCategory = z
         auction: AuctionModel,
       }),
     ),
-
     categories: z.array(
       z.object({
         watchlistId: z.number().int(),
