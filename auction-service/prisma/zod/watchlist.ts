@@ -8,18 +8,22 @@ import {
   RelatedAuctionModel,
   RelatedCategoriesOnWatchListsModel,
   AuctionModel,
+  CategoriesOnWatchListsModel,
+  CategoryModel,
 } from "./index";
 
 export const WatchListModelInput = z
   .object({
     userId: z.number().int(),
     auctionId: z.number().int(),
+    name: z.string(),
   })
   .openapi("Watchlist Input");
 
 export const WatchListModel = z
   .object({
     id: z.number().int(),
+    name: z.string(),
     userId: z.number().int(),
     auctionId: z.number().int(),
   })
@@ -28,15 +32,17 @@ export const WatchListModel = z
 export const WatchListModelWithAuction = z
   .object({
     id: z.number().int(),
+    name: z.string(),
     userId: z.number().int(),
     auctionId: z.number().int(),
-    auctions: AuctionModel,
+    auction: AuctionModel,
+    categories: z.array(CategoryModel),
   })
   .openapi("Watchlist");
 
 export interface IWatchListWithAuction
   extends z.infer<typeof WatchListModelWithAuction> {
-  auction: IncludeAuction;
+  watchlists: IncludeAuction;
 }
 
 export interface CompleteWatchList extends z.infer<typeof WatchListModel> {

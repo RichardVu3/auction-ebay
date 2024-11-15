@@ -68,6 +68,7 @@ router.openapi(getUserWatchListsRoute, async (c) => {
     },
     include: {
       auction: true,
+      categories: true,
     },
   });
   if (!watchlists.length) {
