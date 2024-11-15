@@ -37,14 +37,14 @@ model Auction {
     buyer    User? @relation("UserAsBuyer", fields: [buyerId], references: [id])
     buyerId  Int? // Nullable to support auctions with no buyer yet
 
-    isActive        Boolean     @default(true)
-    buyItNowEnabeld Boolean     @default(false)
-    deleted         Boolean     @default(false)
-    bids            Bid[]
-    categories      Category[]  @relation("AuctionCategories")
-    watchlist       WatchList[]
-    createdAt       DateTime    @default(now())
-    updatedAt       DateTime    @default(now()) @updatedAt
+    isActive         Boolean     @default(true)
+    buyItNowEnabeled Boolean     @default(false)
+    deleted          Boolean     @default(false)
+    bids             Bid[]
+    categories       Category[]  @relation("AuctionCategories")
+    watchlist        WatchList[]
+    createdAt        DateTime    @default(now())
+    updatedAt        DateTime    @default(now()) @updatedAt
 }
 
 model Bid {
