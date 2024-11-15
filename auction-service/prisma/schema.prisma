@@ -30,6 +30,7 @@ model Auction {
     shippingPrice Float    @default(0.00)
     startTime     DateTime @default(now())
     endTime       DateTime @default(now())
+    quantity      Int      @default(1)
 
     seller   User  @relation("UserAsSeller", fields: [sellerId], references: [id])
     sellerId Int
