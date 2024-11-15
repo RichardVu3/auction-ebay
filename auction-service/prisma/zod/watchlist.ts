@@ -33,9 +33,21 @@ export const WatchListModelWithAuctionAndCategory = z
     id: z.number().int(),
     name: z.string(),
     userId: z.number().int(),
-    auctionId: z.number().int(),
-    auctions: z.array(AuctionModel),
-    categories: z.array(CategoryModel),
+    auctions: z.array(
+      z.object({
+        watchlistId: z.number().int(),
+        auctionId: z.number().int(),
+        auction: AuctionModel,
+      }),
+    ),
+
+    categories: z.array(
+      z.object({
+        watchlistId: z.number().int(),
+        categoryId: z.number().int(),
+        category: CategoryModel,
+      }),
+    ),
   })
   .openapi("Watchlist");
 
@@ -43,8 +55,16 @@ export interface IWatchListIncludeAuctionAndCategory {
   id: number;
   name: string;
   userId: number;
-  auctions: IncludeAuction[];
-  categories: IncludeCategory[];
+  auctions: {
+    watchlistId: number;
+    auctionId: number;
+    auction: IncludeAuction;
+  }[];
+  categories: {
+    watchlistId: number;
+    auctionId: number;
+    category: IncludeCategory[];
+  };
 }
 
 export interface CompleteWatchList extends z.infer<typeof WatchListModel> {

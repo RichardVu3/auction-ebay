@@ -57,6 +57,8 @@ export const AuctionModel = z
       .date()
       .openapi({ example: new Date(Date.now()).toISOString() }),
     isActive: z.boolean(),
+    deleted: z.boolean(),
+    buyerId: z.number().int().optional().openapi({ example: 1 }),
     sellerId: z.number().int(),
     createdAt: z.coerce
       .date()
@@ -77,7 +79,9 @@ export interface CompleteAuction {
   startTime: Date;
   endTime: Date;
   isActive: boolean;
+  deleted: boolean;
   sellerId: number;
+  buyerId: number;
   createdAt: Date;
   updatedAt: Date;
   seller: CompleteUser;
@@ -92,10 +96,12 @@ export interface IncludeAuction {
   description: string;
   startPrice: number;
   shippingPrice: number;
+  deleted: boolean;
   startTime: Date;
   endTime: Date;
   isActive: boolean;
   sellerId: number;
+  buyerId: number;
   createdAt: Date;
   updatedAt: Date;
 }

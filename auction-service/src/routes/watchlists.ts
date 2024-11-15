@@ -40,7 +40,7 @@ const getUserWatchListsRoute = createRoute({
       content: {
         "application/json": {
           schema: z.object({
-            watchlist: z.array(WatchListModelWithAuctionAndCategory),
+            watchlists: z.array(WatchListModelWithAuctionAndCategory),
           }),
         },
       },
@@ -66,12 +66,11 @@ router.openapi(getUserWatchListsRoute, async (c) => {
     include: {
       categories: { include: { category: true } },
       auctions: { include: { auction: true } },
-      // auctions: { include: { auction: true } },
     },
   });
   if (!watchlists.length) {
     return c.json({ message: "No WatchLists Found" }, 404);
   }
-  return c.json({ watchlists: watchlists }, 200);
+  return c.json({ watchlists }, 200);
 });
 export { router as watchlistRouter };
