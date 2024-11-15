@@ -24,7 +24,7 @@ const getUserWatchListsRoute = createRoute({
   path: "/",
   request: {
     query: z.object({
-      addToUserWatchlist: z.preprocess((val) => {
+      userId: z.preprocess((val) => {
         if (typeof val === "string") {
           const num = Number(val);
           if (Number.isInteger(num)) {
@@ -61,10 +61,13 @@ const getUserWatchListsRoute = createRoute({
 });
 
 router.openapi(getUserWatchListsRoute, async (c) => {
-  const { addToUserWatchlist } = c.req.query();
+  const { userId } = c.req.query();
   const watchlists = await prisma.watchList.findMany({
     where: {
-      userId: parseInt(addToUserWatchlist),
+      userId: parseInt(userId),
+    },
+    include: {
+      auction: true,
     },
   });
   if (!watchlists.length) {
