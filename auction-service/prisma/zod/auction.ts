@@ -4,6 +4,8 @@ import {
   type CompleteBid,
   type CompleteCategory,
   type CompleteWatchList,
+  type CompleteAuctionsOnWatchLists,
+  RelatedAuctionsOnWatchListsModel,
   RelatedBidModel,
   RelatedUserModel,
   RelatedCategoryModel,
@@ -98,12 +100,27 @@ export interface IncludeAuction {
   updatedAt: Date;
 }
 
-// Related model with lazy loading and explicit type compatibility
+export interface CompleteAuction extends z.infer<typeof AuctionModel> {
+  seller: CompleteUser;
+  buyer?: CompleteUser | null;
+  bids: CompleteBid[];
+  categories: CompleteCategory[];
+  watchlist: CompleteWatchList[];
+  AuctionsOnWatchLists: CompleteAuctionsOnWatchLists[];
+}
+
+/**
+ * RelatedAuctionModel contains all relations on your model in addition to the scalars
+ *
+ * NOTE: Lazy required in case of potential circular dependencies within schema
+ */
 export const RelatedAuctionModel: z.ZodSchema<CompleteAuction> = z.lazy(() =>
   AuctionModel.extend({
     seller: RelatedUserModel,
+    buyer: RelatedUserModel.nullish(),
     bids: RelatedBidModel.array(),
     categories: RelatedCategoryModel.array(),
     watchlist: RelatedWatchListModel.array(),
+    AuctionsOnWatchLists: RelatedAuctionsOnWatchListsModel.array(),
   }),
 );

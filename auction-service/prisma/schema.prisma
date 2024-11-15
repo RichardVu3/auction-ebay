@@ -43,10 +43,10 @@ model Auction {
 
     closedAt   DateTime?
     bids       Bid[]
-    categories Category[]  @relation("AuctionCategories")
-    watchlist  WatchList[]
-    createdAt  DateTime    @default(now())
-    updatedAt  DateTime    @default(now()) @updatedAt
+    categories Category[]             @relation("AuctionCategories")
+    createdAt  DateTime               @default(now())
+    updatedAt  DateTime               @default(now()) @updatedAt
+    watchlists AuctionsOnWatchLists[]
 }
 
 model Bid {
@@ -71,9 +71,17 @@ model WatchList {
     name       String                   @default("My Watchlist")
     user       User                     @relation(fields: [userId], references: [id])
     userId     Int
-    auction    Auction                  @relation(fields: [auctionId], references: [id])
-    auctionId  Int
     categories CategoriesOnWatchLists[]
+    auctions   AuctionsOnWatchLists[]
+}
+
+model AuctionsOnWatchLists {
+    watchlist   WatchList @relation(fields: [watchlistId], references: [id])
+    watchlistId Int
+    auction     Auction   @relation(fields: [auctionId], references: [id])
+    auctionId   Int
+
+    @@id([watchlistId, auctionId])
 }
 
 model CategoriesOnWatchLists {

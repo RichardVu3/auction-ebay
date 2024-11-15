@@ -19,6 +19,11 @@ export const CategoryModel = z
   })
   .openapi("Category");
 
+export interface IncludeCategory {
+  id: number;
+  name: string;
+}
+
 export interface CompleteCategory extends z.infer<typeof CategoryModel> {
   auctions: CompleteAuction[];
   watchlists: CompleteCategoriesOnWatchLists[];

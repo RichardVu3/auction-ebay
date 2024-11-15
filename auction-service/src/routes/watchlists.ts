@@ -1,10 +1,7 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import prisma from "../db";
 import { z } from "zod";
-import {
-  type IWatchListWithAuction,
-  WatchListModelWithAuction,
-} from "../../prisma/zod";
+import { WatchListModelWithAuctionAndCategory } from "../../prisma/zod";
 const router = new OpenAPIHono();
 
 /*
@@ -43,7 +40,7 @@ const getUserWatchListsRoute = createRoute({
       content: {
         "application/json": {
           schema: z.object({
-            watchlist: z.array(WatchListModelWithAuction),
+            watchlist: z.array(WatchListModelWithAuctionAndCategory),
           }),
         },
       },
@@ -67,8 +64,9 @@ router.openapi(getUserWatchListsRoute, async (c) => {
       userId: parseInt(userId),
     },
     include: {
-      auction: true,
-      categories: true,
+      categories: { include: { category: true } },
+      auctions: { include: { auction: true } },
+      // auctions: { include: { auction: true } },
     },
   });
   if (!watchlists.length) {

@@ -1,15 +1,15 @@
 import * as z from "zod";
 import {
   type CompleteUser,
-  type CompleteAuction,
+  type CompleteAuctionsOnWatchLists,
   type CompleteCategoriesOnWatchLists,
   type IncludeAuction,
+  type IncludeCategory,
   RelatedUserModel,
-  RelatedAuctionModel,
   RelatedCategoriesOnWatchListsModel,
   AuctionModel,
-  CategoriesOnWatchListsModel,
   CategoryModel,
+  RelatedAuctionsOnWatchListsModel,
 } from "./index";
 
 export const WatchListModelInput = z
@@ -25,29 +25,31 @@ export const WatchListModel = z
     id: z.number().int(),
     name: z.string(),
     userId: z.number().int(),
-    auctionId: z.number().int(),
   })
   .openapi("Watchlist");
 
-export const WatchListModelWithAuction = z
+export const WatchListModelWithAuctionAndCategory = z
   .object({
     id: z.number().int(),
     name: z.string(),
     userId: z.number().int(),
     auctionId: z.number().int(),
-    auction: AuctionModel,
+    auctions: z.array(AuctionModel),
     categories: z.array(CategoryModel),
   })
   .openapi("Watchlist");
 
-export interface IWatchListWithAuction
-  extends z.infer<typeof WatchListModelWithAuction> {
-  watchlists: IncludeAuction;
+export interface IWatchListIncludeAuctionAndCategory {
+  id: number;
+  name: string;
+  userId: number;
+  auctions: IncludeAuction[];
+  categories: IncludeCategory[];
 }
 
 export interface CompleteWatchList extends z.infer<typeof WatchListModel> {
   user: CompleteUser;
-  auction: CompleteAuction;
+  auctions: CompleteAuctionsOnWatchLists[];
   categories: CompleteCategoriesOnWatchLists[];
 }
 
@@ -60,7 +62,7 @@ export const RelatedWatchListModel: z.ZodSchema<CompleteWatchList> = z.lazy(
   () =>
     WatchListModel.extend({
       user: RelatedUserModel,
-      auction: RelatedAuctionModel,
+      auctions: RelatedAuctionsOnWatchListsModel.array(),
       categories: RelatedCategoriesOnWatchListsModel.array(),
     }),
 );
