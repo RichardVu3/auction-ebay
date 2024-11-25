@@ -1,0 +1,92 @@
+services:
+  ### DATABASES
+  auction-service-db:
+    image: postgres:latest
+    container_name: auction-service-db
+    restart: always
+    environment:
+      POSTGRES_DB: auction_service_db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    ports:
+      - "5433:5432" # Optional: Map to host port 5433
+    networks:
+      - app-network
+
+  notification-service-db:
+    image: postgres:latest
+    container_name: notification-service-db
+    restart: always
+    environment:
+      POSTGRES_DB: notification_service_db
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    ports:
+      - "5434:5432" # Optional: Map to host port 5434
+    networks:
+      - app-network
+
+  ### MESSAGE BROKER
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672" # RabbitMQ main port
+      - "15672:15672" # RabbitMQ management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+
+  ### APIS
+  auction-service:
+    build:
+      context: ./auction-service
+      dockerfile: Dockerfile
+    container_name: auction-service
+    ports:
+      - "4000:4000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@auction-service-db:5432/auction_service_db"
+    depends_on:
+      - auction-service-db
+    networks:
+      - app-network
+
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    ports:
+      - "4001:4001"
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@notification-service-db:5432/notification_service_db"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
+    depends_on:
+      - notification-service-db
+    networks:
+      - app-network
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "42069:42069" # API Gateway exposed on port 3000
+    environment:
+      DATABASE_URL: ""
+    depends_on:
+      - auction-service
+      - auction-service-db
+      - notification-service
+      - notification-service-db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

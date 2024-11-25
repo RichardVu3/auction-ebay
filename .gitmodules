@@ -1,0 +1,12 @@
+[submodule "auction-service"]
+	path = auction-service
+	url = git@github.com:KyleLee95/auction-service.git
+[submodule "auction-app-client"]
+	path = auction-app-client
+	url = git@github.com:KyleLee95/auction-app-client.git
+[submodule "notification-service"]
+	path = notification-service
+	url = git@github.com:KyleLee95/notification-service.git
+[submodule "api-gateway"]
+	path = api-gateway
+	url = git@github.com:KyleLee95/api-gateway.git
