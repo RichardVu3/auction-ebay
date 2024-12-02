@@ -1,6 +1,3 @@
-[submodule "auction-service"]
-	path = auction-service
-	url = git@github.com:KyleLee95/auction-service.git
 [submodule "auction-app-client"]
 	path = auction-app-client
 	url = git@github.com:KyleLee95/auction-app-client.git
@@ -13,3 +10,6 @@
 [submodule "userService"]
 	path = userService
 	url = git@github.com:danoteroc/auction-ebay-user-service.git
+[submodule "auction-service"]
+	path = auction-service
+	url = git@github.com:KyleLee95/auction-service.git
