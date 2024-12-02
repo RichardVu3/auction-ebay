@@ -1,5 +1,19 @@
 services:
   ### DATABASES
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d/:ro
+    ports:
+      - "5433:5432" # Optional: Map to host port 5433
+    networks:
+      - app-network
+
   rabbitmq:
     image: masstransit/rabbitmq
     container_name: rabbitmq
@@ -22,7 +36,7 @@ services:
     ports:
       - "4000:4000"
     environment:
-      DATABASE_URL: "postgresql://postgres:password@auction-service-db:5432/auction_service_db"
+      DATABASE_URL: "postgresql://postgres:password@auction-service-db:5433/auction_service_db"
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
       RABBITMQ_HOST: "guest:guest@rabbitmq"
       ADMIN_USERID: "c1bba5c0-b001-7085-7a2e-e74d5399c3d1"
@@ -39,7 +53,7 @@ services:
     ports:
       - "4001:4001"
     environment:
-      DATABASE_URL: "postgresql://postgres:password@notification-service-db:5432/notification_service_db"
+      DATABASE_URL: "postgresql://postgres:password@notification-service-db:5433/notification_service_db"
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
     depends_on:
       - postgres-db
@@ -57,12 +71,27 @@ services:
       DATABASE_URL: ""
       DEV: "false"
     depends_on:
-      - postgres-db
-      - notification-service
       - auction-service
+      - notification-service
+      - postgres-db
     networks:
       - app-network
 
+  user-service:
+    build:
+      context: ./userService
+    container_name: user-service
+    depends_on:
+      - postgres-db
+    ports:
+      - 8080:8080
+    entrypoint:
+      ["java", "-jar", "-Dspring.profiles.active=docker", "application.jar"]
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  initdb:
