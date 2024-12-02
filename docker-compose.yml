@@ -54,6 +54,7 @@ services:
       DATABASE_URL: "postgresql://postgres:password@auction-service-db:5432/auction_service_db"
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
       RABBITMQ_HOST: "guest:guest@rabbitmq"
+      ADMIN_USERID: "c1bba5c0-b001-7085-7a2e-e74d5399c3d1"
     depends_on:
       - auction-service-db
     networks:
