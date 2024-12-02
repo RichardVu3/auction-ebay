@@ -21,14 +21,16 @@ services:
       POSTGRES_DB: notification_service_db
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
+      RABBITMQ_HOST: rabbitmq
     ports:
       - "5434:5432" # Optional: Map to host port 5434
+    depends_on:
+      - rabbitmq
     networks:
       - app-network
 
-  ### MESSAGE BROKER
   rabbitmq:
-    image: rabbitmq:management
+    image: masstransit/rabbitmq
     container_name: rabbitmq
     restart: always
     ports:
@@ -50,6 +52,8 @@ services:
       - "4000:4000"
     environment:
       DATABASE_URL: "postgresql://postgres:password@auction-service-db:5432/auction_service_db"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
+      RABBITMQ_HOST: "guest:guest@rabbitmq"
     depends_on:
       - auction-service-db
     networks:
@@ -79,6 +83,7 @@ services:
       - "42069:42069" # API Gateway exposed on port 3000
     environment:
       DATABASE_URL: ""
+      DEV: "false"
     depends_on:
       - auction-service
       - auction-service-db
