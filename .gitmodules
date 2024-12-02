@@ -10,3 +10,6 @@
 [submodule "api-gateway"]
 	path = api-gateway
 	url = git@github.com:KyleLee95/api-gateway.git
+[submodule "userService"]
+	path = userService
+	url = git@github.com:danoteroc/auction-ebay-user-service.git

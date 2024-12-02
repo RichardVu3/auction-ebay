@@ -1,34 +1,5 @@
 services:
   ### DATABASES
-  auction-service-db:
-    image: postgres:latest
-    container_name: auction-service-db
-    restart: always
-    environment:
-      POSTGRES_DB: auction_service_db
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-    ports:
-      - "5433:5432" # Optional: Map to host port 5433
-    networks:
-      - app-network
-
-  notification-service-db:
-    image: postgres:latest
-    container_name: notification-service-db
-    restart: always
-    environment:
-      POSTGRES_DB: notification_service_db
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      RABBITMQ_HOST: rabbitmq
-    ports:
-      - "5434:5432" # Optional: Map to host port 5434
-    depends_on:
-      - rabbitmq
-    networks:
-      - app-network
-
   rabbitmq:
     image: masstransit/rabbitmq
     container_name: rabbitmq
@@ -56,7 +27,7 @@ services:
       RABBITMQ_HOST: "guest:guest@rabbitmq"
       ADMIN_USERID: "c1bba5c0-b001-7085-7a2e-e74d5399c3d1"
     depends_on:
-      - auction-service-db
+      - postgres-db
     networks:
       - app-network
 
@@ -71,7 +42,7 @@ services:
       DATABASE_URL: "postgresql://postgres:password@notification-service-db:5432/notification_service_db"
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
     depends_on:
-      - notification-service-db
+      - postgres-db
     networks:
       - app-network
 
@@ -86,10 +57,9 @@ services:
       DATABASE_URL: ""
       DEV: "false"
     depends_on:
-      - auction-service
-      - auction-service-db
+      - postgres-db
       - notification-service
-      - notification-service-db
+      - auction-service
     networks:
       - app-network
 
