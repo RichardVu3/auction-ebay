@@ -10,20 +10,33 @@ services:
     volumes:
       - ./initdb:/docker-entrypoint-initdb.d/:ro
     ports:
-      - "5433:5432" # Optional: Map to host port 5433
+      - "5433:5432"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
 
   rabbitmq:
     image: masstransit/rabbitmq
     container_name: rabbitmq
     restart: always
     ports:
-      - "5672:5672" # RabbitMQ main port
-      - "15672:15672" # RabbitMQ management UI port
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./initmq/definitions.json:/etc/rabbitmq/definitions:ro
     networks:
       - app-network
 
@@ -37,15 +50,20 @@ services:
       - "4000:4000"
     environment:
       DATABASE_URL: "postgresql://postgres:password@postgres-db:5432/auction_service_db"
-      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
-      RABBITMQ_HOST: "guest:guest@rabbitmq"
+      RABBITMQ_HOST: "rabbitmq"
       ADMIN_USERID: "c1bba5c0-b001-7085-7a2e-e74d5399c3d1"
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "localhost:4000/healthcheck"]
     networks:
       - app-network
 
   notification-service:
+    restart: always
     build:
       context: ./notification-service
       dockerfile: Dockerfile
@@ -54,26 +72,39 @@ services:
       - "4001:4001"
     environment:
       DATABASE_URL: "postgresql://postgres:password@postgres-db:5432/notification_service_db"
-      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672" # Use container name
+      RABBITMQ_HOST: "rabbitmq"
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "localhost:4001/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - app-network
 
   api-gateway:
+    restart: always
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
     container_name: api-gateway
     ports:
       - "42069:42069" # API Gateway exposed on port 3000
-    environment:
-      DATABASE_URL: ""
-      DEV: "false"
+    healthcheck:
+      test: ["CMD", "curl", "localhost:42069/healthcheck"]
     depends_on:
-      - auction-service
-      - notification-service
-      - postgres-db
+      auction-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      postgres-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -82,7 +113,8 @@ services:
       context: ./userService
     container_name: user-service
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
     ports:
       - 8080:8080
     entrypoint:
