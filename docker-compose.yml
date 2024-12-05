@@ -25,7 +25,7 @@ services:
     volumes:
       - mongodb_data:/data/db
     networks:
-      - your_network_name
+      - app-network
 
   rabbitmq:
     image: masstransit/rabbitmq
