@@ -4,27 +4,23 @@
 
 ### Getting all of the repos
 
-Clone all the individual repositories into a single directory. Example:
+Clone the repo and update the submodules
 
 ```bash
-mkdir app && cd app
-git clone <git repos>
+
+# clone
+git clone <repo url>
+cd path/to/this/repos
+
+# update submodules. ONLY USE THIS COMMAND THE FIRST TIME
+git submodules update --init --recursive
 ```
 
-If you've done this correctly, the directory that you cloned all of the repos in
-should look similar to this:
+To update submodules after the initial update, use the following command:
 
 ```bash
-root
-├── api-gateway
-├── auction-ebay-user-service
-├── auction-service
-├── client
-├── docker-compose.yml
-├── notification-service
-├── postbuild.sh
-└── README.md
 
+git submodules update --merge --remote
 ```
 
 ### Building Docker Container Network
@@ -33,9 +29,9 @@ Once all the repositories are cloned, build the container networks with `docker 
 
 You can see the configuration in `docker-compose.yaml`
 
-### Post Build Database Initializations
+### Post Build Database Initialization
 
-The `auction-service` and `notification-service` need to have the SQL migrations
+The `auction-service` needs to have the SQL migrations
 applied to their respective databases. The auction service also needs some
 filler data in order to populate the client application properly. In order to do
 this run the `postbuild.sh` script.
@@ -51,6 +47,12 @@ this run the `postbuild.sh` script.
 
 Each service needs to listen on a port. Here's the port mapping:
 
+- mongodb container: ???
+
+- postgresql container: 5433
+
+- rabbitmq container: 5672 (admin management UI: 15672 )
+
 - api-gateway: 42069
 
 - auctions-service: 4000
@@ -58,5 +60,7 @@ Each service needs to listen on a port. Here's the port mapping:
 - notifications-service: 4001
 
 - users-service: 8080
+
+- cart-service: 8000
 
 - client: 5173
