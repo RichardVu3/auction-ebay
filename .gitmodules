@@ -16,3 +16,4 @@
 [submodule "metrics-service"]
 	path = metrics-service
 	url = git@github.com:indup99/metrics-service.git
+	branch = main
