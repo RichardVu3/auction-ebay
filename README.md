@@ -25,7 +25,12 @@ git submodules update --merge --remote
 
 ### Building Docker Container Network
 
-Once all the repositories are cloned, build the container networks with `docker compose up --build`
+Once all the repositories are cloned, build the container networks with
+
+```bash
+# builds all of the submodules and dependencies containers
+docker compose up --build
+```
 
 You can see the configuration in `docker-compose.yaml`
 
@@ -38,9 +43,7 @@ this run the `postbuild.sh` script.
 
 ```bash
 # you may need to run chmod +x postbuild.sh if you get a permission error
-
 ./postbuild.sh
-
 ```
 
 ## Port Mappings
