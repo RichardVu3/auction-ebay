@@ -13,3 +13,6 @@
 [submodule "auction-service"]
 	path = auction-service
 	url = git@github.com:KyleLee95/auction-service.git
+[submodule "metrics-service"]
+	path = metrics-service
+	url = git@github.com:indup99/metrics-service.git
