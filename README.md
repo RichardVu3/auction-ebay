@@ -50,7 +50,7 @@ this run the `postbuild.sh` script.
 
 Each service needs to listen on a port. Here's the port mapping:
 
-- mongodb container: ???
+- mongodb container: 27017
 
 - postgresql container: 5433
 
@@ -63,6 +63,8 @@ Each service needs to listen on a port. Here's the port mapping:
 - notifications-service: 4001
 
 - users-service: 8080
+
+- metrics-service: 8001 
 
 - cart-service: 8000
 
