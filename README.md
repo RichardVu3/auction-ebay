@@ -20,7 +20,7 @@ To update submodules after the initial update, use the following command:
 
 ```bash
 
-git submodules update --merge --remote
+git submodules update --merge --remote --recursive
 ```
 
 ### Building Docker Container Network
