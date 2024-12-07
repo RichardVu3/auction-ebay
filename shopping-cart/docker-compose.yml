@@ -24,6 +24,8 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       MONGO_URI: "mongodb://mongodb:27017/shopping_cart"
       RABBITMQ_HOST: "rabbitmq"
@@ -38,6 +40,8 @@ services:
     depends_on:
       mongodb:
           condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
     environment:
       MONGO_URI: "mongodb://mongodb:27017/shopping_cart"
       RABBITMQ_HOST: "rabbitmq"
