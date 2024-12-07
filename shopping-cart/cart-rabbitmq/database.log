@@ -1,0 +1,66 @@
+2024-12-07 12:28:18,201 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675493c22aff18fe3d0f7de7"}, "message": "Starting topology monitoring"}
+2024-12-07 12:28:18,201 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675493c22aff18fe3d0f7de7"}, "previousDescription": "<TopologyDescription id: 675493c22aff18fe3d0f7de7, topology_type: Unknown, servers: []>", "newDescription": "<TopologyDescription id: 675493c22aff18fe3d0f7de7, topology_type: Unknown, servers: [<ServerDescription ('mongodb', 27017) server_type: Unknown, rtt: None>]>", "message": "Topology description changed"}
+2024-12-07 12:28:18,201 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675493c22aff18fe3d0f7de7"}, "serverHost": "mongodb", "serverPort": 27017, "message": "Starting server monitoring"}
+2024-12-07 12:28:18,201 - pymongo.connection - DEBUG - {"clientId": {"$oid": "675493c22aff18fe3d0f7de7"}, "message": "Connection pool created", "serverHost": "mongodb", "serverPort": 27017}
+2024-12-07 12:28:18,202 - utils.database - INFO - Database connection established
+2024-12-07 12:28:18,202 - pika.adapters.select_connection - DEBUG - Using KQueuePoller
+2024-12-07 12:28:18,202 - pika.adapters.base_connection - DEBUG - Created default connection workflow <pika.adapters.utils.connection_workflow.AMQPConnectionWorkflow object at 0x1067102f0>
+2024-12-07 12:28:18,202 - pika.adapters.utils.connection_workflow - DEBUG - Starting AMQP Connection workflow asynchronously.
+2024-12-07 12:28:18,202 - pika.adapters.select_connection - DEBUG - call_later: added timeout <pika.adapters.select_connection._Timeout object at 0x10620b760> with deadline=86913.087487416 and callback=functools.partial(<bound method AMQPConnectionWorkflow._start_new_cycle_async of <pika.adapters.utils.connection_workflow.AMQPConnectionWorkflow object at 0x1067102f0>>, first=True); now=86913.087487416; delay=0
+2024-12-07 12:28:18,203 - pika.adapters.utils.connection_workflow - DEBUG - Beginning a new AMQP connection workflow cycle; attempts remaining after this: 0
+2024-12-07 12:28:18,203 - pika.adapters.select_connection - DEBUG - call_later: added timeout <pika.adapters.select_connection._Timeout object at 0x105b9ab30> with deadline=86913.087603 and callback=<bound method AMQPConnectionWorkflow._try_next_config_async of <pika.adapters.utils.connection_workflow.AMQPConnectionWorkflow object at 0x1067102f0>>; now=86913.087603; delay=0
+2024-12-07 12:28:18,203 - pika.adapters.utils.connection_workflow - DEBUG - _try_next_config_async: 'rabbitmq':5672
+2024-12-07 12:28:18,207 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675493c22aff18fe3d0f7de7"}, "serverHost": "mongodb", "serverPort": 27017, "awaited": false, "durationMS": 5.431415993371047, "failure": "\"AutoReconnect('mongodb:27017: [Errno 8] nodename nor servname provided, or not known (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')\"", "message": "Server heartbeat failed"}
+2024-12-07 12:28:18,207 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675493c22aff18fe3d0f7de7"}, "previousDescription": "<TopologyDescription id: 675493c22aff18fe3d0f7de7, topology_type: Unknown, servers: [<ServerDescription ('mongodb', 27017) server_type: Unknown, rtt: None>]>", "newDescription": "<TopologyDescription id: 675493c22aff18fe3d0f7de7, topology_type: Unknown, servers: [<ServerDescription ('mongodb', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('mongodb:27017: [Errno 8] nodename nor servname provided, or not known (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>", "message": "Topology description changed"}
+2024-12-07 12:28:18,209 - pika.adapters.utils.selector_ioloop_adapter - ERROR - Address resolution failed: gaierror(8, 'nodename nor servname provided, or not known')
+2024-12-07 12:28:18,209 - pika.adapters.select_connection - DEBUG - add_callback_threadsafe: added callback=<bound method _AddressResolver._dispatch_result of <pika.adapters.utils.selector_ioloop_adapter._AddressResolver object at 0x1064c2d80>>
+2024-12-07 12:28:18,209 - pika.adapters.select_connection - DEBUG - process_timeouts: invoking callback=<bound method _AddressResolver._dispatch_result of <pika.adapters.utils.selector_ioloop_adapter._AddressResolver object at 0x1064c2d80>>
+2024-12-07 12:28:18,209 - pika.adapters.utils.selector_ioloop_adapter - DEBUG - Invoking asynchronous getaddrinfo() completion callback; host='rabbitmq'
+2024-12-07 12:28:18,209 - pika.adapters.utils.connection_workflow - ERROR - getaddrinfo failed: gaierror(8, 'nodename nor servname provided, or not known').
+2024-12-07 12:28:18,209 - pika.adapters.utils.connection_workflow - ERROR - AMQP connection workflow failed: AMQPConnectionWorkflowFailed: 1 exceptions in all; last exception - gaierror(8, 'nodename nor servname provided, or not known'); first exception - None.
+2024-12-07 12:28:18,209 - pika.adapters.utils.connection_workflow - ERROR - AMQPConnectionWorkflow - reporting failure: AMQPConnectionWorkflowFailed: 1 exceptions in all; last exception - gaierror(8, 'nodename nor servname provided, or not known'); first exception - None
+2024-12-07 12:28:18,209 - pika.adapters.blocking_connection - ERROR - Connection workflow failed: AMQPConnectionWorkflowFailed: 1 exceptions in all; last exception - gaierror(8, 'nodename nor servname provided, or not known'); first exception - None
+2024-12-07 12:28:18,209 - pika.adapters.blocking_connection - ERROR - Error in _create_connection().
+Traceback (most recent call last):
+  File "/Users/richardvu/.pyenv/versions/3.12.2/lib/python3.12/site-packages/pika/adapters/blocking_connection.py", line 451, in _create_connection
+    raise self._reap_last_connection_workflow_error(error)
+  File "/Users/richardvu/.pyenv/versions/3.12.2/lib/python3.12/site-packages/pika/adapters/utils/selector_ioloop_adapter.py", line 565, in _resolve
+    result = socket.getaddrinfo(self._host, self._port, self._family,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/richardvu/.pyenv/versions/3.12.2/lib/python3.12/socket.py", line 963, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+2024-12-07 12:33:08,100 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675494e47e1d39ae88ebfa13"}, "message": "Starting topology monitoring"}
+2024-12-07 12:33:08,101 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675494e47e1d39ae88ebfa13"}, "previousDescription": "<TopologyDescription id: 675494e47e1d39ae88ebfa13, topology_type: Unknown, servers: []>", "newDescription": "<TopologyDescription id: 675494e47e1d39ae88ebfa13, topology_type: Unknown, servers: [<ServerDescription ('mongodb', 27017) server_type: Unknown, rtt: None>]>", "message": "Topology description changed"}
+2024-12-07 12:33:08,101 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675494e47e1d39ae88ebfa13"}, "serverHost": "mongodb", "serverPort": 27017, "message": "Starting server monitoring"}
+2024-12-07 12:33:08,101 - pymongo.connection - DEBUG - {"clientId": {"$oid": "675494e47e1d39ae88ebfa13"}, "message": "Connection pool created", "serverHost": "mongodb", "serverPort": 27017}
+2024-12-07 12:33:08,101 - utils.database - INFO - Database connection established
+2024-12-07 12:33:08,102 - pika.adapters.select_connection - DEBUG - Using KQueuePoller
+2024-12-07 12:33:08,102 - pika.adapters.base_connection - DEBUG - Created default connection workflow <pika.adapters.utils.connection_workflow.AMQPConnectionWorkflow object at 0x104694200>
+2024-12-07 12:33:08,102 - pika.adapters.utils.connection_workflow - DEBUG - Starting AMQP Connection workflow asynchronously.
+2024-12-07 12:33:08,102 - pika.adapters.select_connection - DEBUG - call_later: added timeout <pika.adapters.select_connection._Timeout object at 0x103afe170> with deadline=87202.985272625 and callback=functools.partial(<bound method AMQPConnectionWorkflow._start_new_cycle_async of <pika.adapters.utils.connection_workflow.AMQPConnectionWorkflow object at 0x104694200>>, first=True); now=87202.985272625; delay=0
+2024-12-07 12:33:08,102 - pika.adapters.utils.connection_workflow - DEBUG - Beginning a new AMQP connection workflow cycle; attempts remaining after this: 0
+2024-12-07 12:33:08,102 - pika.adapters.select_connection - DEBUG - call_later: added timeout <pika.adapters.select_connection._Timeout object at 0x1046942e0> with deadline=87202.985401041 and callback=<bound method AMQPConnectionWorkflow._try_next_config_async of <pika.adapters.utils.connection_workflow.AMQPConnectionWorkflow object at 0x104694200>>; now=87202.985401041; delay=0
+2024-12-07 12:33:08,102 - pika.adapters.utils.connection_workflow - DEBUG - _try_next_config_async: 'rabbitmq':5672
+2024-12-07 12:33:08,110 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675494e47e1d39ae88ebfa13"}, "serverHost": "mongodb", "serverPort": 27017, "awaited": false, "durationMS": 8.712249997188337, "failure": "\"AutoReconnect('mongodb:27017: [Errno 8] nodename nor servname provided, or not known (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')\"", "message": "Server heartbeat failed"}
+2024-12-07 12:33:08,110 - pika.adapters.utils.selector_ioloop_adapter - ERROR - Address resolution failed: gaierror(8, 'nodename nor servname provided, or not known')
+2024-12-07 12:33:08,110 - pymongo.topology - DEBUG - {"topologyId": {"$oid": "675494e47e1d39ae88ebfa13"}, "previousDescription": "<TopologyDescription id: 675494e47e1d39ae88ebfa13, topology_type: Unknown, servers: [<ServerDescription ('mongodb', 27017) server_type: Unknown, rtt: None>]>", "newDescription": "<TopologyDescription id: 675494e47e1d39ae88ebfa13, topology_type: Unknown, servers: [<ServerDescription ('mongodb', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('mongodb:27017: [Errno 8] nodename nor servname provided, or not known (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>", "message": "Topology description changed"}
+2024-12-07 12:33:08,110 - pika.adapters.select_connection - DEBUG - add_callback_threadsafe: added callback=<bound method _AddressResolver._dispatch_result of <pika.adapters.utils.selector_ioloop_adapter._AddressResolver object at 0x104694320>>
+2024-12-07 12:33:08,110 - pika.adapters.select_connection - DEBUG - process_timeouts: invoking callback=<bound method _AddressResolver._dispatch_result of <pika.adapters.utils.selector_ioloop_adapter._AddressResolver object at 0x104694320>>
+2024-12-07 12:33:08,110 - pika.adapters.utils.selector_ioloop_adapter - DEBUG - Invoking asynchronous getaddrinfo() completion callback; host='rabbitmq'
+2024-12-07 12:33:08,110 - pika.adapters.utils.connection_workflow - ERROR - getaddrinfo failed: gaierror(8, 'nodename nor servname provided, or not known').
+2024-12-07 12:33:08,110 - pika.adapters.utils.connection_workflow - ERROR - AMQP connection workflow failed: AMQPConnectionWorkflowFailed: 1 exceptions in all; last exception - gaierror(8, 'nodename nor servname provided, or not known'); first exception - None.
+2024-12-07 12:33:08,111 - pika.adapters.utils.connection_workflow - ERROR - AMQPConnectionWorkflow - reporting failure: AMQPConnectionWorkflowFailed: 1 exceptions in all; last exception - gaierror(8, 'nodename nor servname provided, or not known'); first exception - None
+2024-12-07 12:33:08,111 - pika.adapters.blocking_connection - ERROR - Connection workflow failed: AMQPConnectionWorkflowFailed: 1 exceptions in all; last exception - gaierror(8, 'nodename nor servname provided, or not known'); first exception - None
+2024-12-07 12:33:08,111 - pika.adapters.blocking_connection - ERROR - Error in _create_connection().
+Traceback (most recent call last):
+  File "/Users/richardvu/.pyenv/versions/3.12.2/lib/python3.12/site-packages/pika/adapters/blocking_connection.py", line 451, in _create_connection
+    raise self._reap_last_connection_workflow_error(error)
+  File "/Users/richardvu/.pyenv/versions/3.12.2/lib/python3.12/site-packages/pika/adapters/utils/selector_ioloop_adapter.py", line 565, in _resolve
+    result = socket.getaddrinfo(self._host, self._port, self._family,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/richardvu/.pyenv/versions/3.12.2/lib/python3.12/socket.py", line 963, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
