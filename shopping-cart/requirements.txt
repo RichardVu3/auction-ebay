@@ -1,0 +1,5 @@
+flask[async]
+pymongo[srv]
+python-dateutil
+pytest-asyncio
+flask_cors
