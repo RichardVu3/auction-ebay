@@ -7,7 +7,11 @@ This is an Asynchronous Microservice.
 
 from flask import Flask, request, jsonify
 from datetime import datetime
+
+import sys
+sys.path.insert(0, '..')
 from utils import DatabaseLogger
+sys.path.pop(0)
 
 from flask_cors import CORS, cross_origin
 

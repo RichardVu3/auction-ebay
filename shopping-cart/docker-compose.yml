@@ -16,11 +16,22 @@ services:
         timeout: 10s
         retries: 10
 
+  rabbitmq_consumer:
+    build:
+      context: .
+      dockerfile: cart-rabbitmq/Dockerfile
+    container_name: rabbitmq_consumer
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      MONGO_URI: "mongodb://mongodb:27017/shopping_cart"
+      RABBITMQ_HOST: "rabbitmq"
 
   shopping_cart_service:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: cart-flask/Dockerfile
     container_name: shopping_cart_service
     ports:
       - "8000:8000"
@@ -29,6 +40,7 @@ services:
           condition: service_healthy
     environment:
       MONGO_URI: "mongodb://mongodb:27017/shopping_cart"
+      RABBITMQ_HOST: "rabbitmq"
 
 volumes:
   mongo_data:
