@@ -52,6 +52,7 @@ this run the `postbuild.sh` script.
 cd stripe
 bash run.sh
 ```
+Wait about one minute or so for the service to be up.
 
 ## Port Mappings
 
