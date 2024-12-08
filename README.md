@@ -46,6 +46,13 @@ this run the `postbuild.sh` script.
 ./postbuild.sh
 ```
 
+### Initiating Stripe API network
+
+```bash
+cd stripe
+bash run.sh
+```
+
 ## Port Mappings
 
 Each service needs to listen on a port. Here's the port mapping:
