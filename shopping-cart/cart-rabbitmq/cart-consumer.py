@@ -11,10 +11,15 @@ logging.basicConfig(level=logging.DEBUG, filename='./cart-rabbitmq.log', filemod
 logger = logging.getLogger(__name__)
 
 # Initialize the database logger
-database_logger = DatabaseLogger(
-    connection_string="mongodb://mongodb:27017/",
-    database_name="shopping_cart"
-)
+try:
+    database_logger = DatabaseLogger(
+        connection_string='mongodb://cart_mongodb:27017/',
+        database_name='shopping_cart'
+    )
+except Exception as e:
+    logger.error(f"Failed to initialize database logger: {e}")
+else:
+    logger.info("Database logger initialized successfully")
 
 
 def process_message(ch, method, properties, body):
@@ -34,10 +39,13 @@ def process_message(ch, method, properties, body):
         if not user_id or not item:
             logger.error("Invalid message structure. Missing userId or item.")
             raise ValueError("Invalid message structure. Missing userId or item.")
+        
+        # Change buyItNowPrice in item to amount in bid
+        item['buyItNowPrice'] = auction_data.get('bid', {}).get('amount')
 
         # Add the item to the database
-        # database_logger.add_item(user_id, item)
-        # logger.info(f"Successfully added item {item['id']} to user {user_id}'s cart.")
+        database_logger.add_item(user_id, item)
+        logger.info(f"Successfully added item {item['id']} to user {user_id}'s cart.")
 
         # Acknowledge message
         ch.basic_ack(delivery_tag=method.delivery_tag)
@@ -51,13 +59,13 @@ def main():
     Sets up RabbitMQ connection and starts consuming messages.
     """
     # RabbitMQ connection parameters
-    rabbitmq_host = "rabbitmq"  # Replace with your RabbitMQ host
+    connection_string = "rabbitmq"
     exchange = "cart-exchange"
-    queue = "cart-queue"
+    queue = "auction.end"
     routing_key = "auction.atc"
 
     # Establish a connection to RabbitMQ
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(connection_string))
     channel = connection.channel()
 
     # Declare exchange and queue
@@ -69,6 +77,7 @@ def main():
     print(f"Listening for messages on queue '{queue}'...")
 
     # Start consuming messages
+    channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue=queue, on_message_callback=process_message, auto_ack=False)
 
     try:

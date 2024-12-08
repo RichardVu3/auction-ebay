@@ -20,7 +20,7 @@ logging.basicConfig(level=logging.DEBUG, filename='./cart.log', filemode='a', fo
 logger = logging.getLogger(__name__)
 
 database_logger = DatabaseLogger(
-    connection_string='mongodb://mongodb:27017/',
+    connection_string='mongodb://cart_mongodb:27017/',
     database_name='shopping_cart'
 )
 

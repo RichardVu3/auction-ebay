@@ -136,6 +136,78 @@ services:
     volumes:
       - ~/.aws:/root/.aws
 
+  cart_mongodb:
+    build:
+      context: shopping-cart/mongodb/
+      dockerfile: Dockerfile
+    container_name: cart_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+        test: ["CMD-SHELL", "pgrep mongod > /dev/null || exit 1"]
+        interval: 10s
+        timeout: 10s
+        retries: 10
+    networks:
+      - app-network
+
+  rabbitmq_consumer:
+    build:
+      context: shopping-cart/
+      dockerfile: cart-rabbitmq/Dockerfile
+    container_name: rabbitmq_consumer
+    depends_on:
+      cart_mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      MONGO_URI: "mongodb://cart_mongodb:27017/shopping_cart"
+      RABBITMQ_HOST: "rabbitmq"
+    networks:
+      - app-network
+
+  shopping_cart_service:
+    build:
+      context: shopping-cart/
+      dockerfile: cart-flask/Dockerfile
+    container_name: shopping_cart_service
+    ports:
+      - "8000:8000"
+    depends_on:
+      cart_mongodb:
+          condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      MONGO_URI: "mongodb://cart_mongodb:27017/shopping_cart"
+      RABBITMQ_HOST: "rabbitmq"
+    networks:
+      - app-network
+
+  # metrics-service:
+  #   build: 
+  #     context: ./metrics-service
+  #     dockerfile: Dockerfile
+  #   container_name: metrics-service
+  #   ports:
+  #     - "8085:8001"  # Changed to match your Dockerfile's port
+  #   environment:
+  #     - MONGODB_URL=mongodb://mongodb:27017
+  #     - MONGODB_DB_NAME=auction_metrics
+  #   depends_on:
+  #     mongodb:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: ["CMD", "curl", "localhost:8001/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+  #   networks:
+  #     - app-network
+
 networks:
   app-network:
     driver: bridge
@@ -143,3 +215,4 @@ networks:
 volumes:
   initdb:
   mongodb_data:
+  mongo_data:
