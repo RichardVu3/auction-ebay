@@ -14,7 +14,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 30s
       timeout: 60s
       retries: 5
@@ -32,6 +32,7 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+
 
   rabbitmq:
     image: masstransit/rabbitmq
@@ -71,7 +72,7 @@ services:
       rabbitmq:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "localhost:4000/healthcheck" ]
+      test: ["CMD", "curl", "localhost:4000/healthcheck"]
     networks:
       - app-network
 
@@ -86,13 +87,15 @@ services:
     environment:
       DATABASE_URL: "postgresql://postgres:password@postgres-db:5432/notification_service_db"
       RABBITMQ_HOST: "rabbitmq"
+    env_file:
+      - ./notification-service/.env
     depends_on:
       postgres-db:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "localhost:4001/healthcheck" ]
+      test: ["CMD", "curl", "localhost:4001/healthcheck"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -106,9 +109,9 @@ services:
       dockerfile: Dockerfile
     container_name: api-gateway
     ports:
-      - "42069:42069" # API Gateway exposed on port 3000
+      - "42069:42069"
     healthcheck:
-      test: [ "CMD", "curl", "localhost:42069/healthcheck" ]
+      test: ["CMD", "curl", "localhost:42069/healthcheck"]
     depends_on:
       auction-service:
         condition: service_healthy
@@ -130,11 +133,10 @@ services:
         condition: service_healthy
     ports:
       - 8080:8080
-    entrypoint: [ "java", "-jar", "-Dspring.profiles.active=docker", "application.jar" ]
+    entrypoint:
+      ["java", "-jar", "-Dspring.profiles.active=docker", "application.jar"]
     networks:
       - app-network
-    volumes:
-      - ~/.aws:/root/.aws
 
   cart_mongodb:
     build:
@@ -207,7 +209,6 @@ services:
       retries: 5
     networks:
       - app-network
-
 networks:
   app-network:
     driver: bridge
