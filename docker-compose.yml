@@ -33,7 +33,6 @@ services:
       retries: 5
       start_period: 40s
 
-
   rabbitmq:
     image: masstransit/rabbitmq
     container_name: rabbitmq
@@ -109,7 +108,7 @@ services:
       dockerfile: Dockerfile
     container_name: api-gateway
     ports:
-      - "42069:42069"
+      - "42069:42069" # API Gateway exposed on port 3000
     healthcheck:
       test: ["CMD", "curl", "localhost:42069/healthcheck"]
     depends_on:
@@ -137,6 +136,8 @@ services:
       ["java", "-jar", "-Dspring.profiles.active=docker", "application.jar"]
     networks:
       - app-network
+    volumes:
+      - ~/.aws:/root/.aws
 
   cart_mongodb:
     build:
@@ -148,10 +149,10 @@ services:
     volumes:
       - mongo_data:/data/db
     healthcheck:
-        test: ["CMD-SHELL", "pgrep mongod > /dev/null || exit 1"]
-        interval: 10s
-        timeout: 10s
-        retries: 10
+      test: ["CMD-SHELL", "pgrep mongod > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
     networks:
       - app-network
 
@@ -180,7 +181,7 @@ services:
       - "8000:8000"
     depends_on:
       cart_mongodb:
-          condition: service_healthy
+        condition: service_healthy
       rabbitmq:
         condition: service_healthy
     environment:
@@ -190,7 +191,7 @@ services:
       - app-network
 
   metrics-service:
-    build: 
+    build:
       context: ./metrics-service
       dockerfile: Dockerfile
     container_name: metrics-service
@@ -209,6 +210,7 @@ services:
       retries: 5
     networks:
       - app-network
+
 networks:
   app-network:
     driver: bridge

@@ -25,7 +25,7 @@ git submodules update --merge --remote --recursive
 
 ### Building Docker Container Network
 
-Once all the repositories are cloned, build the container networks with
+Once all the repositories are cloned and updated, build the container networks with
 
 ```bash
 # builds all of the submodules and dependencies containers
@@ -46,12 +46,63 @@ this run the `postbuild.sh` script.
 ./postbuild.sh
 ```
 
+The `auction-service` will throw a database error due to the database being
+empty. This **might** cause the docker build to stall. You should be able to run
+the `postbuild.sh` script successfully as long as the `auction-service` is
+running. You should then be able to restart the `auction-service` manually.
+
+### Environment Variables
+
+In short, you will need to add a `.env` file to the root directory of the
+`notifications-service`, and `auction-service` and `userService`.
+
+User Service:
+
+```bash
+AWS_COGNITO_CLIENT_ID=""
+AWS_COGNITO_USERPOOL=""
+```
+
+Auction Service:
+
+```bash
+ PORT=4000
+ ADMIN_USERID="c1bba5c0-b001-7085-7a2e-e74d5399c3d1"
+ AWS_ACCESS_KEY_ID=""
+ AWS_SECRET_ACCESS_KEY_ID=""
+ AWS_REGION="us-east-2"
+ AWS_COGNITO_USERPOOL_ID="us-east-2_gyo9HVnEr"
+ RABBITMQ_HOST="rabbitmq"
+ DATABASE_URL: "postgresql://postgres:password@postgres-db:5432/auction_service_db"
+
+```
+
+Notification Service:
+
+```bash
+ PORT=4001
+ ADMIN_USERID=c1bba5c0-b001-7085-7a2e-e74d5399c3d1
+ AWS_ACCESS_KEY_ID=""
+ AWS_SECRET_ACCESS_KEY_ID=""
+ AWS_REGION="us-east-2"
+ AWS_COGNITO_USERPOOL_ID="us-east-2_gyo9HVnEr"
+ RABBITMQ_HOST=rabbitmq
+ SENDER_EMAIL=kyle@kylelee.dev
+ # can only send emails to verified users in SES due to it being run in Sandbox Mode
+
+
+```
+
+For more detailed instructions please see the `auction-service`, `notification-service` and `userService` README files for
+instructions on setting up the `.env` files for the respective services.
+
 ### Initiating Stripe API network
 
 ```bash
 cd stripe
 bash run.sh
 ```
+
 Wait about one minute or so for the service to be up.
 
 ## Port Mappings
@@ -72,7 +123,7 @@ Each service needs to listen on a port. Here's the port mapping:
 
 - users-service: 8080
 
-- metrics-service: 8001 
+- metrics-service: 8001
 
 - cart-service: 8000
 
