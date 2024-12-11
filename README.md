@@ -103,7 +103,7 @@ cd stripe
 bash run.sh
 ```
 
-Wait about one minute or so for the service to be up.
+Wait about one minute or so for the service to be up. When prompting to input card details, please use `4242 4242 4242 4242` with any date in the future as expiry date, CVV and name can be anything. This is the way Stripe recognize the test card.
 
 ## Port Mappings
 
