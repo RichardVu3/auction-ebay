@@ -51,6 +51,31 @@ empty. This **might** cause the docker build to stall. You should be able to run
 the `postbuild.sh` script successfully as long as the `auction-service` is
 running. You should then be able to restart the `auction-service` manually.
 
+### Building the client
+
+The client is not containerized and must be built separately. To do so, do the
+following:
+
+```bash
+
+# navigate to submodule directory
+cd /path/to/auction-app/client
+
+# install dependencies
+
+npm i # or pnpm/yarn.
+
+# start the server
+npm run dev   # or npm run start to run in production mode
+
+
+
+
+
+
+
+```
+
 ### Environment Variables
 
 In short, you will need to add a `.env` file to the root directory of the
